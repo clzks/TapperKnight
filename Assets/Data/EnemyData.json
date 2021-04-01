@@ -1,0 +1,37 @@
+{
+    "Description":{
+        "Id":"정보를 구분 짓는 값",
+        "Name":"이름",
+        "MoveSpeed":"초당 이동 거리. 1.0 = 1.0f",
+        "Damage":"몬스터 데미지",
+        "NoteList" : "몬스터가 가지고 있는 노트. 입력한 순서대로 나옴. ",
+        "NoteInterval" : "노트들간의 시간간격. [Left, Right, BothSide, Left]"
+        },
+    "Enemy":[
+        {
+            "Id" : 10000,
+            "Name" : "나비",
+            "MoveSpeed" : 5,
+            "Damage" : 3,
+            "NoteList" : [
+                    "Left",
+                    "Left",
+                    "Right"
+            ],
+            "NoteInterval" : 0.5
+        },
+        {
+            "Id" : 20000,
+            "Name" : "호랑이",
+            "MoveSpeed" : 8,
+            "Damage" : 10,
+            "NoteList" : [
+                    "Left",
+                    "Right",
+                    "BothSide",
+                    "BothSide"
+            ],
+            "NoteInterval" : 0.25
+        }
+    ]
+}
