@@ -7,11 +7,13 @@ public class InGameScene : MonoBehaviour
     [SerializeField]private InGameView _inGameView;
     [SerializeField] private InGamePresenter _inGamePresenter;
     [SerializeField] private TapperKinghtModel _model;
-
+    private GameManager _gameManager;
     private void Awake()
     {
         MakeMvpPattern();
         SetMvpPattern();
+        _gameManager = GameManager.Get();
+        _gameManager.SetInGamePresenter(_inGamePresenter);
     }
 
     private void MakeMvpPattern()
@@ -40,6 +42,7 @@ public class InGameScene : MonoBehaviour
             viewObject.transform.SetParent(transform);
         }
     }
+
 
     private void SetMvpPattern()
     {

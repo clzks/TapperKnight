@@ -18,6 +18,14 @@ public enum ScoreType
     Count
 }
 
+public enum InGameState
+{ 
+    Ready,
+    Play,
+    Change,
+    Count
+}
+
 public static class Formula
 {
     public static int EnemyHpFormula(EnemyModel model)

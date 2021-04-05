@@ -6,5 +6,5 @@ public class EnemyView : MonoBehaviour
 {
     private InGamePresenter inGamePresenter;
     
-
+    
 }

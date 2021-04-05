@@ -28,6 +28,11 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _inGameView.GetNoteBoxPosY();
     }
     
+    public StageModel GetStageModel(int index)
+    {
+        return _model.GetStageModel(index);
+    }
+
     public void SetNoteSprite(Sprite sp)
     {
 
