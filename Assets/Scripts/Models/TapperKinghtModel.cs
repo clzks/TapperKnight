@@ -9,10 +9,12 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     // 뷰는 몬스터의 정보를 받아서 생성 및 세팅한다.
 
     private List<StageModel> stageModelList;
+    private Dictionary<ScoreType, float> scoreDistanceList;
 
     private void Awake()
     {
-        SetSampleStageModel();    
+        SetSampleStageModel();
+        SetSampleScoreDistance();
     }
 
     public void SetSampleStageModel()
@@ -33,10 +35,23 @@ public class TapperKinghtModel : MonoBehaviour, IModel
         }
     }
 
+    public void SetSampleScoreDistance()
+    {
+        scoreDistanceList = new Dictionary<ScoreType, float>();
+
+        scoreDistanceList.Add(ScoreType.Miss, 1f);
+        scoreDistanceList.Add(ScoreType.Bad, 1f);
+        scoreDistanceList.Add(ScoreType.Good, 0.6f);
+        scoreDistanceList.Add(ScoreType.Great, 0.4f);
+        scoreDistanceList.Add(ScoreType.Perfect, 0.2f);
+    }
+
     public void SetStageModel()
     {
 
     }
+
+
 
     public List<StageModel> GetStageModelList()
     {
@@ -46,5 +61,10 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     public StageModel GetStageModel(int index)
     {
         return stageModelList[index];
+    }
+
+    public Dictionary<ScoreType, float> GetScoreModel()
+    {
+        return scoreDistanceList;
     }
 }

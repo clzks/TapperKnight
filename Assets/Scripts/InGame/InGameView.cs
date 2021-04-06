@@ -16,11 +16,13 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private Vector3 playerPos;
     private InGameState state = InGameState.Count;
     private StageModel inGameStageModel;
+    Dictionary<ScoreType, float> scoreDistanceList;
     private int currentStageIndex = 0;
     [SerializeField] private float currStageTimer = 0f;
     [SerializeField] private float maxStageTime;
     [SerializeField] private float currGenTimer = 0f;
     [SerializeField] private float maxGenTime;
+    private BaseEnemy targetEnemy;
     private void Awake()
     {
         _gameManager = GameManager.Get();
@@ -52,13 +54,15 @@ public class InGameView : MonoBehaviour, IView
             case InGameState.Ready:
 
                 await GetStageModelAsync();
-                if (null != inGameStageModel)
+                await GetScoreModelAsync();
+
+                if (null != inGameStageModel && null != scoreDistanceList)
                 {
                     state = InGameState.Play;
                 }
                 else
                 {
-                    Debug.Log("스테이지 모델 로드 실패");
+                    Debug.Log("게임데이터 로드 실패");
                     await UniTask.Delay(1000);
                 }
                 break;
@@ -99,6 +103,12 @@ public class InGameView : MonoBehaviour, IView
         maxGenTime = inGameStageModel.MaximumGenCycle;
     }
 
+    public async UniTask GetScoreModelAsync()
+    {
+        await UniTask.Yield();
+        scoreDistanceList = _inGamePresenter.GetScoreModel();
+    }
+
     public void SetPresenter(InGamePresenter presenter)
     {
         _inGamePresenter = presenter;
@@ -106,16 +116,48 @@ public class InGameView : MonoBehaviour, IView
 
     public void OnClickLeftButton()
     {
-           
+        if (null != targetEnemy)
+        {
+            BaseNote note = targetEnemy.GetNote();
+            note?.OnNoteCall(NoteType.Left);
+        }
     }
 
     public void OnClickRightButton()
     {
-        
+        if (null != targetEnemy)
+        {
+            BaseNote note = targetEnemy.GetNote();
+            note?.OnNoteCall(NoteType.Right);
+        }
+    }
+
+    public void OnClickBothSideButtons()
+    {
+        if (null != targetEnemy)
+        {
+            BaseNote note = targetEnemy.GetNote();
+            note?.OnNoteCall(NoteType.BothSide);
+        }
     }
 
     public float GetNoteBoxPosY()
     {
         return noteBoxPosY;
+    }
+
+    public void SetTarget(BaseEnemy enemy)
+    {
+        targetEnemy = enemy;
+    }
+
+    public BaseEnemy GetTarget()
+    {
+        return targetEnemy;
+    }
+
+    public void OnTargetDestroy()
+    {
+        targetEnemy = null;
     }
 }

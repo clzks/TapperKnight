@@ -11,6 +11,4 @@ public class EnemyData
     public Queue<NoteType> Notes;
     public float NoteInterval;
     public float TotalTime;
-
-
 }

@@ -23,7 +23,7 @@ public class BaseEnemy : MonoBehaviour
 
     private void Update()
     {
-        transform.position -= new Vector3(status.speed, 0f, 0f);
+        transform.position -= new Vector3(status.speed, 0f, 0f) * Time.deltaTime;
     }
 
     public void SetSampleEnemy()
@@ -37,6 +37,12 @@ public class BaseEnemy : MonoBehaviour
         {
             _inGamePresenter = GameManager.Get().GetInGamePresenter();
         }
+
+        if(null == _inGamePresenter.GetTarget())
+        {
+            _inGamePresenter.SetTarget(this);
+        }
+
         float y = _inGamePresenter.GetNoteBoxPosY();
         for (int i = 0; i < 3; ++i)
         {
@@ -44,7 +50,8 @@ public class BaseEnemy : MonoBehaviour
             SetRandomNote(note);
             note.transform.SetParent(noteParent.transform);
             // Interval 값들로 하여금 노트간의 간격 계산해서 생성해주는것 필요 (노트 오브젝트는 몬스터의 자식으로 들어갈것)
-            note.transform.position = new Vector3(transform.position.x + i * 0.4f - 0.4f, y, transform.position.z);
+            note.SetPosition(new Vector3(transform.position.x + i * 0.4f - 0.4f, y, transform.position.z));
+            note.SetParent(this);
             enemyNotes.Enqueue(note);
         }
     }
@@ -86,9 +93,26 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
+    public void OnNoteCall(ScoreType score)
+    {
+        _inGamePresenter.OnNoteCall(score);
+        enemyNotes.Dequeue();
+
+        if(0 == enemyNotes.Count)
+        {
+            DestroyEnemy();
+            _inGamePresenter.OnTargetDestroy();
+        }
+    }
+
+    public BaseNote GetNote()
+    {
+        return enemyNotes.Peek();
+    }
+
     public void DestroyEnemy()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
 

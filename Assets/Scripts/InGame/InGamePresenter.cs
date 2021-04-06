@@ -33,8 +33,33 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _model.GetStageModel(index);
     }
 
+    public Dictionary<ScoreType, float> GetScoreModel()
+    {
+        return _model.GetScoreModel();
+    }
+
+    public void SetTarget(BaseEnemy enemy)
+    {
+        _inGameView.SetTarget(enemy);
+    }
+
+    public BaseEnemy GetTarget()
+    {
+        return _inGameView.GetTarget();
+    }
+
     public void SetNoteSprite(Sprite sp)
     {
 
+    }
+
+    public void OnNoteCall(ScoreType score)
+    {
+        
+    }
+
+    public void OnTargetDestroy()
+    {
+        _inGameView.OnTargetDestroy();
     }
 }
