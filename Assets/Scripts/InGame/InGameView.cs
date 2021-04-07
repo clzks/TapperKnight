@@ -8,12 +8,14 @@ public class InGameView : MonoBehaviour, IView
     private GameManager _gameManager;
     private ObjectPoolManager _objectPool;
 
+    [Header("UI")]
     [SerializeField] private InGamePresenter _inGamePresenter;
     [SerializeField] private Button leftButton;
     [SerializeField] private Button rightButton;
     [SerializeField] private GameObject noteBox;
     [SerializeField] private float noteBoxPosY;
-    [SerializeField] private Vector3 playerPos;
+
+    [Header("Stage")]
     private InGameState state = InGameState.Count;
     private StageModel inGameStageModel;
     Dictionary<ScoreType, float> scoreDistanceList;
@@ -22,9 +24,14 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private float maxStageTime;
     [SerializeField] private float currGenTimer = 3f;
     [SerializeField] private float maxGenTime;
+
+    [Header("Control")]
     [Tooltip("버튼 동시 입력을 위한 대기시간(1ms = 0.001s)")]
     [SerializeField] private float bothSideDelayTime = 0.03f;
     private float delayTimer = 0f;
+
+    [Header("Object")]
+    [SerializeField] private BaseCharacter playerCharacter;
     private BaseEnemy targetEnemy;
     private NoteType currClickButton = NoteType.Null;
     private void Awake()
@@ -48,7 +55,7 @@ public class InGameView : MonoBehaviour, IView
 
         noteBox = GameObject.Find("Field/NoteBox");
         noteBoxPosY = noteBox.transform.position.y;
-        playerPos = GameObject.Find("Field/PlayerPos").transform.position;
+        playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
     }
 
     private async void Update()
@@ -66,6 +73,7 @@ public class InGameView : MonoBehaviour, IView
         switch (state)
         {
             case InGameState.Ready:
+                playerCharacter.SetSampleCharacter();
                 currClickButton = NoteType.Null;
                 await GetStageModelAsync();
                 await GetScoreModelAsync();
