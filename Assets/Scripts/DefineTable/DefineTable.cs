@@ -5,6 +5,7 @@ public enum NoteType
     Left,
     Right,
     BothSide,
+    Null,
     Count
 }
 

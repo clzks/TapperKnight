@@ -60,7 +60,7 @@ public class AsyncTest : MonoBehaviour
             await UniTask.Yield();  //  hanging
         }
             
-            await UniTask.Delay(100);
+        await UniTask.Delay(100);
     }
     
     private IEnumerator ShowEffectCo(UnityAction<int> onDone)

@@ -20,9 +20,13 @@ public class InGameView : MonoBehaviour, IView
     private int currentStageIndex = 0;
     [SerializeField] private float currStageTimer = 0f;
     [SerializeField] private float maxStageTime;
-    [SerializeField] private float currGenTimer = 0f;
+    [SerializeField] private float currGenTimer = 3f;
     [SerializeField] private float maxGenTime;
+    [Tooltip("버튼 동시 입력을 위한 대기시간(1ms = 0.001s)")]
+    [SerializeField] private float bothSideDelayTime = 0.03f;
+    private float delayTimer = 0f;
     private BaseEnemy targetEnemy;
+    private NoteType currClickButton = NoteType.Null;
     private void Awake()
     {
         _gameManager = GameManager.Get();
@@ -33,13 +37,13 @@ public class InGameView : MonoBehaviour, IView
         if (null == leftButton)
         {
             leftButton = GameObject.Find("LeftButton").GetComponent<Button>();
-            leftButton.onClick.AddListener(OnClickLeftButton);
+            leftButton.onClick.AddListener(() => OnClickButton(NoteType.Left));
         }
 
         if (null == rightButton)
         {
             rightButton = GameObject.Find("RightButton").GetComponent<Button>();
-            rightButton.onClick.AddListener(OnClickRightButton);
+            rightButton.onClick.AddListener(() => OnClickButton(NoteType.Right));
         }
 
         noteBox = GameObject.Find("Field/NoteBox");
@@ -49,10 +53,20 @@ public class InGameView : MonoBehaviour, IView
 
     private async void Update()
     {
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            OnClickButton(NoteType.Left);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            OnClickButton(NoteType.Right);
+        }
+
         switch (state)
         {
             case InGameState.Ready:
-
+                currClickButton = NoteType.Null;
                 await GetStageModelAsync();
                 await GetScoreModelAsync();
 
@@ -63,7 +77,7 @@ public class InGameView : MonoBehaviour, IView
                 else
                 {
                     Debug.Log("게임데이터 로드 실패");
-                    await UniTask.Delay(1000);
+                    await UniTask.Delay(100);
                 }
                 break;
 
@@ -114,31 +128,37 @@ public class InGameView : MonoBehaviour, IView
         _inGamePresenter = presenter;
     }
 
-    public void OnClickLeftButton()
+    public async void OnClickButton(NoteType type)
     {
-        if (null != targetEnemy)
+        if(NoteType.Null == currClickButton)
         {
-            BaseNote note = targetEnemy.GetNote();
-            note?.OnNoteCall(NoteType.Left);
+            currClickButton = type;
         }
-    }
+        else
+        {
+            if(1 == ((int)currClickButton + (int)type))
+            {
+                currClickButton = NoteType.BothSide;
+            }
+            else
+            {
+                delayTimer += bothSideDelayTime;
+            }
 
-    public void OnClickRightButton()
-    {
-        if (null != targetEnemy)
-        {
-            BaseNote note = targetEnemy.GetNote();
-            note?.OnNoteCall(NoteType.Right);
+            return;
         }
-    }
 
-    public void OnClickBothSideButtons()
-    {
-        if (null != targetEnemy)
+        while(delayTimer <= bothSideDelayTime)
         {
-            BaseNote note = targetEnemy.GetNote();
-            note?.OnNoteCall(NoteType.BothSide);
+            delayTimer += Time.deltaTime;
+            await UniTask.Yield();
         }
+
+        var note = targetEnemy?.GetNote();
+
+        note?.OnNoteCall(currClickButton);
+        currClickButton = NoteType.Null;
+        delayTimer = 0f;
     }
 
     public float GetNoteBoxPosY()

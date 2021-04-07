@@ -31,7 +31,7 @@ public class BaseEnemy : MonoBehaviour
         enemyNotes = new Queue<BaseNote>();
         status.name = "임시적";
         status.damage = 2;
-        status.speed = 3;
+        status.speed = 1;
         //BaseEnemy enemy = Instantiate(ObjectPoolManager.Get().prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
         if (null == _inGamePresenter)
         {
@@ -47,11 +47,14 @@ public class BaseEnemy : MonoBehaviour
         for (int i = 0; i < 3; ++i)
         {
             BaseNote note = Instantiate(ObjectPoolManager.Get().prefabList["Note"]).GetComponent<BaseNote>();
-            SetRandomNote(note);
+            //SetRandomNote(note);
+            SetBothSideNote(note);
             note.transform.SetParent(noteParent.transform);
             // Interval 값들로 하여금 노트간의 간격 계산해서 생성해주는것 필요 (노트 오브젝트는 몬스터의 자식으로 들어갈것)
             note.SetPosition(new Vector3(transform.position.x + i * 0.4f - 0.4f, y, transform.position.z));
             note.SetParent(this);
+            note.SetBoxPosition(-4.5f);
+            note.SetBoxSize(1f);
             enemyNotes.Enqueue(note);
         }
     }
@@ -91,6 +94,12 @@ public class BaseEnemy : MonoBehaviour
             bn.noteType = NoteType.BothSide;
             bn.SetNoteSprite(ObjectPoolManager.Get().spriteList["BothSide"]);
         }
+    }
+
+    private void SetBothSideNote(BaseNote bn)
+    {
+        bn.noteType = NoteType.BothSide;
+        bn.SetNoteSprite(ObjectPoolManager.Get().spriteList["BothSide"]);
     }
 
     public void OnNoteCall(ScoreType score)

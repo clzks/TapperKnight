@@ -53,11 +53,14 @@ public class BaseNote : MonoBehaviour
     {
         if(Position >= _boxPosX + 1f)
         {
+            Debug.Log("거리가 너무멀어 무효처리");
             return;
         }
 
         if (type != noteType)
         {
+            Debug.Log("노트와 버튼정보 불일치");
+            NoteCall(ScoreType.Miss);
             return;
         }
 
