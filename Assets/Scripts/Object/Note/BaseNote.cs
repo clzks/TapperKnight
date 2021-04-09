@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class BaseNote : MonoBehaviour
 {
+    private ObjectPoolManager _objectPool;
     private BaseEnemy parentEnemy;
     private float _boxSizeX;
     private float _boxPosX;
     public float Position { get { return transform.position.x; } }
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    
+
+    private void Awake()
+    {
+        _objectPool = ObjectPoolManager.Get();
+    }
     public void SetNoteSprite(Sprite sp)
     {
         spriteRenderer.sprite = sp;
@@ -95,6 +100,6 @@ public class BaseNote : MonoBehaviour
 
     private void DestroyNote()
     {
-        gameObject.SetActive(false);
+        _objectPool.DestroyNote(this);
     }
 }

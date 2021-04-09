@@ -18,24 +18,31 @@ public class BaseCharacter : MonoBehaviour
         status.MaxSpeed = 1;
     }
 
-    private async void Update()
+    private async UniTask Start()
     {
-        while(status.Hp >= 0)
+        while (status.Hp >= 0)
         {
-            GetDamage(status.HpDecreasePerSecond);
             await UniTask.Delay(1000);
+            GetDamage(status.HpDecreasePerSecond).Forget();
         }
     }
 
-    public void GetDamage(float damage)
+    private async UniTask Update()
     {
-        status.Hp -= damage;
+        
+    }
 
+    public async UniTaskVoid GetDamage(float damage)
+    {
+        await UniTask.Yield();
+
+        status.Hp -= damage;
         if (status.Hp <= 0f)
         {
             // Á×À½Ã³¸®
         }
     }
+
 }
 [System.Serializable]
 public struct CharacterStatus

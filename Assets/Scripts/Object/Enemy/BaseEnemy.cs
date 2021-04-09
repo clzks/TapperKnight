@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour
 {
+    private ObjectPoolManager _objectPool;
     public Queue<BaseNote> enemyNotes;
     public EnemyStatus status;
     private InGamePresenter _inGamePresenter;
@@ -18,6 +19,7 @@ public class BaseEnemy : MonoBehaviour
     }
     private void Awake()
     {
+        _objectPool = ObjectPoolManager.Get();
         _inGamePresenter = GameManager.Get().GetInGamePresenter();
     }
 
@@ -28,10 +30,11 @@ public class BaseEnemy : MonoBehaviour
 
     public void SetSampleEnemy()
     {
+        transform.position = new Vector3(10.5f ,transform.position.y, transform.position.z);
         enemyNotes = new Queue<BaseNote>();
         status.name = "¿”Ω√¿˚";
         status.damage = 2;
-        status.speed = 1;
+        status.speed = 3;
         //BaseEnemy enemy = Instantiate(ObjectPoolManager.Get().prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
         if (null == _inGamePresenter)
         {
@@ -46,7 +49,7 @@ public class BaseEnemy : MonoBehaviour
         float y = _inGamePresenter.GetNoteBoxPosY();
         for (int i = 0; i < 3; ++i)
         {
-            BaseNote note = Instantiate(ObjectPoolManager.Get().prefabList["Note"]).GetComponent<BaseNote>();
+            BaseNote note = _objectPool.MakeNote();
             //SetRandomNote(note);
             SetBothSideNote(note);
             note.transform.SetParent(noteParent.transform);
@@ -121,7 +124,8 @@ public class BaseEnemy : MonoBehaviour
 
     public void DestroyEnemy()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        ObjectPoolManager.Get().DestroyEnemy(this);
     }
 }
 

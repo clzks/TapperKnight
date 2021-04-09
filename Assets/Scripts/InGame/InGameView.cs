@@ -26,31 +26,32 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private float maxGenTime;
 
     [Header("Control")]
-    [Tooltip("버튼 동시 입력을 위한 대기시간(1ms = 0.001s)")]
-    [SerializeField] private float bothSideDelayTime = 0.03f;
+    [Tooltip("버튼 동시 입력을 위한 대기시간(초)")]
+    [SerializeField] private float bothSideDelayTime = 0.04f;
     private float delayTimer = 0f;
 
     [Header("Object")]
     [SerializeField] private BaseCharacter playerCharacter;
-    private BaseEnemy targetEnemy;
-    private NoteType currClickButton = NoteType.Null;
+    [SerializeField] private BaseEnemy targetEnemy;
+    [SerializeField] private NoteType currClickButton = NoteType.Null;
     private void Awake()
     {
         _gameManager = GameManager.Get();
         _objectPool = ObjectPoolManager.Get();
+        _objectPool.InitPool();
 
         state = InGameState.Ready;
 
         if (null == leftButton)
         {
             leftButton = GameObject.Find("LeftButton").GetComponent<Button>();
-            leftButton.onClick.AddListener(() => OnClickButton(NoteType.Left));
+            leftButton.onClick.AddListener(async () => await OnClickButton(NoteType.Left));
         }
 
         if (null == rightButton)
         {
             rightButton = GameObject.Find("RightButton").GetComponent<Button>();
-            rightButton.onClick.AddListener(() => OnClickButton(NoteType.Right));
+            rightButton.onClick.AddListener(async () => await OnClickButton(NoteType.Right));
         }
 
         noteBox = GameObject.Find("Field/NoteBox");
@@ -58,16 +59,16 @@ public class InGameView : MonoBehaviour, IView
         playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
     }
 
-    private async void Update()
+    private async UniTask Update()
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
-            OnClickButton(NoteType.Left);
+            await OnClickButton(NoteType.Left);
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            OnClickButton(NoteType.Right);
+            await OnClickButton(NoteType.Right);
         }
 
         switch (state)
@@ -93,7 +94,7 @@ public class InGameView : MonoBehaviour, IView
                 currGenTimer += Time.deltaTime;
                 currStageTimer += Time.deltaTime;
 
-                if (currGenTimer >= maxGenTime)
+                if (currGenTimer >= 1f)
                 {
                     BaseEnemy enemy = _objectPool.MakeEnemy();
                     enemy.SetSampleEnemy();
@@ -136,7 +137,7 @@ public class InGameView : MonoBehaviour, IView
         _inGamePresenter = presenter;
     }
 
-    public async void OnClickButton(NoteType type)
+    public async UniTask OnClickButton(NoteType type)
     {
         if(NoteType.Null == currClickButton)
         {
@@ -186,6 +187,8 @@ public class InGameView : MonoBehaviour, IView
 
     public void OnTargetDestroy()
     {
-        targetEnemy = null;
+        var nextTarget = _objectPool.GetEnemy();
+
+        targetEnemy = nextTarget ? nextTarget : null;
     }
 }

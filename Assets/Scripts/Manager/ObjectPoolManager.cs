@@ -5,15 +5,18 @@ using System.Linq;
 using UnityEngine.U2D;
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
-    public Dictionary<int, List<GameObject>> enemyPool;
-    public Dictionary<int, List<GameObject>> notePool;
+    //public Dictionary<int, List<GameObject>> enemyPool;
+    [SerializeField]public List<GameObject> enemyPool;
+    public List<GameObject> notePool;
 
     public Dictionary<string, Sprite> spriteList;
     public Dictionary<string, GameObject> prefabList;
     public List<BaseEnemy> activeEnemyList;
+    public List<BaseNote> activeNoteList;
     private void Awake()
     {
         activeEnemyList = new List<BaseEnemy>();
+        activeNoteList = new List<BaseNote>();
         spriteList = new Dictionary<string, Sprite>();
         spriteList.Add("Left", Resources.Load<Sprite>("Sprites/Left"));
         spriteList.Add("Right", Resources.Load<Sprite>("Sprites/Right"));
@@ -27,22 +30,54 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
     public BaseEnemy MakeEnemy()
     {
-        BaseEnemy enemy = Instantiate(prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
+        BaseEnemy enemy;
+
+        if (enemyPool.Count != 0)
+        {
+            enemy = enemyPool[0].GetComponent<BaseEnemy>();
+            enemy.gameObject.SetActive(true);
+            enemyPool.Remove(enemy.gameObject);
+        }
+        else
+        {
+            enemy = Instantiate(prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
+        }
         activeEnemyList.Add(enemy);
         return enemy;
     }
 
+    public BaseNote MakeNote()
+    {
+        BaseNote note;
+
+        if (notePool.Count != 0)
+        {
+            note = notePool[0].GetComponent<BaseNote>();
+            note.gameObject.SetActive(true);
+            notePool.Remove(note.gameObject);
+        }
+        else
+        {
+            note = Instantiate(prefabList["Note"]).GetComponent<BaseNote>();
+        }
+        activeNoteList.Add(note);
+        return note;
+    }
+
     public void InitPool()
     {
-        enemyPool = new Dictionary<int, List<GameObject>>();
-        notePool = new Dictionary<int, List<GameObject>>();
+        enemyPool = new List<GameObject>();
+        notePool = new List<GameObject>();
     }
 
     public void DestroyEnemy(BaseEnemy enemy)
     {
         if(activeEnemyList.Contains(enemy))
         {
+            enemy.transform.SetParent(transform);
             enemy.gameObject.SetActive(false);
+            enemyPool.Add(enemy.gameObject);
+            activeEnemyList.Remove(enemy);
         }
         else
         {
@@ -50,8 +85,30 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
     }
 
+    public void DestroyNote(BaseNote note)
+    {
+        if (activeNoteList.Contains(note))
+        {
+            note.transform.SetParent(transform);
+            note.gameObject.SetActive(false);
+            notePool.Add(note.gameObject);
+            activeNoteList.Remove(note);
+        }
+        else
+        {
+            Debug.Log("노트풀 에러");
+        }
+    }
+
     public BaseEnemy GetEnemy()
     {
-        return activeEnemyList.OrderBy(x => x.transform.position.x).First();
+        if (activeEnemyList.Count != 0)
+        {
+            return activeEnemyList.OrderBy(x => x.transform.position.x).First();
+        }
+        else
+        {
+            return null;
+        }
     }
 }
