@@ -29,7 +29,7 @@ public class BaseCharacter : MonoBehaviour
 
     private async UniTask Update()
     {
-        
+        await UniTask.Yield();
     }
 
     public async UniTaskVoid GetDamage(float damage)
@@ -44,6 +44,7 @@ public class BaseCharacter : MonoBehaviour
     }
 
 }
+
 [System.Serializable]
 public struct CharacterStatus
 {
