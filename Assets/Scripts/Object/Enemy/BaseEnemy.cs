@@ -21,7 +21,7 @@ public class BaseEnemy : MonoBehaviour
     private void Awake()
     {
         meshRenderer.sortingLayerName = "Background";
-        meshRenderer.sortingOrder = 5;
+        meshRenderer.sortingOrder = 4;
         _objectPool = ObjectPoolManager.Get();
         _inGamePresenter = GameManager.Get().GetInGamePresenter();
     }

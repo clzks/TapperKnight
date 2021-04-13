@@ -11,6 +11,7 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     private Dictionary<int, StageModel> stageModelList;
     private Dictionary<int, EnemyModel> enemyModelList;
     private Dictionary<ScoreType, float> scoreDistanceList;
+    private BaseCharacter player;
 
     private void Awake()
     {
@@ -75,5 +76,10 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     public Dictionary<ScoreType, float> GetScoreModel()
     {
         return scoreDistanceList;
+    }
+
+    public float GetPlayerSpeed()
+    {
+        return player.currSpeed;
     }
 }

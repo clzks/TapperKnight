@@ -53,6 +53,10 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _inGameView.GetTarget();
     }
 
+    public float GetPlayerSpeed()
+    {
+        return _model.GetPlayerSpeed();
+    }
     public void SetNoteSprite(Sprite sp)
     {
 

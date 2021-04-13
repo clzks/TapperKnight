@@ -7,6 +7,7 @@ public class BaseCharacter : MonoBehaviour
 {
     public CharacterStatus status;
     public SkinnedMeshRenderer meshRenderer;
+    public float currSpeed;
     public void SetSampleCharacter()
     {
         status.Name = "ป๙วร";
@@ -21,7 +22,7 @@ public class BaseCharacter : MonoBehaviour
     private async UniTask Start()
     {
         meshRenderer.sortingLayerName = "Background";
-        meshRenderer.sortingOrder = 5;
+        meshRenderer.sortingOrder = 4;
 
         while (status.Hp >= 0)
         {
