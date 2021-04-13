@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-
+[RequireComponent(typeof(SkinnedMeshRenderer))]
 public class BaseCharacter : MonoBehaviour
 {
     public CharacterStatus status;
-
+    public SkinnedMeshRenderer meshRenderer;
     public void SetSampleCharacter()
     {
         status.Name = "ป๙วร";
@@ -20,6 +20,9 @@ public class BaseCharacter : MonoBehaviour
 
     private async UniTask Start()
     {
+        meshRenderer.sortingLayerName = "Background";
+        meshRenderer.sortingOrder = 5;
+
         while (status.Hp >= 0)
         {
             await UniTask.Delay(1000);

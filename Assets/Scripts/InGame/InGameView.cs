@@ -19,7 +19,7 @@ public class InGameView : MonoBehaviour, IView
     private InGameState state = InGameState.Count;
     private StageModel inGameStageModel;
     Dictionary<ScoreType, float> scoreDistanceList;
-    private int currentStageIndex = 0;
+    private int currentStageNumber = 1;
     [SerializeField] private float currStageTimer = 0f;
     [SerializeField] private float maxStageTime;
     [SerializeField] private float currGenTimer = 3f;
@@ -96,9 +96,8 @@ public class InGameView : MonoBehaviour, IView
 
                 if (currGenTimer >= 1f)
                 {
-                    BaseEnemy enemy = _objectPool.MakeEnemy();
-                    enemy.SetSampleEnemy();
                     currGenTimer = 0f;
+                    await MakeEnemy();
                 }
 
                 if (currStageTimer >= maxStageTime)
@@ -111,7 +110,7 @@ public class InGameView : MonoBehaviour, IView
 
                 currGenTimer = 0f;
                 currStageTimer = 0f;
-                currentStageIndex++;
+                currentStageNumber++;
                 await GetStageModelAsync();
                 state = InGameState.Play;
                 break;
@@ -121,8 +120,8 @@ public class InGameView : MonoBehaviour, IView
     public async UniTask GetStageModelAsync()
     {
         await UniTask.Yield();
-        inGameStageModel = _inGamePresenter.GetStageModel(currentStageIndex);
-        maxStageTime = inGameStageModel.TotalTime;
+        inGameStageModel = _inGamePresenter.GetStageModel(currentStageNumber);
+        maxStageTime = inGameStageModel.StageTime;
         maxGenTime = inGameStageModel.MaximumGenCycle;
     }
 
@@ -183,6 +182,14 @@ public class InGameView : MonoBehaviour, IView
     public BaseEnemy GetTarget()
     {
         return targetEnemy;
+    }
+
+    public async UniTask MakeEnemy()
+    {
+        await UniTask.Yield();
+        BaseEnemy enemy = _objectPool.MakeEnemy();
+        var enemyModel = _inGamePresenter.GetRandomEnemy(currentStageNumber);
+        enemy.SetEnemy(enemyModel);
     }
 
     public void OnTargetDestroy()

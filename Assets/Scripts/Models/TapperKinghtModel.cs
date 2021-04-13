@@ -8,31 +8,25 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     // 프레젠터에게 요청받을 시 해당 몬스터의 정보를 뷰에게 넘겨준다.
     // 뷰는 몬스터의 정보를 받아서 생성 및 세팅한다.
 
-    private List<StageModel> stageModelList;
+    private Dictionary<int, StageModel> stageModelList;
+    private Dictionary<int, EnemyModel> enemyModelList;
     private Dictionary<ScoreType, float> scoreDistanceList;
 
     private void Awake()
     {
-        SetSampleStageModel();
+        GetStageList();
+        GetEnemyList();
         SetSampleScoreDistance();
     }
-
-    public void SetSampleStageModel()
+    
+    public void GetStageList()
     {
-        stageModelList = new List<StageModel>();
+        stageModelList = DataManager.Get().GetStageList();
+    }
 
-        for(int i = 0; i < 8; ++i)
-        {
-            StageModel sm = new StageModel();
-
-            sm.Id = i;
-            sm.StageNumber = i + 1;
-            sm.MinimumGenCycle = 3;
-            sm.MaximumGenCycle = 5;
-            sm.GenDegreeRatio = 0.5f;
-            sm.TotalTime = 50f;
-            stageModelList.Add(sm);
-        }
+    public void GetEnemyList()
+    {
+        enemyModelList = DataManager.Get().GetEnemyList();
     }
 
     public void SetSampleScoreDistance()
@@ -46,21 +40,36 @@ public class TapperKinghtModel : MonoBehaviour, IModel
         scoreDistanceList.Add(ScoreType.Perfect, 0.2f);
     }
 
-    public void SetStageModel()
-    {
-
-    }
-
-
-
-    public List<StageModel> GetStageModelList()
-    {
-        return stageModelList;
-    }
+    //public Dictionary<int, StageModel> GetStageModelList()
+    //{
+    //    return stageModelList;
+    //}
     
     public StageModel GetStageModel(int index)
     {
         return stageModelList[index];
+    }
+
+    public EnemyModel GetEnemyModel(int id)
+    {
+        return enemyModelList[id];
+    }
+
+    public EnemyModel GetRandomEnemy(int stageNumber)
+    {
+        var enemyList = stageModelList[stageNumber].EnemyList;
+        int n = Random.Range(0, 1000) % enemyList.Count;
+        var id = enemyList[n];
+
+        if (true == enemyModelList.ContainsKey(id))
+        {
+            return enemyModelList[id];
+        }
+        else
+        {
+            Debug.LogError("이네미 모델 리스트에 포함되지 않은 Id 발견");
+            return enemyModelList[10000];
+        }
     }
 
     public Dictionary<ScoreType, float> GetScoreModel()

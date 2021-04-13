@@ -33,6 +33,11 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _model.GetStageModel(index);
     }
 
+    public EnemyModel GetRandomEnemy(int stageNumber)
+    {
+        return _model.GetRandomEnemy(stageNumber);
+    }
+
     public Dictionary<ScoreType, float> GetScoreModel()
     {
         return _model.GetScoreModel();

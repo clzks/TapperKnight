@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StageModel : IModel
@@ -6,6 +7,12 @@ public class StageModel : IModel
     public int StageNumber;
     public float MinimumGenCycle;
     public float MaximumGenCycle;
-    public float GenDegreeRatio;
-    public float TotalTime;
+    public float StageTime;
+    public List<int> EnemyList;
+}
+
+public struct SpawnEnemyInfo
+{
+    public int Id;
+    public int Intense;
 }

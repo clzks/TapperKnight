@@ -1,0 +1,115 @@
+{
+    "Description": {
+        "Id": "정보를 구분 짓는 값(int)",
+        "StageNumber": "스테이지 서순(int)",
+        "MinimumGenCycle": "최소 젠 시간(float)",
+        "MaximumGenCycle": "최대 젠 시간(float)",
+        "StageTime": "스테이지 시간. 이 시간 이후로는 몬스터가 생성하지 않고 마지막 몬스터가 처리되면 다음 스테이지로 넘어감(int)",
+        "EnemyList": "등장하는 몬스터 Id 리스트, EnemyData.json을 숙지한 상태로 써야함"
+    },
+    "Stage": [
+        {
+            "Id": 10000,
+            "StageNumber": 1,
+            "MinimumGenCycle": 3.0,
+            "MaximumGenCycle": 4.0,
+            "StageTime": 30,
+            "EnemyList": [
+                10000,
+                20000,
+                30000
+            ]
+        },
+        {
+            "Id": 20000,
+            "StageNumber": 2,
+            "MinimumGenCycle": 2.5,
+            "MaximumGenCycle": 3.5,
+            "StageTime": 31,
+            "EnemyList": [
+                10000,
+                20000,
+                30000,
+                40000
+            ]
+        },
+        {
+            "Id": 30000,
+            "StageNumber": 3,
+            "MinimumGenCycle": 2.5,
+            "MaximumGenCycle": 3.5,
+            "StageTime": 31,
+            "EnemyList": [
+                10000,
+                20000,
+                30000,
+                40000
+            ]
+        },
+        {
+            "Id": 40000,
+            "StageNumber": 4,
+            "MinimumGenCycle": 2.5,
+            "MaximumGenCycle": 3.5,
+            "StageTime": 31,
+            "EnemyList": [
+                10000,
+                20000,
+                30000,
+                40000
+            ]
+        },
+        {
+            "Id": 50000,
+            "StageNumber": 5,
+            "MinimumGenCycle": 2.5,
+            "MaximumGenCycle": 3.5,
+            "StageTime": 31,
+            "EnemyList": [
+                10000,
+                20000,
+                30000,
+                40000
+            ]
+        },
+        {
+            "Id": 60000,
+            "StageNumber": 6,
+            "MinimumGenCycle": 2.5,
+            "MaximumGenCycle": 3.5,
+            "StageTime": 31,
+            "EnemyList": [
+                10000,
+                20000,
+                30000,
+                40000
+            ]
+        },
+        {
+            "Id": 70000,
+            "StageNumber": 7,
+            "MinimumGenCycle": 2.5,
+            "MaximumGenCycle": 3.5,
+            "StageTime": 31,
+            "EnemyList": [
+                10000,
+                20000,
+                30000,
+                40000
+            ]
+        },
+        {
+            "Id": 80000,
+            "StageNumber": 8,
+            "MinimumGenCycle": 2.5,
+            "MaximumGenCycle": 3.5,
+            "StageTime": 31,
+            "EnemyList": [
+                10000,
+                20000,
+                30000,
+                40000
+            ]
+        }
+    ]
+}

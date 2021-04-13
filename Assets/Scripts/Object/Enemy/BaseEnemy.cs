@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(SkinnedMeshRenderer))]
 public class BaseEnemy : MonoBehaviour
 {
     private ObjectPoolManager _objectPool;
@@ -9,6 +9,7 @@ public class BaseEnemy : MonoBehaviour
     public EnemyStatus status;
     private InGamePresenter _inGamePresenter;
     [SerializeField]private GameObject noteParent;
+    public SkinnedMeshRenderer meshRenderer;
 
     public void SetEnemyStatus(EnemyModel model)
     {
@@ -19,6 +20,8 @@ public class BaseEnemy : MonoBehaviour
     }
     private void Awake()
     {
+        meshRenderer.sortingLayerName = "Background";
+        meshRenderer.sortingOrder = 5;
         _objectPool = ObjectPoolManager.Get();
         _inGamePresenter = GameManager.Get().GetInGamePresenter();
     }
@@ -26,6 +29,40 @@ public class BaseEnemy : MonoBehaviour
     private void Update()
     {
         transform.position -= new Vector3(status.speed, 0f, 0f) * Time.deltaTime;
+    }
+
+    public void SetEnemy(EnemyModel em)
+    {
+        transform.position = new Vector3(10.5f, transform.position.y, transform.position.z);
+        enemyNotes = new Queue<BaseNote>();
+        status.name = em.Name;
+        status.damage = em.Damage;
+        status.speed = em.MoveSpeed;
+        //BaseEnemy enemy = Instantiate(ObjectPoolManager.Get().prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
+        if (null == _inGamePresenter)
+        {
+            _inGamePresenter = GameManager.Get().GetInGamePresenter();
+        }
+
+        if (null == _inGamePresenter.GetTarget())
+        {
+            _inGamePresenter.SetTarget(this);
+        }
+
+        float y = _inGamePresenter.GetNoteBoxPosY();
+        for (int i = 0; i < 3; ++i)
+        {
+            BaseNote note = _objectPool.MakeNote();
+            //SetRandomNote(note);
+            SetBothSideNote(note);
+            note.transform.SetParent(noteParent.transform);
+            // Interval 값들로 하여금 노트간의 간격 계산해서 생성해주는것 필요 (노트 오브젝트는 몬스터의 자식으로 들어갈것)
+            note.SetPosition(new Vector3(transform.position.x + i * 0.4f - 0.4f, y, transform.position.z));
+            note.SetParent(this);
+            note.SetBoxPosition(-4.5f);
+            note.SetBoxSize(1f);
+            enemyNotes.Enqueue(note);
+        }
     }
 
     public void SetSampleEnemy()
@@ -134,13 +171,5 @@ public struct EnemyStatus
     public string name;
     public float damage;
     public int hp;
-    //public float MaxHp;
-    //public float MinHp;
-    //public float HpIntense;
     public float speed;
-    //public Queue<NoteType> Notes;
-    //public float MaxNoteInterval;
-    //public float MinNoteInterval;
-    //public float NoteIntervalIntense;
-    //public float TotalTime;
 }

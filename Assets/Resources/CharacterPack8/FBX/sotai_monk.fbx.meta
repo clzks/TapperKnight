@@ -1,119 +1,298 @@
 fileFormatVersion: 2
 guid: 8f18d779351985e4cb33fc431efa10d7
-timeCreated: 1445499495
-licenseType: Store
 ModelImporter:
-  serializedVersion: 18
-  fileIDToRecycleName:
-    100000: all_scale
-    100002: atama
-    100004: kokansetsu1
-    100006: kokansetsu2
-    100008: koshi
-    100010: kubi
-    100012: l_ashi1
-    100014: l_ashi2
-    100016: l_ashi3
-    100018: l_buki_0
-    100020: l_buki_1
-    100022: l_ude1
-    100024: l_ude2
-    100026: l_ude3
-    100028: manto1
-    100030: manto2
-    100032: manto3
-    100034: p_sotai
-    100036: r_ashi1
-    100038: r_ashi2
-    100040: r_ashi3
-    100042: r_buki_0
-    100044: r_buki_1
-    100046: R_kata
-    100048: R_koshi
-    100050: R_l_buki
-    100052: R_l_kata
-    100054: R_l_kokansetsu
-    100056: R_manto
-    100058: R_r_buki
-    100060: R_r_kata
-    100062: R_r_kokansetsu
-    100064: r_ude1
-    100066: r_ude2
-    100068: r_ude3
-    100070: se
-    100072: sotai
-    100074: //RootNode
-    400000: all_scale
-    400002: atama
-    400004: kokansetsu1
-    400006: kokansetsu2
-    400008: koshi
-    400010: kubi
-    400012: l_ashi1
-    400014: l_ashi2
-    400016: l_ashi3
-    400018: l_buki_0
-    400020: l_buki_1
-    400022: l_ude1
-    400024: l_ude2
-    400026: l_ude3
-    400028: manto1
-    400030: manto2
-    400032: manto3
-    400034: p_sotai
-    400036: r_ashi1
-    400038: r_ashi2
-    400040: r_ashi3
-    400042: r_buki_0
-    400044: r_buki_1
-    400046: R_kata
-    400048: R_koshi
-    400050: R_l_buki
-    400052: R_l_kata
-    400054: R_l_kokansetsu
-    400056: R_manto
-    400058: R_r_buki
-    400060: R_r_kata
-    400062: R_r_kokansetsu
-    400064: r_ude1
-    400066: r_ude2
-    400068: r_ude3
-    400070: se
-    400072: sotai
-    400074: //RootNode
-    4300000: p_sotai
-    7400000: idle
-    7400002: walk
-    7400004: run
-    7400006: attack_01
-    7400008: attack_02
-    7400010: skill
-    7400012: dead
-    9500000: //RootNode
-    13700000: p_sotai
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: all_scale
+  - first:
+      1: 100002
+    second: atama
+  - first:
+      1: 100004
+    second: kokansetsu1
+  - first:
+      1: 100006
+    second: kokansetsu2
+  - first:
+      1: 100008
+    second: koshi
+  - first:
+      1: 100010
+    second: kubi
+  - first:
+      1: 100012
+    second: l_ashi1
+  - first:
+      1: 100014
+    second: l_ashi2
+  - first:
+      1: 100016
+    second: l_ashi3
+  - first:
+      1: 100018
+    second: l_buki_0
+  - first:
+      1: 100020
+    second: l_buki_1
+  - first:
+      1: 100022
+    second: l_ude1
+  - first:
+      1: 100024
+    second: l_ude2
+  - first:
+      1: 100026
+    second: l_ude3
+  - first:
+      1: 100028
+    second: manto1
+  - first:
+      1: 100030
+    second: manto2
+  - first:
+      1: 100032
+    second: manto3
+  - first:
+      1: 100034
+    second: p_sotai
+  - first:
+      1: 100036
+    second: r_ashi1
+  - first:
+      1: 100038
+    second: r_ashi2
+  - first:
+      1: 100040
+    second: r_ashi3
+  - first:
+      1: 100042
+    second: r_buki_0
+  - first:
+      1: 100044
+    second: r_buki_1
+  - first:
+      1: 100046
+    second: R_kata
+  - first:
+      1: 100048
+    second: R_koshi
+  - first:
+      1: 100050
+    second: R_l_buki
+  - first:
+      1: 100052
+    second: R_l_kata
+  - first:
+      1: 100054
+    second: R_l_kokansetsu
+  - first:
+      1: 100056
+    second: R_manto
+  - first:
+      1: 100058
+    second: R_r_buki
+  - first:
+      1: 100060
+    second: R_r_kata
+  - first:
+      1: 100062
+    second: R_r_kokansetsu
+  - first:
+      1: 100064
+    second: r_ude1
+  - first:
+      1: 100066
+    second: r_ude2
+  - first:
+      1: 100068
+    second: r_ude3
+  - first:
+      1: 100070
+    second: se
+  - first:
+      1: 100072
+    second: sotai
+  - first:
+      1: 100074
+    second: //RootNode
+  - first:
+      4: 400000
+    second: all_scale
+  - first:
+      4: 400002
+    second: atama
+  - first:
+      4: 400004
+    second: kokansetsu1
+  - first:
+      4: 400006
+    second: kokansetsu2
+  - first:
+      4: 400008
+    second: koshi
+  - first:
+      4: 400010
+    second: kubi
+  - first:
+      4: 400012
+    second: l_ashi1
+  - first:
+      4: 400014
+    second: l_ashi2
+  - first:
+      4: 400016
+    second: l_ashi3
+  - first:
+      4: 400018
+    second: l_buki_0
+  - first:
+      4: 400020
+    second: l_buki_1
+  - first:
+      4: 400022
+    second: l_ude1
+  - first:
+      4: 400024
+    second: l_ude2
+  - first:
+      4: 400026
+    second: l_ude3
+  - first:
+      4: 400028
+    second: manto1
+  - first:
+      4: 400030
+    second: manto2
+  - first:
+      4: 400032
+    second: manto3
+  - first:
+      4: 400034
+    second: p_sotai
+  - first:
+      4: 400036
+    second: r_ashi1
+  - first:
+      4: 400038
+    second: r_ashi2
+  - first:
+      4: 400040
+    second: r_ashi3
+  - first:
+      4: 400042
+    second: r_buki_0
+  - first:
+      4: 400044
+    second: r_buki_1
+  - first:
+      4: 400046
+    second: R_kata
+  - first:
+      4: 400048
+    second: R_koshi
+  - first:
+      4: 400050
+    second: R_l_buki
+  - first:
+      4: 400052
+    second: R_l_kata
+  - first:
+      4: 400054
+    second: R_l_kokansetsu
+  - first:
+      4: 400056
+    second: R_manto
+  - first:
+      4: 400058
+    second: R_r_buki
+  - first:
+      4: 400060
+    second: R_r_kata
+  - first:
+      4: 400062
+    second: R_r_kokansetsu
+  - first:
+      4: 400064
+    second: r_ude1
+  - first:
+      4: 400066
+    second: r_ude2
+  - first:
+      4: 400068
+    second: r_ude3
+  - first:
+      4: 400070
+    second: se
+  - first:
+      4: 400072
+    second: sotai
+  - first:
+      4: 400074
+    second: //RootNode
+  - first:
+      43: 4300000
+    second: p_sotai
+  - first:
+      74: 7400000
+    second: idle
+  - first:
+      74: 7400002
+    second: walk
+  - first:
+      74: 7400004
+    second: run
+  - first:
+      74: 7400006
+    second: attack_01
+  - first:
+      74: 7400008
+    second: attack_02
+  - first:
+      74: 7400010
+    second: skill
+  - first:
+      74: 7400012
+    second: dead
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: p_sotai
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: idle
       takeName: Take 001
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -121,6 +300,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -213,9 +393,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: walk
       takeName: Take 001
+      internalID: 0
       firstFrame: 43
       lastFrame: 82
       wrapMode: 0
@@ -223,6 +405,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -315,9 +498,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: run
       takeName: Take 001
+      internalID: 0
       firstFrame: 85
       lastFrame: 114
       wrapMode: 0
@@ -325,6 +510,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -417,9 +603,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: attack_01
       takeName: Take 001
+      internalID: 0
       firstFrame: 117
       lastFrame: 142
       wrapMode: 0
@@ -427,6 +615,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -519,9 +708,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: attack_02
       takeName: Take 001
+      internalID: 0
       firstFrame: 145
       lastFrame: 170
       wrapMode: 0
@@ -529,6 +720,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -621,9 +813,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: skill
       takeName: Take 001
+      internalID: 0
       firstFrame: 173
       lastFrame: 206
       wrapMode: 0
@@ -631,6 +825,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -723,9 +918,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: dead
       takeName: Take 001
+      internalID: 0
       firstFrame: 209
       lastFrame: 264
       wrapMode: 0
@@ -733,6 +930,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -825,46 +1023,72 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

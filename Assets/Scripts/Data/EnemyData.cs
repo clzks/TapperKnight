@@ -8,7 +8,5 @@ public class EnemyData
     public string Name;
     public float Damage;
     public float MoveSpeed;
-    public Queue<NoteType> Notes;
     public float NoteInterval;
-    public float TotalTime;
 }

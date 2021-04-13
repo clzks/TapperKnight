@@ -4,34 +4,50 @@
         "Name":"이름",
         "MoveSpeed":"초당 이동 거리. 1.0 = 1.0f",
         "Damage":"몬스터 데미지",
-        "NoteList" : "몬스터가 가지고 있는 노트. 입력한 순서대로 나옴. ",
-        "NoteInterval" : "노트들간의 시간간격. [Left, Right, BothSide, Left]"
+        "NoteInterval" : "노트들간의 시간간격 또는 거리간격. 둘중에 하나 취사선택해서 쓰는게 좋을듯함니다"
         },
-    "Enemy":[
+    "Enemy": [
         {
-            "Id" : 10000,
-            "Name" : "나비",
-            "MoveSpeed" : 5,
-            "Damage" : 3,
-            "NoteList" : [
-                    "Left",
-                    "Left",
-                    "Right"
-            ],
-            "NoteInterval" : 0.5
+            "Id": 10000,
+            "Name": "나비",
+            "MoveSpeed": 5,
+            "Damage": 3,
+            "NoteInterval": 0.5
         },
         {
-            "Id" : 20000,
-            "Name" : "호랑이",
-            "MoveSpeed" : 8,
-            "Damage" : 10,
-            "NoteList" : [
-                    "Left",
-                    "Right",
-                    "BothSide",
-                    "BothSide"
-            ],
-            "NoteInterval" : 0.25
+            "Id": 20000,
+            "Name": "호랑이",
+            "MoveSpeed": 8,
+            "Damage": 10,
+            "NoteInterval": 0.25
+        },
+        {
+            "Id": 30000,
+            "Name": "드래곤",
+            "MoveSpeed": 12,
+            "Damage": 15,
+            "NoteInterval": 0.25
+        },
+        {
+            "Id": 40000,
+            "Name": "영웅",
+            "MoveSpeed": 16,
+            "Damage": 20,
+            "NoteInterval": 0.25
+        },
+        {
+            "Id": 50000,
+            "Name": "삼치",
+            "MoveSpeed": 18,
+            "Damage": 30,
+            "NoteInterval": 0.25
+        },
+        {
+            "Id": 60000,
+            "Name": "쭈꾸미",
+            "MoveSpeed": 20,
+            "Damage": 36,
+            "NoteInterval": 0.25
         }
     ]
 }
