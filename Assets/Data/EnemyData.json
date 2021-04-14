@@ -48,6 +48,13 @@
             "MoveSpeed": 20,
             "Damage": 36,
             "NoteInterval": 0.25
+        },
+        {
+            "Id": 70000,
+            "Name": "뱜",
+            "MoveSpeed": 22,
+            "Damage": 38,
+            "NoteInterval": 0.25
         }
     ]
 }
