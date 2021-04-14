@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class CharacterModel
 {
-    public int Id;
-    public string Name;
-    public float Hp;
-    public float HpDecreasePerSecond;
-    public float NormalSpeed;
-    public float Accel;
-    public float MaxSpeed;
-    public float MinSpeed;
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public float Hp { get; set; }
+    public float HpDecreasePerSecond { get; set; }
+    public float NormalSpeed { get; set; }
+    public float Accel { get; set; }
+    public float MaxSpeed { get; set; }
+    public float MinSpeed { get; set; }
 }

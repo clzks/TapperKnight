@@ -31,6 +31,7 @@ public class InGameView : MonoBehaviour, IView
     private float delayTimer = 0f;
 
     [Header("Object")]
+    [SerializeField] private BackgroundController bgController;
     [SerializeField] private BaseCharacter playerCharacter;
     [SerializeField] private BaseEnemy targetEnemy;
     [SerializeField] private NoteType currClickButton = NoteType.Null;
@@ -57,6 +58,7 @@ public class InGameView : MonoBehaviour, IView
         noteBox = GameObject.Find("Field/NoteBox");
         noteBoxPosY = noteBox.transform.position.y;
         playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
+        bgController = GameObject.Find("Field/Backgrounds").GetComponent<BackgroundController>();
     }
 
     private async UniTask Start()
@@ -145,6 +147,7 @@ public class InGameView : MonoBehaviour, IView
 
     private async UniTask Change()
     {
+        bgController.SetBackgroundList(currentStageNumber);
         currGenTimer = 0f;
         currStageTimer = 0f;
         currentStageNumber++;
@@ -152,6 +155,8 @@ public class InGameView : MonoBehaviour, IView
         state = InGameState.Play;
     }
     #endregion
+
+    
     public async UniTask OnClickButton(NoteType type)
     {
         if(NoteType.Null == currClickButton)

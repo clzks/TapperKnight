@@ -7,17 +7,23 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
     private string path = "Assets/Data/";
+    private string texturePath = "Textures/Background/Stage";
 
     private Dictionary<int, StageModel> stageList;
     private Dictionary<int, EnemyModel> enemyList;
-    
+    private Dictionary<int, List<BackgroundModel>> backgroundModelList;
+    private Dictionary<int, Dictionary<int, Texture>> textureList;
+
     public void Awake()
     {
         stageList = new Dictionary<int, StageModel>();
         enemyList = new Dictionary<int, EnemyModel>();
+        backgroundModelList = new Dictionary<int, List<BackgroundModel>>();
+        textureList = new Dictionary<int, Dictionary<int, Texture>>();
 
         LoadStageData();
         LoadEnemyData();
+        LoadBackground();
     }
 
     public TextAsset LoadTextAsset(string name)
@@ -29,7 +35,7 @@ public class DataManager : Singleton<DataManager>
         return textAsset;
     }
 
-    public void LoadStageData()
+    private void LoadStageData()
     {
         TextAsset stageData = LoadTextAsset("Stage");
         JArray stages = JObject.Parse(stageData.text)["Stage"] as JArray;
@@ -40,7 +46,7 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    public void LoadEnemyData()
+    private void LoadEnemyData()
     {
         TextAsset stageData = LoadTextAsset("Enemy");
         JArray enemys = JObject.Parse(stageData.text)["Enemy"] as JArray;
@@ -51,6 +57,31 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
+    private void LoadBackground()
+    {
+        TextAsset bgData = LoadTextAsset("Background");
+        JArray backgroundListData = JObject.Parse(bgData.text)["Background"] as JArray;
+        for(int i = 0; i < backgroundListData.Count; ++i)
+        {
+            var listModel = backgroundListData[i].ToObject<BackgroundListModel>();
+            var backgroundList = listModel.List;
+            Dictionary<int, Texture> singleStageTexList = new Dictionary<int, Texture>();
+            foreach (var item in backgroundList)
+            {
+                Texture tex = GetTextureFromResources(listModel.StageNumber, item.LayerNumber);
+                singleStageTexList.Add(item.LayerNumber, tex);
+            }
+            textureList.Add(listModel.StageNumber, singleStageTexList);
+            backgroundModelList.Add(listModel.StageNumber, backgroundList);
+        }
+    }
+
+    private Texture GetTextureFromResources(int stageNumber, int layerNumber)
+    {
+        Texture texture = Resources.Load<Texture>(texturePath + stageNumber.ToString() + "/Layer" + layerNumber);
+        return texture;
+    }
+
     public Dictionary<int, StageModel> GetStageList()
     {
         return stageList;
@@ -59,5 +90,15 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, EnemyModel> GetEnemyList()
     {
         return enemyList;
+    }
+
+    public Texture GetTexture(int stageNumber, int layerNumber)
+    {
+        return textureList[stageNumber][layerNumber];
+    }
+
+    public List<BackgroundModel> GetBackgroundList(int stageNumber)
+    {
+        return backgroundModelList[stageNumber];
     }
 }

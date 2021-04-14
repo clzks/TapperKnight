@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 public class EnemyModel : IModel
 {
-    public int Id;
-    public string Name;
-    public float Damage;
-    public int MaxHp;
-    public int MinHp;
-    public float HpIntense;
-    public float MoveSpeed;
-    public Queue<NoteType> Notes;
-    public float MaxNoteInterval;
-    public float MinNoteInterval;
-    public float NoteIntervalIntense;
-    public float TotalTime;
-    
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public float Damage { get; set; }
+    public int MaxHp { get; set; }
+    public int MinHp { get; set; }
+    public float HpIntense { get; set; }
+    public float MoveSpeed { get; set; }
+    public Queue<NoteType> Notes { get; set; }
+    public float MaxNoteInterval { get; set; }
+    public float MinNoteInterval { get; set; }
+    public float NoteIntervalIntense { get; set; }
+    public float TotalTime { get; set; }
+
     internal static EnemyModel MakeSampleEnemyModel()
     {
         return new EnemyModel()

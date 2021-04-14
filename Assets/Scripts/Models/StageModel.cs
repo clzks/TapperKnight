@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class StageModel : IModel
 {
-    public int Id;
-    public int StageNumber;
-    public float MinimumGenCycle;
-    public float MaximumGenCycle;
-    public float StageTime;
-    public List<int> EnemyList;
+    public int Id { get; set; }
+    public int StageNumber { get; set; }
+    public float MinimumGenCycle { get; set; }
+    public float MaximumGenCycle { get; set; }
+    public float StageTime { get; set; }
+    public List<int> EnemyList { get; set; }
 }
 
 public struct SpawnEnemyInfo
 {
-    public int Id;
-    public int Intense;
+    public int Id { get; set; }
+    public int Intense { get; set; }
 }

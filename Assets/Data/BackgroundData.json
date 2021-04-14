@@ -1,0 +1,53 @@
+{
+    "Description": {
+        "" : "레이어 갯수는 최대 5개까지만으로 합니다. 6개 이상 필요할 시 말씀해주삼",
+        "StageNumber": "1탄 2탄 (int)",
+        "LayerNumber": "에디터에 적용되는 레이어 넘버(int)",
+        "ScrollSpeed": "에디터에 적용할 스크롤 속도(float)",
+        "YPosition": "MeshRenderer Y포지션(float)",
+        "XScale": "MeshRenderer X크기(float)",
+        "YScale": "MeshRenderer Y크기(float)"
+    },
+    "Background": [
+        {
+            "StageNumber": 1,
+            "List": [
+                {
+                    "LayerNumber": 1,
+                    "ScrollSpeed": 0.0,
+                    "YPosition": 0,
+                    "XScale": 27.0,
+                    "YScale": 14.4
+                },
+                {
+                    "LayerNumber": 2,
+                    "ScrollSpeed": 0.0,
+                    "YPosition": -3.79,
+                    "XScale": 27.0,
+                    "YScale": 4.0
+                },
+                {
+                    "LayerNumber": 3,
+                    "ScrollSpeed": 0.0,
+                    "YPosition": 0,
+                    "XScale": 27.0,
+                    "YScale": 14.4
+                },
+                {
+                    "LayerNumber": 4,
+                    "ScrollSpeed": 0.0,
+                    "YPosition": 0,
+                    "XScale": 27.0,
+                    "YScale": 14.4
+                },
+                {
+                    "LayerNumber": 5,
+                    "ScrollSpeed": 0.0,
+                    "YPosition": 0,
+                    "XScale": 19.2,
+                    "YScale": 14.4
+                }
+            ]
+        }
+    ]
+}

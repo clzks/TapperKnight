@@ -5,37 +5,47 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-    private InGamePresenter _inGamePresenter;
+    private DataManager _dataManager;
+    private int _maxCount = 5;
     [Tooltip("Layer숫자가 높을수록 먼 이미지")]
     public List<BaseBackground> backgroundList;
     [Range(-10, 10)]
     public List<float> backgroundSpeedList;
-
+    
     public void Awake()
     {
-        if (backgroundList.Count == 0)
-        {
-            Debug.LogError("배경리스트 숫자가 잘못 설정되었습니다");
-        }
 
-        if (backgroundSpeedList.Count == 0)
-        {
-            Debug.LogError("배경리스트에 입력할 속도가 잘못 설정되었습니다");
-        }
-
-        if (backgroundList.Count != backgroundSpeedList.Count)
-        {
-            Debug.LogError("");
-        }
-
-    
     }
     
+    public async UniTaskVoid SetBackgroundList(int stageNumber)
+    {
+        List<BackgroundModel> models = _dataManager.GetBackgroundList(stageNumber);
+
+        int count = models.Count;
+
+        for (int i = 0; i < count; ++i)
+        {
+            BackgroundModel model = models[i];
+            BaseBackground bg = backgroundList[i];
+            bg.gameObject.SetActive(true);
+            bg.SetBackground(model);
+            bg.SetTexture(_dataManager.GetTexture(stageNumber, i + 1));
+        }
+
+        if(count != _maxCount)
+        {
+            for (int i = count; i < _maxCount; ++i)
+            {
+                backgroundList[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
     public async UniTask Start()
     {
         await UniTask.Yield();
-        _inGamePresenter = GameManager.Get().GetInGamePresenter();
-        int count = backgroundList.Count;
+        _dataManager = DataManager.Get();
+        int count = _maxCount;
 
         for (int i = 0; i < count; ++i)
         {
@@ -50,10 +60,10 @@ public class BackgroundController : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+    // 에디터상에서 배경 스크롤 스피드를 조절해볼수 있게 하기위한 코드
     public async UniTask Update()
     {
-        //float playerSpeed = _inGamePresenter.GetPlayerSpeed();
-
         await UniTask.Yield();
         for(int i = 0; i < backgroundList.Count; ++i)
         {
@@ -61,4 +71,5 @@ public class BackgroundController : MonoBehaviour
             backgroundList[i].SetSpeed(spd);
         }
     }
+#endif
 }

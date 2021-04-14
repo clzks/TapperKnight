@@ -5,6 +5,6 @@ using UnityEngine;
 public class PlayerModel
 {
     // юс╫ц
-    public List<int> OwnCharacterList;
-    public int OwnGold;
+    public List<int> OwnCharacterList { get; set; }
+    public int OwnGold { get; set; }
 }

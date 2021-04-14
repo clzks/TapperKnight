@@ -1,9 +1,11 @@
 {
     "name": "UniTask.Editor",
+    "rootNamespace": "",
     "references": [
         "UniTask"
     ],
     "includePlatforms": [
+        "Android",
         "Editor"
     ],
     "excludePlatforms": [],
