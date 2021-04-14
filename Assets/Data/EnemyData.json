@@ -62,6 +62,13 @@
             "MoveSpeed": 24,
             "Damage": 40,
             "NoteInterval": 0.25
+        },
+        {
+            "Id": 90000,
+            "Name": "고라니",
+            "MoveSpeed": 26,
+            "Damage": 42,
+            "NoteInterval": 0.25
         }
     ]
 }
