@@ -666,6 +666,7 @@ MonoBehaviour:
     MaxSpeed: 0
     MinSpeed: 0
   meshRenderer: {fileID: 1061495083}
+  currSpeed: 0
 --- !u!137 &315422260
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0

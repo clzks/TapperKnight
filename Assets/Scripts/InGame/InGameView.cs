@@ -59,68 +59,28 @@ public class InGameView : MonoBehaviour, IView
         playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
     }
 
+    private async UniTask Start()
+    {
+        while(InGameState.Ready == state)
+        {
+            await Ready();
+        }
+    }
+
     private async UniTask Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        if(InGameState.Play != state)
         {
-            await OnClickButton(NoteType.Left);
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            await OnClickButton(NoteType.Right);
-        }
-
-        switch (state)
-        {
-            case InGameState.Ready:
-                playerCharacter.SetSampleCharacter();
-                currClickButton = NoteType.Null;
-                await GetStageModelAsync();
-                await GetScoreModelAsync();
-
-                if (null != inGameStageModel && null != scoreDistanceList)
-                {
-                    state = InGameState.Play;
-                }
-                else
-                {
-                    Debug.Log("게임데이터 로드 실패");
-                    await UniTask.Delay(100);
-                }
-                break;
-
-            case InGameState.Play:
-                currGenTimer += Time.deltaTime;
-                currStageTimer += Time.deltaTime;
-
-                if (currGenTimer >= 1f)
-                {
-                    currGenTimer = 0f;
-                    await MakeEnemy();
-                }
-
-                if (currStageTimer >= maxStageTime)
-                {
-                    state = InGameState.Change;
-                }
-                break;
-
-            case InGameState.Change:
-
-                currGenTimer = 0f;
-                currStageTimer = 0f;
-                currentStageNumber++;
-                await GetStageModelAsync();
-                state = InGameState.Play;
-                break;
-        }
+        await Play();
     }
 
     public async UniTask GetStageModelAsync()
     {
         await UniTask.Yield();
-        inGameStageModel = _inGamePresenter.GetStageModel(currentStageNumber);
+        inGameStageModel = inGameStageModel ?? _inGamePresenter.GetStageModel(currentStageNumber);
         maxStageTime = inGameStageModel.StageTime;
         maxGenTime = inGameStageModel.MaximumGenCycle;
     }
@@ -136,6 +96,62 @@ public class InGameView : MonoBehaviour, IView
         _inGamePresenter = presenter;
     }
 
+    #region FSM
+    private async UniTask Ready()
+    {
+        playerCharacter.SetSampleCharacter();
+        currClickButton = NoteType.Null;
+        await GetStageModelAsync();
+        await GetScoreModelAsync();
+
+        if (null != inGameStageModel && null != scoreDistanceList)
+        {
+            state = InGameState.Play;
+        }
+        else
+        {
+            Debug.Log("게임데이터 로드 실패");
+            await UniTask.Delay(100);
+        }
+    }
+
+    private async UniTask Play()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            await OnClickButton(NoteType.Left);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            await OnClickButton(NoteType.Right);
+        }
+
+        currGenTimer += Time.deltaTime;
+        currStageTimer += Time.deltaTime;
+
+        if (currGenTimer >= 1f)
+        {
+            currGenTimer = 0f;
+            await MakeEnemy();
+        }
+
+        if (currStageTimer >= maxStageTime)
+        {
+            state = InGameState.Change;
+            await Change();
+        }
+    }
+
+    private async UniTask Change()
+    {
+        currGenTimer = 0f;
+        currStageTimer = 0f;
+        currentStageNumber++;
+        await GetStageModelAsync();
+        state = InGameState.Play;
+    }
+    #endregion
     public async UniTask OnClickButton(NoteType type)
     {
         if(NoteType.Null == currClickButton)
