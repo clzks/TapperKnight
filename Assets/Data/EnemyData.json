@@ -55,6 +55,13 @@
             "MoveSpeed": 22,
             "Damage": 38,
             "NoteInterval": 0.25
+        },
+        {
+            "Id": 80000,
+            "Name": "고슴도치",
+            "MoveSpeed": 24,
+            "Damage": 40,
+            "NoteInterval": 0.25
         }
     ]
 }
