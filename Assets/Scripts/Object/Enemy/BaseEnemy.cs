@@ -11,13 +11,7 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField]private GameObject noteParent;
     public SkinnedMeshRenderer meshRenderer;
 
-    public void SetEnemyStatus(EnemyModel model)
-    {
-        status.name = model.Name;
-        status.damage = model.Damage;
-        status.speed = model.MoveSpeed;
-        SetEnemyNote(model);
-    }
+   
     private void Awake()
     {
         meshRenderer.sortingLayerName = "Background";
@@ -33,12 +27,10 @@ public class BaseEnemy : MonoBehaviour
 
     public void SetEnemy(EnemyModel em)
     {
+        SetStatus(em);
         transform.position = new Vector3(10.5f, transform.position.y, transform.position.z);
         enemyNotes = new Queue<BaseNote>();
-        status.name = em.Name;
-        status.damage = em.Damage;
-        status.speed = em.MoveSpeed;
-        //BaseEnemy enemy = Instantiate(ObjectPoolManager.Get().prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
+        float interval = em.NoteInterval;
         if (null == _inGamePresenter)
         {
             _inGamePresenter = GameManager.Get().GetInGamePresenter();
@@ -49,69 +41,49 @@ public class BaseEnemy : MonoBehaviour
             _inGamePresenter.SetTarget(this);
         }
 
-        float y = _inGamePresenter.GetNoteBoxPosY();
-        for (int i = 0; i < 3; ++i)
-        {
-            BaseNote note = _objectPool.MakeNote();
-            //SetRandomNote(note);
-            SetBothSideNote(note);
-            note.transform.SetParent(noteParent.transform);
-            // Interval 값들로 하여금 노트간의 간격 계산해서 생성해주는것 필요 (노트 오브젝트는 몬스터의 자식으로 들어갈것)
-            note.SetPosition(new Vector3(transform.position.x + i * 0.4f - 0.4f, y, transform.position.z));
-            note.SetParent(this);
-            note.SetBoxPosition(-4.5f);
-            note.SetBoxSize(1f);
-            enemyNotes.Enqueue(note);
-        }
+        SetNote(interval);
     }
-
-    public void SetSampleEnemy()
+    public void SetStatus(EnemyModel model)
     {
-        transform.position = new Vector3(10.5f ,transform.position.y, transform.position.z);
-        enemyNotes = new Queue<BaseNote>();
-        status.name = "임시적";
-        status.damage = 2;
-        status.speed = 3;
-        //BaseEnemy enemy = Instantiate(ObjectPoolManager.Get().prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
-        if (null == _inGamePresenter)
-        {
-            _inGamePresenter = GameManager.Get().GetInGamePresenter();
-        }
-
-        if(null == _inGamePresenter.GetTarget())
-        {
-            _inGamePresenter.SetTarget(this);
-        }
-
-        float y = _inGamePresenter.GetNoteBoxPosY();
-        for (int i = 0; i < 3; ++i)
-        {
-            BaseNote note = _objectPool.MakeNote();
-            //SetRandomNote(note);
-            SetBothSideNote(note);
-            note.transform.SetParent(noteParent.transform);
-            // Interval 값들로 하여금 노트간의 간격 계산해서 생성해주는것 필요 (노트 오브젝트는 몬스터의 자식으로 들어갈것)
-            note.SetPosition(new Vector3(transform.position.x + i * 0.4f - 0.4f, y, transform.position.z));
-            note.SetParent(this);
-            note.SetBoxPosition(-4.5f);
-            note.SetBoxSize(1f);
-            enemyNotes.Enqueue(note);
-        }
+        status.name = model.Name;
+        status.damage = model.Damage;
+        status.speed = model.MoveSpeed;
+        status.hp = model.NoteCount;
+        //SetEnemyNote(model);
     }
-
-    private void SetEnemyNote(EnemyModel model)
+    private void SetNote(float interval)
     {
         float notePosY = _inGamePresenter.GetNoteBoxPosY();
-        // MaxHp, MinHp, HpIntense를 통한 Enemy Hp 계산식필요
-        status.hp = Formula.EnemyHpFormula(model);
         // 계산된 Hp 개수만큼 Queue에 Note생성 해주는것 필요
-        for(int i = 0; i < status.hp; ++i)
+        if(status.hp % 2 == 0)
         {
-            BaseNote note = Instantiate(ObjectPoolManager.Get().prefabList["Note"]).GetComponent<BaseNote>();
-            SetRandomNote(note);
-            note.transform.SetParent(noteParent.transform);
-            // Interval 값들로 하여금 노트간의 간격 계산해서 생성해주는것 필요 (노트 오브젝트는 몬스터의 자식으로 들어갈것)
-            // 짝수일때는 몬스터를 가운데두고, 홀수일때는 가운데 노트가 몬스터와 동일한 위치다
+            //짝수
+            for (int i = 0; i < status.hp; ++i)
+            {
+                BaseNote note = _objectPool.MakeNote();
+                SetRandomNote(note);
+                note.transform.SetParent(noteParent.transform);
+                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2) + 0.5f * interval, notePosY, transform.position.z));
+                note.SetParentEnemy(this);
+                note.SetBoxPosition(-4.5f);
+                note.SetBoxSize(1f);
+                enemyNotes.Enqueue(note);
+            }
+        }
+        else
+        {
+            //홀수
+            for (int i = 0; i < status.hp; ++i)
+            {
+                BaseNote note = _objectPool.MakeNote();
+                SetRandomNote(note);
+                note.transform.SetParent(noteParent.transform);
+                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePosY, transform.position.z));
+                note.SetParentEnemy(this);
+                note.SetBoxPosition(-4.5f);
+                note.SetBoxSize(1f);
+                enemyNotes.Enqueue(note);
+            }
         }
     }
 

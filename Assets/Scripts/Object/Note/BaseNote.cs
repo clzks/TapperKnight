@@ -26,7 +26,7 @@ public class BaseNote : MonoBehaviour
         transform.position = v;
     }
 
-    public void SetParent(BaseEnemy enemy)
+    public void SetParentEnemy(BaseEnemy enemy)
     {
         parentEnemy = enemy;
     }
@@ -41,14 +41,9 @@ public class BaseNote : MonoBehaviour
         _boxSizeX = halfSizeX;
     }
 
-    public void SetParentEnemy(BaseEnemy enemy)
-    {
-        parentEnemy = enemy;
-    }
-
     public void Update()
     {
-        if(transform.position.x <= _boxPosX - _boxSizeX)
+        if(Position <= _boxPosX - _boxSizeX)
         {
             NoteCall(ScoreType.Miss);
         }
