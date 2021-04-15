@@ -21,8 +21,7 @@ public class BaseCharacter : MonoBehaviour
 
     private async UniTask Start()
     {
-        meshRenderer.sortingLayerName = "Background";
-        meshRenderer.sortingOrder = 4;
+        SetSortingLayer("Background", 4);
 
         while (status.Hp >= 0)
         {
@@ -47,6 +46,11 @@ public class BaseCharacter : MonoBehaviour
         }
     }
 
+    public void SetSortingLayer(string layerName, int sortingOrder)
+    {
+        meshRenderer.sortingLayerName = layerName;
+        meshRenderer.sortingOrder = sortingOrder;
+    }
 }
 
 [System.Serializable]

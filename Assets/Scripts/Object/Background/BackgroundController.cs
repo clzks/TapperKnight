@@ -11,7 +11,8 @@ public class BackgroundController : MonoBehaviour
     public List<BaseBackground> backgroundList;
     [Range(-10, 10)]
     public List<float> backgroundSpeedList;
-    
+    [SerializeField] private SpriteRenderer _stageChangeBlock;
+
     public void Awake()
     {
 
@@ -57,6 +58,25 @@ public class BackgroundController : MonoBehaviour
             {
                 backgroundList[i].SetLayer(count - (1 + i));
             }
+        }
+    }
+
+    public async UniTask ExecuteStageChange(int stageNumber, float screenBlackOutTime)
+    {
+        screenBlackOutTime = 1 / screenBlackOutTime;
+
+        while (_stageChangeBlock.color.a < 1f)
+        {
+            _stageChangeBlock.color += new Color(0, 0, 0, Time.deltaTime * screenBlackOutTime);
+            await UniTask.Yield();
+        }
+        
+        SetBackgroundList(stageNumber).Forget();
+
+        while(_stageChangeBlock.color.a > 0f)
+        {
+            _stageChangeBlock.color -= new Color(0, 0, 0, Time.deltaTime * screenBlackOutTime);
+            await UniTask.Yield();
         }
     }
 

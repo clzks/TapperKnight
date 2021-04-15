@@ -94,11 +94,27 @@ public class DataManager : Singleton<DataManager>
 
     public Texture GetTexture(int stageNumber, int layerNumber)
     {
-        return textureList[stageNumber][layerNumber];
+        if(true == textureList.ContainsKey(stageNumber))
+        {
+            return textureList[stageNumber][layerNumber];
+        }
+        else
+        {
+            Debug.LogWarning("배경 텍스쳐리스트에 해당 스테이지 정보가 없습니다. 스테이지 1의 배경텍스쳐를 가져옵니다");
+            return textureList[1][layerNumber];
+        }
     }
 
     public List<BackgroundModel> GetBackgroundList(int stageNumber)
     {
-        return backgroundModelList[stageNumber];
+        if (true == backgroundModelList.ContainsKey(stageNumber))
+        {
+            return backgroundModelList[stageNumber];
+        }
+        else
+        {
+            Debug.LogWarning("배경리스트에 해당 스테이지 정보가 없습니다. 스테이지 1의 배경을 가져옵니다");
+            return backgroundModelList[1];
+        }
     }
 }

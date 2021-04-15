@@ -111,4 +111,9 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             return null;
         }
     }
+
+    public int GetEnemyCount()
+    {
+        return activeEnemyList.Count;
+    }
 }

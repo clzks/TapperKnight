@@ -56,3 +56,6 @@ TagManager:
   - name: Effect
     uniqueID: 3681379801
     locked: 0
+  - name: StageChangeBlock
+    uniqueID: 2384203957
+    locked: 0
