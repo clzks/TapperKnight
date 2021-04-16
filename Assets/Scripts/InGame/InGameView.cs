@@ -227,7 +227,7 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
         BaseEnemy enemy = _objectPool.MakeEnemy();
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
-        enemy.SetEnemy(enemyModel);
+        enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
     }
 
     public void OnTargetDestroy()

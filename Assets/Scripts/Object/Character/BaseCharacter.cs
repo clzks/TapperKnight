@@ -46,6 +46,11 @@ public class BaseCharacter : MonoBehaviour
         }
     }
 
+    public float GetPositionY()
+    {
+        return transform.position.y;
+    }
+
     public void SetSortingLayer(string layerName, int sortingOrder)
     {
         meshRenderer.sortingLayerName = layerName;

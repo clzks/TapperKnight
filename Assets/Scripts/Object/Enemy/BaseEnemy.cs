@@ -25,10 +25,10 @@ public class BaseEnemy : MonoBehaviour
         transform.position -= new Vector3(status.speed, 0f, 0f) * Time.deltaTime;
     }
 
-    public void SetEnemy(EnemyModel em)
+    public void SetEnemy(EnemyModel em, float playerPosY)
     {
         SetStatus(em);
-        transform.position = new Vector3(10.5f, transform.position.y, transform.position.z);
+        transform.position = new Vector3(10.5f, playerPosY, transform.position.z);
         enemyNotes = new Queue<BaseNote>();
         float interval = em.NoteInterval;
         if (null == _inGamePresenter)
