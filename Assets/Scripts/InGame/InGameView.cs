@@ -12,6 +12,8 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private InGamePresenter _inGamePresenter;
     [SerializeField] private Button _leftButton;
     [SerializeField] private Button _rightButton;
+    [SerializeField] private Button _singleRespawnButton;
+    [SerializeField] private Button _autoRespawnButton;
     [SerializeField] private GameObject _noteBox;
     [SerializeField] private float _noteBoxPosY;
 
@@ -39,6 +41,7 @@ public class InGameView : MonoBehaviour, IView
 
     [Header("Test")]
     public int testMaxStageNumber;
+    [SerializeField] private bool _isAutoMode = false;
     private void Awake()
     {
         _gameManager = GameManager.Get();
@@ -59,6 +62,18 @@ public class InGameView : MonoBehaviour, IView
             _rightButton.onClick.AddListener(async () => await OnClickButton(NoteType.Right));
         }
 
+        if (null == _singleRespawnButton)
+        {
+            _singleRespawnButton = GameObject.Find("SingleRespawn").GetComponent<Button>();
+            _singleRespawnButton.onClick.AddListener(async () => await OnClickSingleRespawnButton());
+        }
+
+        if (null == _autoRespawnButton)
+        {
+            _autoRespawnButton = GameObject.Find("AutoRespawn").GetComponent<Button>();
+            _autoRespawnButton.onClick.AddListener(async () => await OnClickAutoRespawnButton());
+        }
+
         _noteBox = GameObject.Find("Field/NoteBox");
         _noteBoxPosY = _noteBox.transform.position.y;
         _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
@@ -67,7 +82,7 @@ public class InGameView : MonoBehaviour, IView
 
     private async UniTask Start()
     {
-        while(InGameState.Ready == _state)
+        while (InGameState.Ready == _state)
         {
             await Ready();
         }
@@ -75,7 +90,7 @@ public class InGameView : MonoBehaviour, IView
 
     private async UniTask Update()
     {
-        if(InGameState.Play != _state)
+        if (InGameState.Play != _state)
         {
             return;
         }
@@ -133,25 +148,36 @@ public class InGameView : MonoBehaviour, IView
             await OnClickButton(NoteType.Right);
         }
 
-        _currGenTimer += Time.deltaTime;
-        _currStageTimer += Time.deltaTime;
-
-        
-
-        if (_currStageTimer >= _maxStageTime)
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            if (0 == _objectPool.GetEnemyCount())
-            {
-                _state = InGameState.Change;
-                await Change();
-            }
+            await OnClickAutoRespawnButton();
         }
-        else
+
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            if (_currGenTimer >= 1f)
+            await OnClickSingleRespawnButton();
+        }
+
+        if (true == _isAutoMode)
+        {
+            _currGenTimer += Time.deltaTime;
+            _currStageTimer += Time.deltaTime;
+
+            if (_currStageTimer >= _maxStageTime)
             {
-                _currGenTimer = 0f;
-                await MakeEnemy();
+                if (0 == _objectPool.GetEnemyCount())
+                {
+                    _state = InGameState.Change;
+                    await Change();
+                }
+            }
+            else
+            {
+                if (_currGenTimer >= 1f)
+                {
+                    _currGenTimer = 0f;
+                    await MakeEnemy();
+                }
             }
         }
     }
@@ -174,7 +200,7 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
     }
 
-    public async UniTask OnClickButton(NoteType type)
+    private async UniTask OnClickButton(NoteType type)
     {
         if(NoteType.Null == _currClickButton)
         {
@@ -205,6 +231,16 @@ public class InGameView : MonoBehaviour, IView
         note?.OnNoteCall(_currClickButton);
         _currClickButton = NoteType.Null;
         delayTimer = 0f;
+    }
+
+    private async UniTask OnClickSingleRespawnButton()
+    {
+        await MakeEnemy();
+    }
+
+    private async UniTask OnClickAutoRespawnButton()
+    {
+        _isAutoMode = !_isAutoMode;
     }
 
     public float GetNoteBoxPosY()
