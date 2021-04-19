@@ -89,7 +89,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         if (activeNoteList.Contains(note))
         {
-            note.transform.SetParent(transform);
+            //note.transform.SetParent(transform);
             note.gameObject.SetActive(false);
             notePool.Add(note.gameObject);
             activeNoteList.Remove(note);

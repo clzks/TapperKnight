@@ -6,7 +6,8 @@
     ],
     "includePlatforms": [
         "Android",
-        "Editor"
+        "Editor",
+        "WindowsStandalone64"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

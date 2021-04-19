@@ -1,8 +1,8 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Cysharp.Threading.Tasks;
 public class AsyncTest : MonoBehaviour
 {
     private async void Awake()
@@ -11,7 +11,7 @@ public class AsyncTest : MonoBehaviour
         //  UniTask
         //  start
         //  async
-        await GetDataAsync();
+        //await GetDataAsync();
         var result = true;
         while (result)
         {
@@ -34,11 +34,6 @@ public class AsyncTest : MonoBehaviour
     }
     
     private void DestroyCard(int value)
-    {
-    
-    }
-    
-    private async UniTask GetDataAsync()
     {
     
     }

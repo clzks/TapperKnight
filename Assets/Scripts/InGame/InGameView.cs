@@ -1,8 +1,8 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Cysharp.Threading.Tasks;
 public class InGameView : MonoBehaviour, IView
 {
     private GameManager _gameManager;
@@ -16,6 +16,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private Button _autoRespawnButton;
     [SerializeField] private GameObject _noteBox;
     [SerializeField] private float _noteBoxPosY;
+    [SerializeField] private List<Vector3> _notePopDestination;
 
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
@@ -78,6 +79,9 @@ public class InGameView : MonoBehaviour, IView
         _noteBoxPosY = _noteBox.transform.position.y;
         _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
         _bgController = GameObject.Find("Field/Backgrounds").GetComponent<BackgroundController>();
+        _notePopDestination = new List<Vector3>();
+        _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Bezier").transform.position);
+        _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Destination").transform.position);
     }
 
     private async UniTask Start()
@@ -241,6 +245,7 @@ public class InGameView : MonoBehaviour, IView
     private async UniTask OnClickAutoRespawnButton()
     {
         _isAutoMode = !_isAutoMode;
+        await UniTask.Yield();
     }
 
     public float GetNoteBoxPosY()
@@ -248,9 +253,15 @@ public class InGameView : MonoBehaviour, IView
         return _noteBoxPosY;
     }
 
-    public void SetTarget(BaseEnemy enemy)
+    public List<Vector3> GetNotePopDestination()
+    {
+        return _notePopDestination;
+    }
+
+    public async UniTask SetTarget(BaseEnemy enemy)
     {
         _targetEnemy = enemy;
+        await UniTask.Yield();
     }
 
     public BaseEnemy GetTarget()
@@ -263,13 +274,13 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
         BaseEnemy enemy = _objectPool.MakeEnemy();
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
-        enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
+        await enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
     }
 
-    public void OnTargetDestroy()
+    public async UniTask OnTargetDestroy()
     {
         var nextTarget = _objectPool.GetEnemy();
-
         _targetEnemy = nextTarget ? nextTarget : null;
+        await UniTask.Yield();
     }
 }

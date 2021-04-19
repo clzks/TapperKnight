@@ -40,6 +40,8 @@ public class BackgroundController : MonoBehaviour
                 backgroundList[i].gameObject.SetActive(false);
             }
         }
+
+        await UniTask.Yield();
     }
 
     public async UniTask Start()

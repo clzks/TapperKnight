@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,14 +14,16 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         
     }
 
-    public void SetView(InGameView view)
+    public async UniTaskVoid SetView(InGameView view)
     {
         _inGameView = view;
+        await UniTask.Yield();
     }   
     
-    public void SetModel(TapperKinghtModel model)
+    public async UniTaskVoid SetModel(TapperKinghtModel model)
     {
         _model = model;
+        await UniTask.Yield();
     }
 
     public float GetNoteBoxPosY()
@@ -43,9 +46,9 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _model.GetScoreModel();
     }
 
-    public void SetTarget(BaseEnemy enemy)
+    public async UniTask SetTarget(BaseEnemy enemy)
     {
-        _inGameView.SetTarget(enemy);
+        await _inGameView.SetTarget(enemy);
     }
 
     public BaseEnemy GetTarget()
@@ -57,18 +60,24 @@ public class InGamePresenter : MonoBehaviour, IPresenter
     {
         return _model.GetPlayerSpeed();
     }
-    public void SetNoteSprite(Sprite sp)
+
+    public List<Vector3> GetNotePopDestination()
+    {
+        return _inGameView.GetNotePopDestination();
+    }
+
+    public async UniTaskVoid SetNoteSprite(Sprite sp)
     {
 
     }
 
-    public void OnNoteCall(ScoreType score)
+    public async UniTask OnNoteCall(ScoreType score)
     {
         
     }
 
-    public void OnTargetDestroy()
+    public async UniTask OnTargetDestroy()
     {
-        _inGameView.OnTargetDestroy();
+        await _inGameView.OnTargetDestroy();
     }
 }
