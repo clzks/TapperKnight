@@ -17,11 +17,11 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private GameObject _noteBox;
     [SerializeField] private float _noteBoxPosY;
     [SerializeField] private List<Vector3> _notePopDestination;
-
+    [SerializeField] private Image _hpBar;
+    [SerializeField] private Text _runnigRecord;
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
     private StageModel _inGameStageModel;
-    private Dictionary<ScoreType, float> _scoreDistanceList;
     private int _currentStageNumber = 1;
     [SerializeField] private float _currStageTimer = 0f;
     [SerializeField] private float _maxStageTime;
@@ -39,7 +39,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private BaseCharacter _playerCharacter;
     [SerializeField] private BaseEnemy _targetEnemy;
     [SerializeField] private NoteType _currClickButton = NoteType.Null;
-
+    [SerializeField] private Transform _inGamePool;
     [Header("Test")]
     public int testMaxStageNumber;
     [SerializeField] private bool _isAutoMode = false;
@@ -82,6 +82,9 @@ public class InGameView : MonoBehaviour, IView
         _notePopDestination = new List<Vector3>();
         _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Bezier").transform.position);
         _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Destination").transform.position);
+        _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
+        _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
+        _inGamePool = GameObject.Find("ObjectPool").transform;
     }
 
     private async UniTask Start()
@@ -98,8 +101,9 @@ public class InGameView : MonoBehaviour, IView
         {
             return;
         }
-
         await Play();
+        await UpdateCharacterRecord();
+        await UpdateCharacterHp();
     }
 
     public async UniTask GetStageModelAsync()
@@ -108,12 +112,6 @@ public class InGameView : MonoBehaviour, IView
         _inGameStageModel = _inGameStageModel ?? _inGamePresenter.GetStageModel(_currentStageNumber);
         _maxStageTime = _inGameStageModel.StageTime;
         _maxGenTime = _inGameStageModel.MaximumGenCycle;
-    }
-
-    public async UniTask GetScoreModelAsync()
-    {
-        await UniTask.Yield();
-        _scoreDistanceList = _inGamePresenter.GetScoreModel();
     }
 
     public void SetPresenter(InGamePresenter presenter)
@@ -127,16 +125,15 @@ public class InGameView : MonoBehaviour, IView
         _playerCharacter.SetSampleCharacter();
         _currClickButton = NoteType.Null;
         await GetStageModelAsync();
-        await GetScoreModelAsync();
 
-        if (null != _inGameStageModel && null != _scoreDistanceList)
+        if (null != _inGameStageModel)
         {
             _state = InGameState.Play;
         }
         else
         {
             Debug.Log("게임데이터 로드 실패");
-            await UniTask.Delay(100);
+            await UniTask.Delay(1000);
         }
     }
 
@@ -166,6 +163,7 @@ public class InGameView : MonoBehaviour, IView
         {
             _currGenTimer += Time.deltaTime;
             _currStageTimer += Time.deltaTime;
+            await _playerCharacter.AddRecord();
 
             if (_currStageTimer >= _maxStageTime)
             {
@@ -184,14 +182,15 @@ public class InGameView : MonoBehaviour, IView
                 }
             }
         }
+
     }
 
     private async UniTask Change()
     {
         _currentStageNumber++;
-        _playerCharacter.SetSortingLayer("StageChangeBlock", 4);
+        _playerCharacter.SetSortingLayer("StageChangeBlock", 4).Forget();
         await _bgController.ExecuteStageChange(_currentStageNumber, _blackOutTime);
-        _playerCharacter.SetSortingLayer("Background", 4);
+        _playerCharacter.SetSortingLayer("Background", 4).Forget();
         await InitStageFactor();
         await GetStageModelAsync();
         _state = InGameState.Play;
@@ -248,6 +247,24 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
     }
 
+
+    private async UniTask UpdateCharacterHp()
+    {
+        _hpBar.fillAmount = _playerCharacter.GetHpPercent();
+        await UniTask.Yield();
+    }
+
+    private async UniTask UpdateCharacterRecord()
+    {
+        _runnigRecord.text = _playerCharacter.GetRunningRecord().ToString();
+        await UniTask.Yield();
+    }
+
+    public float GetPlayerSpeed()
+    {
+        return _playerCharacter.GetSpeed();
+    }
+
     public float GetNoteBoxPosY()
     {
         return _noteBoxPosY;
@@ -256,6 +273,11 @@ public class InGameView : MonoBehaviour, IView
     public List<Vector3> GetNotePopDestination()
     {
         return _notePopDestination;
+    }
+
+    public async UniTask GetDamage(float damage)
+    {
+        await _playerCharacter.GetDamage(damage);
     }
 
     public async UniTask SetTarget(BaseEnemy enemy)
@@ -271,10 +293,11 @@ public class InGameView : MonoBehaviour, IView
 
     public async UniTask MakeEnemy()
     {
-        await UniTask.Yield();
         BaseEnemy enemy = _objectPool.MakeEnemy();
+        await enemy.SetInGamePool(_inGamePool);
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
         await enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
+        await UniTask.Yield();
     }
 
     public async UniTask OnTargetDestroy()

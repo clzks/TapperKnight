@@ -6,30 +6,32 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    private string path = "Assets/Data/";
-    private string texturePath = "Textures/Background/Stage";
+    private string _path = "Assets/Data/";
+    private string _texturePath = "Textures/Background/Stage";
 
-    private Dictionary<int, StageModel> stageList;
-    private Dictionary<int, EnemyModel> enemyList;
-    private Dictionary<int, List<BackgroundModel>> backgroundModelList;
-    private Dictionary<int, Dictionary<int, Texture>> textureList;
-
+    private Dictionary<int, StageModel> _stageList;
+    private Dictionary<int, EnemyModel> _enemyList;
+    private Dictionary<int, List<BackgroundModel>> _backgroundModelList;
+    private Dictionary<int, Dictionary<int, Texture>> _textureList;
+    private Dictionary<ScoreType, int> _scoreList; 
     public void Awake()
     {
-        stageList = new Dictionary<int, StageModel>();
-        enemyList = new Dictionary<int, EnemyModel>();
-        backgroundModelList = new Dictionary<int, List<BackgroundModel>>();
-        textureList = new Dictionary<int, Dictionary<int, Texture>>();
+        _stageList = new Dictionary<int, StageModel>();
+        _enemyList = new Dictionary<int, EnemyModel>();
+        _backgroundModelList = new Dictionary<int, List<BackgroundModel>>();
+        _textureList = new Dictionary<int, Dictionary<int, Texture>>();
+        _scoreList = new Dictionary<ScoreType, int>();
 
         LoadStageData();
         LoadEnemyData();
         LoadBackground();
+        LoadScoreData();
     }
 
     public TextAsset LoadTextAsset(string name)
     {
         TextAsset textAsset;
-        name = path + name + "Data.json";
+        name = _path + name + "Data.json";
 
         textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(name);
         return textAsset;
@@ -42,7 +44,7 @@ public class DataManager : Singleton<DataManager>
         for (int i = 0; i < stages.Count; ++i)
         {
             var stage = stages[i].ToObject<StageModel>();
-            stageList.Add(stage.StageNumber, stage);
+            _stageList.Add(stage.StageNumber, stage);
         }
     }
 
@@ -53,7 +55,7 @@ public class DataManager : Singleton<DataManager>
         for (int i = 0; i < enemys.Count; ++i)
         {
             var enemy = enemys[i].ToObject<EnemyModel>();
-            enemyList.Add(enemy.Id, enemy);
+            _enemyList.Add(enemy.Id, enemy);
         }
     }
 
@@ -71,50 +73,67 @@ public class DataManager : Singleton<DataManager>
                 Texture tex = GetTextureFromResources(listModel.StageNumber, item.LayerNumber);
                 singleStageTexList.Add(item.LayerNumber, tex);
             }
-            textureList.Add(listModel.StageNumber, singleStageTexList);
-            backgroundModelList.Add(listModel.StageNumber, backgroundList);
+            _textureList.Add(listModel.StageNumber, singleStageTexList);
+            _backgroundModelList.Add(listModel.StageNumber, backgroundList);
+        }
+    }
+
+    private void LoadScoreData()
+    {
+        TextAsset scoreData = LoadTextAsset("Score");
+        JArray scores = JObject.Parse(scoreData.text)["Score"] as JArray;
+
+        for(int i = 0; i < scores.Count; ++i)
+        {
+            var score = scores[i].ToObject<ScoreModel>();
+            _scoreList.Add(score.Type, score.ScoreValue);
         }
     }
 
     private Texture GetTextureFromResources(int stageNumber, int layerNumber)
     {
-        Texture texture = Resources.Load<Texture>(texturePath + stageNumber.ToString() + "/Layer" + layerNumber);
+        Texture texture = Resources.Load<Texture>(_texturePath + stageNumber.ToString() + "/Layer" + layerNumber);
         return texture;
     }
 
     public Dictionary<int, StageModel> GetStageList()
     {
-        return stageList;
+        return _stageList;
     }
 
     public Dictionary<int, EnemyModel> GetEnemyList()
     {
-        return enemyList;
+        return _enemyList;
     }
 
     public Texture GetTexture(int stageNumber, int layerNumber)
     {
-        if(true == textureList.ContainsKey(stageNumber))
+        if(true == _textureList.ContainsKey(stageNumber))
         {
-            return textureList[stageNumber][layerNumber];
+            return _textureList[stageNumber][layerNumber];
         }
         else
         {
             Debug.LogWarning("배경 텍스쳐리스트에 해당 스테이지 정보가 없습니다. 스테이지 1의 배경텍스쳐를 가져옵니다");
-            return textureList[1][layerNumber];
+            return _textureList[1][layerNumber];
         }
     }
 
     public List<BackgroundModel> GetBackgroundList(int stageNumber)
     {
-        if (true == backgroundModelList.ContainsKey(stageNumber))
+        if (true == _backgroundModelList.ContainsKey(stageNumber))
         {
-            return backgroundModelList[stageNumber];
+            return _backgroundModelList[stageNumber];
         }
         else
         {
             Debug.LogWarning("배경리스트에 해당 스테이지 정보가 없습니다. 스테이지 1의 배경을 가져옵니다");
-            return backgroundModelList[1];
+            return _backgroundModelList[1];
         }
+    }
+
+    public Dictionary<ScoreType, int> GetScoreList()
+    {
+        return _scoreList;
     }
 }

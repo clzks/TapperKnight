@@ -1,11 +1,10 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.U2D;
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
-    //public Dictionary<int, List<GameObject>> enemyPool;
     [SerializeField]public List<GameObject> enemyPool;
     public List<GameObject> notePool;
 
@@ -13,7 +12,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     public Dictionary<string, GameObject> prefabList;
     public List<BaseEnemy> activeEnemyList;
     public List<BaseNote> activeNoteList;
-    private void Awake()
+    private async UniTask Awake()
     {
         activeEnemyList = new List<BaseEnemy>();
         activeNoteList = new List<BaseNote>();
@@ -26,6 +25,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
         prefabList.Add("Note", Resources.Load<GameObject>("Prefabs/Note"));
         prefabList.Add("BaseEnemy", Resources.Load<GameObject>("Prefabs/BaseEnemy"));
+        await UniTask.Yield();
     }
 
     public BaseEnemy MakeEnemy()
@@ -70,34 +70,36 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         notePool = new List<GameObject>();
     }
 
-    public void DestroyEnemy(BaseEnemy enemy)
+    public async UniTask DestroyEnemy(BaseEnemy enemy)
     {
-        if(activeEnemyList.Contains(enemy))
+        if(true == activeEnemyList.Contains(enemy))
         {
-            enemy.transform.SetParent(transform);
+            //enemy.transform.SetParent(transform);
             enemy.gameObject.SetActive(false);
-            enemyPool.Add(enemy.gameObject);
             activeEnemyList.Remove(enemy);
+            enemyPool.Add(enemy.gameObject);
+            await UniTask.Yield();
         }
-        else
-        {
-            Debug.Log("이네미 풀 에러");
-        }
+        //else
+        //{
+        //    Debug.LogError("이네미 풀 에러");
+        //}
     }
 
-    public void DestroyNote(BaseNote note)
+    public async UniTask DestroyNote(BaseNote note)
     {
-        if (activeNoteList.Contains(note))
+        if (true == activeNoteList.Contains(note))
         {
             //note.transform.SetParent(transform);
             note.gameObject.SetActive(false);
-            notePool.Add(note.gameObject);
             activeNoteList.Remove(note);
+            notePool.Add(note.gameObject);
+            await UniTask.Yield();
         }
-        else
-        {
-            Debug.Log("노트풀 에러");
-        }
+        //else
+        //{
+        //    Debug.LogError("노트풀 에러");
+        //}
     }
 
     public BaseEnemy GetEnemy()

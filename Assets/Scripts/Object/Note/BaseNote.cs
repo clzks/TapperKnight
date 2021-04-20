@@ -13,7 +13,7 @@ public class BaseNote : MonoBehaviour
     public float Position { get { return transform.position.x; } }
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
-
+    private Transform _inGamePool;
     private async UniTask Awake()
     {
         _objectPool = ObjectPoolManager.Get();
@@ -61,6 +61,13 @@ public class BaseNote : MonoBehaviour
     public async UniTaskVoid SetNotePopDestination(List<Vector3> dest)
     {
         _notePopDestination = dest;
+        await UniTask.Yield();
+    }
+
+    public async UniTaskVoid SetInGamePool(Transform tr)
+    {
+        _inGamePool = tr;
+        transform.SetParent(_inGamePool);
         await UniTask.Yield();
     }
 
@@ -129,7 +136,7 @@ public class BaseNote : MonoBehaviour
 
     private async UniTask DestroyNote()
     {
-        _objectPool.DestroyNote(this);
+        await _objectPool.DestroyNote(this);
         await UniTask.Yield();
     }
 }

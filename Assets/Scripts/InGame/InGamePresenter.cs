@@ -41,11 +41,6 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _model.GetRandomEnemy(stageNumber);
     }
 
-    public Dictionary<ScoreType, float> GetScoreModel()
-    {
-        return _model.GetScoreModel();
-    }
-
     public async UniTask SetTarget(BaseEnemy enemy)
     {
         await _inGameView.SetTarget(enemy);
@@ -58,7 +53,7 @@ public class InGamePresenter : MonoBehaviour, IPresenter
 
     public float GetPlayerSpeed()
     {
-        return _model.GetPlayerSpeed();
+        return _inGameView.GetPlayerSpeed();
     }
 
     public List<Vector3> GetNotePopDestination()
@@ -71,9 +66,14 @@ public class InGamePresenter : MonoBehaviour, IPresenter
 
     }
 
-    public async UniTask OnNoteCall(ScoreType score)
+    public async UniTask OnNoteCall(ScoreType score, float damage)
     {
-        
+        if (score == ScoreType.Miss)
+        {
+            await _inGameView.GetDamage(damage);
+        }
+
+        await _model.AddScore(score);
     }
 
     public async UniTask OnTargetDestroy()

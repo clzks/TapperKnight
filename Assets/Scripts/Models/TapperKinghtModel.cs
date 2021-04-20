@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,79 +8,103 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     // 스테이지 별 몬스터 등장 데이터를 들고있어야 하며
     // 프레젠터에게 요청받을 시 해당 몬스터의 정보를 뷰에게 넘겨준다.
     // 뷰는 몬스터의 정보를 받아서 생성 및 세팅한다.
-
-    private Dictionary<int, StageModel> stageModelList;
-    private Dictionary<int, EnemyModel> enemyModelList;
-    private Dictionary<ScoreType, float> scoreDistanceList;
-    private BaseCharacter player;
-
-    private void Awake()
+    private DataManager _dataManager;
+    private Dictionary<int, StageModel> _stageModelList;
+    private Dictionary<int, EnemyModel> _enemyModelList;
+    private Dictionary<ScoreType, int> _scoreList;
+    private PlayerModel _playerModel;
+    
+    private async UniTask Awake()
     {
-        GetStageList();
-        GetEnemyList();
-        SetSampleScoreDistance();
+        _dataManager = DataManager.Get();
+        await GetStageList();
+        await GetEnemyList();
+        await SetScoreModel();
+        _playerModel = new PlayerModel(); // 임시
     }
     
-    public void GetStageList()
+    public async UniTask GetStageList()
     {
-        stageModelList = DataManager.Get().GetStageList();
+        _stageModelList = DataManager.Get().GetStageList();
+        await UniTask.Yield();
     }
 
-    public void GetEnemyList()
+    public async UniTask GetEnemyList()
     {
-        enemyModelList = DataManager.Get().GetEnemyList();
+        _enemyModelList = DataManager.Get().GetEnemyList();
+        await UniTask.Yield();
+    }
+    public async UniTask SetScoreModel()
+    {
+        _scoreList = _dataManager.GetScoreList();
+        await UniTask.Yield();
     }
 
-    public void SetSampleScoreDistance()
-    {
-        scoreDistanceList = new Dictionary<ScoreType, float>();
-
-        scoreDistanceList.Add(ScoreType.Miss, 1f);
-        scoreDistanceList.Add(ScoreType.Bad, 1f);
-        scoreDistanceList.Add(ScoreType.Good, 0.6f);
-        scoreDistanceList.Add(ScoreType.Great, 0.4f);
-        scoreDistanceList.Add(ScoreType.Perfect, 0.2f);
-    }
-
-    //public Dictionary<int, StageModel> GetStageModelList()
-    //{
-    //    return stageModelList;
-    //}
-    
     public StageModel GetStageModel(int index)
     {
-        return stageModelList[index];
+        return _stageModelList[index];
     }
 
     public EnemyModel GetEnemyModel(int id)
     {
-        return enemyModelList[id];
+        return _enemyModelList[id];
     }
 
     public EnemyModel GetRandomEnemy(int stageNumber)
     {
-        var enemyList = stageModelList[stageNumber].EnemyList;
+        var enemyList = _stageModelList[stageNumber].EnemyList;
         int n = Random.Range(0, 1000) % enemyList.Count;
         var id = enemyList[n];
 
-        if (true == enemyModelList.ContainsKey(id))
+        if (true == _enemyModelList.ContainsKey(id))
         {
-            return enemyModelList[id];
+            return _enemyModelList[id];
         }
         else
         {
             Debug.LogError("이네미 모델 리스트에 포함되지 않은 Id 발견");
-            return enemyModelList[10000];
+            return _enemyModelList[10000];
         }
     }
 
-    public Dictionary<ScoreType, float> GetScoreModel()
+    public async UniTask AddScore(ScoreType type)
     {
-        return scoreDistanceList;
+        int value = _scoreList[type];
+
+        var result = await AddScore(value);
+
+        if(false == result)
+        {
+            Debug.LogWarning("획득할 수 없는 점수입니다");
+        }
     }
 
-    public float GetPlayerSpeed()
+    public async UniTask<bool> AddScore(int score)
     {
-        return player.currSpeed;
+        if(_playerModel.OwnScore + score >= 0)
+        {
+            _playerModel.OwnScore += score;
+            Debug.Log("점수" + score + "점 획득. 현재 스코어 : " + _playerModel.OwnScore);
+            await UniTask.Yield();
+            return true;
+        }
+        else
+        {
+            await UniTask.Yield();
+            return false;
+        }
+    }
+
+    public async UniTask<bool> AddGold(int gold)
+    {
+        if(_playerModel.OwnGold + gold >= 0)
+        {
+            _playerModel.OwnGold += gold;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

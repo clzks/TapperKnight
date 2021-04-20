@@ -11,7 +11,7 @@ public class BaseEnemy : MonoBehaviour
     private InGamePresenter _inGamePresenter;
     [SerializeField]private GameObject noteParent;
     public SkinnedMeshRenderer meshRenderer;
-
+    private Transform _inGamePool;
    
     private void Awake()
     {
@@ -63,6 +63,7 @@ public class BaseEnemy : MonoBehaviour
             for (int i = 0; i < status.hp; ++i)
             {
                 BaseNote note = _objectPool.MakeNote();
+                note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
                 note.transform.SetParent(noteParent.transform);
                 note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2) + 0.5f * interval, notePosY, transform.position.z)).Forget();
@@ -79,10 +80,11 @@ public class BaseEnemy : MonoBehaviour
             for (int i = 0; i < status.hp; ++i)
             {
                 BaseNote note = _objectPool.MakeNote();
+                note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
                 note.transform.SetParent(noteParent.transform);
-                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePosY, transform.position.z)).Forget();
                 note.SetParentEnemy(this).Forget();
+                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePosY, transform.position.z)).Forget();
                 note.SetBoxPosition(-4.5f).Forget();
                 note.SetBoxSize(1f).Forget();
                 note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
@@ -124,8 +126,8 @@ public class BaseEnemy : MonoBehaviour
 
     public async UniTask OnNoteCall(ScoreType score)
     {
-        await _inGamePresenter.OnNoteCall(score);
-        enemyNotes.Dequeue().transform.SetParent(_objectPool.transform);
+        await ResetNote();
+        await _inGamePresenter.OnNoteCall(score, status.damage);
 
         if(0 == enemyNotes.Count)
         {
@@ -136,12 +138,34 @@ public class BaseEnemy : MonoBehaviour
 
     public BaseNote GetNote()
     {
-        return enemyNotes.Peek();
+        if (enemyNotes.Count != 0)
+        {
+            return enemyNotes.Peek();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public async UniTask SetInGamePool(Transform tr)
+    {
+        _inGamePool = tr;
+        transform.SetParent(_inGamePool);
+        await UniTask.Yield();
+    }
+
+    private async UniTask ResetNote()
+    {
+        BaseNote note = enemyNotes.Dequeue();
+        note.SetParentEnemy(null).Forget();
+        note.transform.SetParent(_inGamePool);
+        await UniTask.Yield();
     }
 
     public async UniTask DestroyEnemy()
     {
-        ObjectPoolManager.Get().DestroyEnemy(this);
+        await ObjectPoolManager.Get().DestroyEnemy(this);
         await UniTask.Yield();
     }
 }
