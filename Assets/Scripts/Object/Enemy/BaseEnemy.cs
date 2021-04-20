@@ -65,11 +65,12 @@ public class BaseEnemy : MonoBehaviour
                 BaseNote note = _objectPool.MakeNote();
                 note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
-                note.transform.SetParent(noteParent.transform);
+                note.transform.SetParent(_inGamePool.transform);
                 note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2) + 0.5f * interval, notePosY, transform.position.z)).Forget();
                 note.SetParentEnemy(this).Forget();
                 note.SetBoxPosition(-4.5f).Forget();
                 note.SetBoxSize(1f).Forget();
+                note.SetNoteSpeed(status.speed).Forget();
                 note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
                 enemyNotes.Enqueue(note);
             }
@@ -82,11 +83,12 @@ public class BaseEnemy : MonoBehaviour
                 BaseNote note = _objectPool.MakeNote();
                 note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
-                note.transform.SetParent(noteParent.transform);
+                note.transform.SetParent(_inGamePool.transform);
                 note.SetParentEnemy(this).Forget();
                 note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePosY, transform.position.z)).Forget();
                 note.SetBoxPosition(-4.5f).Forget();
                 note.SetBoxSize(1f).Forget();
+                note.SetNoteSpeed(status.speed).Forget();
                 note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
                 enemyNotes.Enqueue(note);
             }

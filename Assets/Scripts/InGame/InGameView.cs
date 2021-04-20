@@ -56,13 +56,13 @@ public class InGameView : MonoBehaviour, IView
         if (null == _leftButton)
         {
             _leftButton = GameObject.Find("LeftButton").GetComponent<Button>();
-            _leftButton.onClick.AddListener(async () => await OnClickButton(NoteType.Left));
+            _leftButton.onClick.AddListener(() => OnClickButton(NoteType.Left).Forget());
         }
 
         if (null == _rightButton)
         {
             _rightButton = GameObject.Find("RightButton").GetComponent<Button>();
-            _rightButton.onClick.AddListener(async () => await OnClickButton(NoteType.Right));
+            _rightButton.onClick.AddListener(() => OnClickButton(NoteType.Right).Forget());
         }
 
         if (null == _singleRespawnButton)
@@ -146,12 +146,12 @@ public class InGameView : MonoBehaviour, IView
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            await OnClickButton(NoteType.Left);
+            OnClickButton(NoteType.Left).Forget();
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            await OnClickButton(NoteType.Right);
+            OnClickButton(NoteType.Right).Forget();
         }
 
         if (Input.GetKeyDown(KeyCode.T))
@@ -212,7 +212,7 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
     }
 
-    private async UniTask OnClickButton(NoteType type)
+    private async UniTaskVoid OnClickButton(NoteType type)
     {
         if(NoteType.Null == _currClickButton)
         {
@@ -224,10 +224,10 @@ public class InGameView : MonoBehaviour, IView
             {
                 _currClickButton = NoteType.BothSide;
             }
-            else
-            {
-                delayTimer += _bothSideDelayTime;
-            }
+            //else
+            //{
+            //    delayTimer += _bothSideDelayTime;
+            //}
 
             return;
         }

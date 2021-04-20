@@ -9,11 +9,11 @@ public class BaseNote : MonoBehaviour
     private BaseEnemy parentEnemy;
     private float _boxSizeX;
     private float _boxPosX;
+    private float _speed;
     private List<Vector3> _notePopDestination;
     public float Position { get { return transform.position.x; } }
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    private Transform _inGamePool;
     private async UniTask Awake()
     {
         _objectPool = ObjectPoolManager.Get();
@@ -22,6 +22,8 @@ public class BaseNote : MonoBehaviour
 
     public async UniTask Update()
     {
+        transform.position -= new Vector3(_speed * Time.deltaTime, 0f, 0f);
+
         if (Position <= _boxPosX - _boxSizeX)
         {
             await NoteCall(ScoreType.Miss);
@@ -58,6 +60,10 @@ public class BaseNote : MonoBehaviour
         await UniTask.Yield();
     }
 
+    public async UniTaskVoid SetNoteSpeed(float speed)
+    {
+        _speed = speed;
+    }
     public async UniTaskVoid SetNotePopDestination(List<Vector3> dest)
     {
         _notePopDestination = dest;
@@ -66,8 +72,7 @@ public class BaseNote : MonoBehaviour
 
     public async UniTaskVoid SetInGamePool(Transform tr)
     {
-        _inGamePool = tr;
-        transform.SetParent(_inGamePool);
+        transform.SetParent(tr);
         await UniTask.Yield();
     }
 
@@ -120,15 +125,24 @@ public class BaseNote : MonoBehaviour
     }
     private async UniTask NotePop(ScoreType score)
     {
+        float time = 0f;
+
         if (score != ScoreType.Miss)
         {
-            float time = 0f;
             Vector3 startPos = transform.position;
             while (time <= 1f)
             {
                 transform.position = Formula.BezierMove(startPos, _notePopDestination[0], _notePopDestination[1], time);
                 await UniTask.Yield();
                 time += Time.deltaTime * 2f;
+            }
+        }
+        else
+        {
+            while (time <= 2f)
+            {
+                await UniTask.Yield();
+                time += Time.deltaTime;
             }
         }
         await DestroyNote();

@@ -100,7 +100,6 @@ public class TapperKinghtModel : MonoBehaviour, IModel
         }
         else
         {
-            await UniTask.Yield();
             return false;
         }
     }
@@ -110,6 +109,7 @@ public class TapperKinghtModel : MonoBehaviour, IModel
         if(_playerModel.OwnGold + gold >= 0)
         {
             _playerModel.OwnGold += gold;
+            await UniTask.Yield();
             return true;
         }
         else
