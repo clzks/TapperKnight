@@ -51,6 +51,10 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _inGameView.GetTarget();
     }
 
+    public int GetScore()
+    {
+        return _model.GetScore();
+    }
     public float GetPlayerSpeed()
     {
         return _inGameView.GetPlayerSpeed();
@@ -80,4 +84,5 @@ public class InGamePresenter : MonoBehaviour, IPresenter
     {
         await _inGameView.OnTargetDestroy();
     }
+
 }

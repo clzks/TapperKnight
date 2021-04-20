@@ -19,6 +19,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private List<Vector3> _notePopDestination;
     [SerializeField] private Image _hpBar;
     [SerializeField] private Text _runnigRecord;
+    [SerializeField] private Text _score;
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
     private StageModel _inGameStageModel;
@@ -27,6 +28,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private float _maxStageTime;
     [SerializeField] private float _currGenTimer = 3f;
     [SerializeField] private float _maxGenTime;
+    //[SerializeField] private int _scoreValue = 0;
     private float _blackOutTime = 1.3f;
 
     [Header("Control")]
@@ -84,6 +86,7 @@ public class InGameView : MonoBehaviour, IView
         _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Destination").transform.position);
         _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
         _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
+        _score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
         _inGamePool = GameObject.Find("ObjectPool").transform;
     }
 
@@ -257,6 +260,7 @@ public class InGameView : MonoBehaviour, IView
     private async UniTask UpdateCharacterRecord()
     {
         _runnigRecord.text = _playerCharacter.GetRunningRecord().ToString();
+        _score.text = _inGamePresenter.GetScore().ToString();
         await UniTask.Yield();
     }
 
@@ -277,7 +281,7 @@ public class InGameView : MonoBehaviour, IView
 
     public async UniTask GetDamage(float damage)
     {
-        await _playerCharacter.GetDamage(damage);
+        await _playerCharacter.TakeDamage(damage);
     }
 
     public async UniTask SetTarget(BaseEnemy enemy)

@@ -31,7 +31,7 @@ public class BaseCharacter : MonoBehaviour
         while (_currHp >= 0)
         {
             await UniTask.Delay(1000);
-            await GetDamage(status.HpDecreasePerSecond);
+            await TakeDamage(status.HpDecreasePerSecond);
         }
     }
 
@@ -41,7 +41,7 @@ public class BaseCharacter : MonoBehaviour
         await UniTask.Yield();
     }
 
-    public async UniTask GetDamage(float damage)
+    public async UniTask TakeDamage(float damage)
     {
         await UniTask.Yield();
 

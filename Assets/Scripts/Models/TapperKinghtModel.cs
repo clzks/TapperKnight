@@ -107,4 +107,9 @@ public class TapperKinghtModel : MonoBehaviour, IModel
             return false;
         }
     }
+
+    public int GetScore()
+    {
+        return _playerModel.OwnScore;
+    }
 }
