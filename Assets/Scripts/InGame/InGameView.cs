@@ -27,7 +27,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private float _currStageTimer = 0f;
     [SerializeField] private float _maxStageTime;
     [SerializeField] private float _currGenTimer = 3f;
-    [SerializeField] private float _maxGenTime;
+    [SerializeField] private float _genTime;
     private bool _isLastStage = false;
     private float _blackOutTime = 1.3f;
 
@@ -114,8 +114,10 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
         _inGameStageModel = _inGamePresenter.GetStageModel(_currentStageNumber, ref _isLastStage);
         _maxStageTime = _inGameStageModel.StageTime;
-        _maxGenTime = _inGameStageModel.MaximumGenCycle;
+        _genTime = _inGameStageModel.MaximumGenCycle;
     }
+
+    
 
     public void SetPresenter(InGamePresenter presenter)
     {
@@ -181,7 +183,7 @@ public class InGameView : MonoBehaviour, IView
             }
             else
             {
-                if (_currGenTimer >= 1f)
+                if (_currGenTimer >= _genTime)
                 {
                     _currGenTimer = 0f;
                     await MakeEnemy();
@@ -199,6 +201,7 @@ public class InGameView : MonoBehaviour, IView
         _playerCharacter.SetSortingLayer("Background", 4).Forget();
         await InitStageFactor();
         await GetStageModelAsync();
+        SetGenTime().Forget();
         _state = InGameState.Play;
     }
     #endregion
@@ -267,6 +270,14 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
     }
 
+    private async UniTaskVoid SetGenTime()
+    {
+        if(_inGameStageModel != null)
+        {
+            _genTime = Random.Range(_inGameStageModel.MinimumGenCycle, _inGameStageModel.MaximumGenCycle);
+        }
+    }
+
     public float GetPlayerSpeed()
     {
         return _playerCharacter.GetSpeed();
@@ -304,6 +315,7 @@ public class InGameView : MonoBehaviour, IView
         await enemy.SetInGamePool(_inGamePool);
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
         await enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
+        SetGenTime().Forget();
         await UniTask.Yield();
     }
 
