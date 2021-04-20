@@ -45,6 +45,16 @@ public class TapperKinghtModel : MonoBehaviour, IModel
         return _stageModelList[index];
     }
 
+    public StageModel GetStageModel(int index, ref bool isLast)
+    {
+        if(_stageModelList.Count == index)
+        {
+            isLast = true;
+        }
+
+        return _stageModelList[index];
+    }
+
     public EnemyModel GetEnemyModel(int id)
     {
         return _enemyModelList[id];

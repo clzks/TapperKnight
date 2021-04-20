@@ -23,12 +23,12 @@ public class InGameView : MonoBehaviour, IView
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
     private StageModel _inGameStageModel;
-    private int _currentStageNumber = 1;
+    [SerializeField] private int _currentStageNumber = 1;
     [SerializeField] private float _currStageTimer = 0f;
     [SerializeField] private float _maxStageTime;
     [SerializeField] private float _currGenTimer = 3f;
     [SerializeField] private float _maxGenTime;
-    //[SerializeField] private int _scoreValue = 0;
+    private bool _isLastStage = false;
     private float _blackOutTime = 1.3f;
 
     [Header("Control")]
@@ -112,7 +112,7 @@ public class InGameView : MonoBehaviour, IView
     public async UniTask GetStageModelAsync()
     {
         await UniTask.Yield();
-        _inGameStageModel = _inGameStageModel ?? _inGamePresenter.GetStageModel(_currentStageNumber);
+        _inGameStageModel = _inGamePresenter.GetStageModel(_currentStageNumber, ref _isLastStage);
         _maxStageTime = _inGameStageModel.StageTime;
         _maxGenTime = _inGameStageModel.MaximumGenCycle;
     }
@@ -165,7 +165,10 @@ public class InGameView : MonoBehaviour, IView
         if (true == _isAutoMode)
         {
             _currGenTimer += Time.deltaTime;
-            _currStageTimer += Time.deltaTime;
+            if (_isLastStage == false)
+            {
+                _currStageTimer += Time.deltaTime;
+            }
             await _playerCharacter.AddRecord();
 
             if (_currStageTimer >= _maxStageTime)
