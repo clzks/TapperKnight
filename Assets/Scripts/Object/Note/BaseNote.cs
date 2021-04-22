@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseNote : MonoBehaviour
+public class BaseNote : MonoBehaviour, IPoolObject
 {
     private ObjectPoolManager _objectPool;
     private BaseEnemy parentEnemy;
@@ -80,7 +80,7 @@ public class BaseNote : MonoBehaviour
     {
         ScoreType score = ScoreType.Miss;
 
-        if(Position >= _boxPosX + 1f)
+        if(Position >= _boxPosX + 2f)
         {
             Debug.Log("거리가 너무멀어 무효처리");
             return;
@@ -93,19 +93,19 @@ public class BaseNote : MonoBehaviour
             return;
         }
 
-        if (Mathf.Abs(Position - _boxPosX) <= 0.2f)
+        if (Mathf.Abs(Position - _boxPosX) <= 0.4f)
         {
             score = ScoreType.Perfect;
         }
-        else if (Mathf.Abs(Position - _boxPosX) <= 0.4f)
+        else if (Mathf.Abs(Position - _boxPosX) <= 0.8f)
         {
             score = ScoreType.Great;
         }
-        else if (Mathf.Abs(Position - _boxPosX) <= 0.6f)
+        else if (Mathf.Abs(Position - _boxPosX) <= 1.2f)
         {
             score = ScoreType.Good;
         }
-        else if (Mathf.Abs(Position - _boxPosX) < 0.8f)
+        else if (Mathf.Abs(Position - _boxPosX) < 1.6f)
         {
             score = ScoreType.Bad;
         }
@@ -150,7 +150,32 @@ public class BaseNote : MonoBehaviour
 
     private async UniTask DestroyNote()
     {
-        await _objectPool.DestroyNote(this);
+        await _objectPool.ReturnObject(this);
         await UniTask.Yield();
+    }
+
+    public IPoolObject MakeObject()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Init()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ReturnObject()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public GameObject GetObject()
+    {
+        return gameObject;
+    }
+
+    public ObjectType GetObjectType()
+    {
+        return ObjectType.Note;
     }
 }

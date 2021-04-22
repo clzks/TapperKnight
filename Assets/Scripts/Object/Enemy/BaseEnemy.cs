@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(SkinnedMeshRenderer))]
-public class BaseEnemy : MonoBehaviour
+public class BaseEnemy : MonoBehaviour, IPoolObject
 {
     private ObjectPoolManager _objectPool;
     public Queue<BaseNote> enemyNotes;
     public EnemyStatus status;
     private InGamePresenter _inGamePresenter;
-    [SerializeField]private GameObject noteParent;
+    //[SerializeField]private GameObject _noteParent;
     public SkinnedMeshRenderer meshRenderer;
     private Transform _inGamePool;
    
@@ -62,7 +62,7 @@ public class BaseEnemy : MonoBehaviour
             //Â¦¼ö
             for (int i = 0; i < status.hp; ++i)
             {
-                BaseNote note = _objectPool.MakeNote();
+                BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
                 note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
                 note.transform.SetParent(_inGamePool.transform);
@@ -80,7 +80,7 @@ public class BaseEnemy : MonoBehaviour
             //È¦¼ö
             for (int i = 0; i < status.hp; ++i)
             {
-                BaseNote note = _objectPool.MakeNote();
+                BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
                 note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
                 note.transform.SetParent(_inGamePool.transform);
@@ -104,17 +104,17 @@ public class BaseEnemy : MonoBehaviour
         if(0 == r)
         {
             bn.noteType = NoteType.Left;
-            bn.SetNoteSprite(ObjectPoolManager.Get().spriteList["Left"]).Forget();
+            bn.SetNoteSprite(_objectPool.spriteList["Left"]).Forget();
         }
         else if(1 == r)
         {
             bn.noteType = NoteType.Right;
-            bn.SetNoteSprite(ObjectPoolManager.Get().spriteList["Right"]).Forget();
+            bn.SetNoteSprite(_objectPool.spriteList["Right"]).Forget();
         }
         else
         {
             bn.noteType = NoteType.BothSide;
-            bn.SetNoteSprite(ObjectPoolManager.Get().spriteList["BothSide"]).Forget();
+            bn.SetNoteSprite(_objectPool.spriteList["BothSide"]).Forget();
         }
         await UniTask.Yield();
     }
@@ -122,7 +122,7 @@ public class BaseEnemy : MonoBehaviour
     private async UniTaskVoid SetBothSideNote(BaseNote bn)
     {
         bn.noteType = NoteType.BothSide;
-        bn.SetNoteSprite(ObjectPoolManager.Get().spriteList["BothSide"]).Forget();
+        bn.SetNoteSprite(_objectPool.spriteList["BothSide"]).Forget();
         await UniTask.Yield();
     }
 
@@ -167,8 +167,33 @@ public class BaseEnemy : MonoBehaviour
 
     public async UniTask DestroyEnemy()
     {
-        await ObjectPoolManager.Get().DestroyEnemy(this);
+        await _objectPool.ReturnObject(this);
         await UniTask.Yield();
+    }
+
+    public IPoolObject MakeObject()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Init()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ReturnObject()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public GameObject GetObject()
+    {
+        return gameObject;
+    }
+
+    public ObjectType GetObjectType()
+    {
+        return ObjectType.Enemy;
     }
 }
 

@@ -311,7 +311,7 @@ public class InGameView : MonoBehaviour, IView
 
     public async UniTask MakeEnemy()
     {
-        BaseEnemy enemy = _objectPool.MakeEnemy();
+        BaseEnemy enemy = (BaseEnemy)_objectPool.MakeObject(ObjectType.Enemy);
         await enemy.SetInGamePool(_inGamePool);
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
         await enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());

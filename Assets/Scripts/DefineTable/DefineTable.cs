@@ -26,6 +26,14 @@ public enum InGameState
     Change,
     Count
 }
+public enum ObjectType
+{ 
+    Enemy,
+    Note,
+    Effect,
+    Score,
+    Count
+}
 
 public static class Formula
 {

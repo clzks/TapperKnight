@@ -5,108 +5,152 @@ using System.Linq;
 using UnityEngine.U2D;
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
-    [SerializeField]public List<GameObject> enemyPool;
-    public List<GameObject> notePool;
-
     public Dictionary<string, Sprite> spriteList;
-    public Dictionary<string, GameObject> prefabList;
-    public List<BaseEnemy> activeEnemyList;
-    public List<BaseNote> activeNoteList;
+    public Dictionary<ObjectType, GameObject> prefabList;
+    public Dictionary<ObjectType, List<GameObject>> _objectPoolList;
+    public Dictionary<ObjectType, List<GameObject>> _activePoolList;
+
     private async UniTask Awake()
     {
-        activeEnemyList = new List<BaseEnemy>();
-        activeNoteList = new List<BaseNote>();
         spriteList = new Dictionary<string, Sprite>();
         spriteList.Add("Left", Resources.Load<Sprite>("Sprites/Left"));
         spriteList.Add("Right", Resources.Load<Sprite>("Sprites/Right"));
         spriteList.Add("BothSide", Resources.Load<Sprite>("Sprites/BothSide"));
 
-        prefabList = new Dictionary<string, GameObject>();
+        prefabList = new Dictionary<ObjectType, GameObject>();
 
-        prefabList.Add("Note", Resources.Load<GameObject>("Prefabs/Note"));
-        prefabList.Add("BaseEnemy", Resources.Load<GameObject>("Prefabs/BaseEnemy"));
+        prefabList.Add(ObjectType.Note, Resources.Load<GameObject>("Prefabs/Note"));
+        prefabList.Add(ObjectType.Enemy, Resources.Load<GameObject>("Prefabs/BaseEnemy"));
         await UniTask.Yield();
     }
 
-    public BaseEnemy MakeEnemy()
+    public IPoolObject MakeObject(ObjectType type)
     {
-        BaseEnemy enemy;
+        IPoolObject obj;
+       
+        List<GameObject> pool;
+        List<GameObject> activePool;
 
-        if (enemyPool.Count != 0)
+        if(_objectPoolList.ContainsKey(type) == true)
         {
-            enemy = enemyPool[0].GetComponent<BaseEnemy>();
-            enemy.gameObject.SetActive(true);
-            enemyPool.Remove(enemy.gameObject);
+            pool = _objectPoolList[type];
         }
         else
         {
-            enemy = Instantiate(prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
+            pool = new List<GameObject>();
+            _objectPoolList.Add(type, pool);
         }
-        activeEnemyList.Add(enemy);
-        return enemy;
-    }
 
-    public BaseNote MakeNote()
-    {
-        BaseNote note;
-
-        if (notePool.Count != 0)
+        if(pool.Count != 0)
         {
-            note = notePool[0].GetComponent<BaseNote>();
-            note.gameObject.SetActive(true);
-            notePool.Remove(note.gameObject);
+            obj = pool[0].GetComponent<IPoolObject>();
+            obj.GetObject().SetActive(true);
+            pool.Remove(obj.GetObject());
         }
         else
         {
-            note = Instantiate(prefabList["Note"]).GetComponent<BaseNote>();
+            obj = Instantiate(prefabList[type]).GetComponent<IPoolObject>();
+            //obj.Init();
         }
-        activeNoteList.Add(note);
-        return note;
+
+        if(_activePoolList.ContainsKey(type) == true)
+        {
+            activePool = _activePoolList[type];
+        }
+        else
+        {
+            activePool = new List<GameObject>();
+            _activePoolList.Add(type, activePool);
+        }
+
+        activePool.Add(obj.GetObject());
+
+        return obj;
     }
+
+    public async UniTask ReturnObject(IPoolObject poolObject)
+    {
+        ObjectType type = poolObject.GetObjectType();
+        var list = _activePoolList[type];
+        var pool = _objectPoolList[type];
+        GameObject obj = poolObject.GetObject();
+
+        if (true == list.Contains(obj))
+        {
+            obj.SetActive(false);
+            list.Remove(obj);
+            pool.Add(obj);
+            await UniTask.Yield();
+        }
+    }
+
+    //public BaseEnemy MakeEnemy()
+    //{
+    //    BaseEnemy enemy;
+    //
+    //    if (enemyPool.Count != 0)
+    //    {
+    //        enemy = enemyPool[0].GetComponent<BaseEnemy>();
+    //        enemy.gameObject.SetActive(true);
+    //        enemyPool.Remove(enemy.gameObject);
+    //    }
+    //    else
+    //    {
+    //        enemy = Instantiate(prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
+    //    }
+    //    activeEnemyList.Add(enemy);
+    //    return enemy;
+    //}
+
+    //public BaseNote MakeNote()
+    //{
+    //    BaseNote note;
+    //
+    //    if (notePool.Count != 0)
+    //    {
+    //        note = notePool[0].GetComponent<BaseNote>();
+    //        note.gameObject.SetActive(true);
+    //        notePool.Remove(note.gameObject);
+    //    }
+    //    else
+    //    {
+    //        note = Instantiate(prefabList["Note"]).GetComponent<BaseNote>();
+    //    }
+    //    activeNoteList.Add(note);
+    //    return note;
+    //}
 
     public void InitPool()
     {
-        enemyPool = new List<GameObject>();
-        notePool = new List<GameObject>();
+        _objectPoolList = new Dictionary<ObjectType, List<GameObject>>();
+        _activePoolList = new Dictionary<ObjectType, List<GameObject>>();
     }
 
-    public async UniTask DestroyEnemy(BaseEnemy enemy)
-    {
-        if(true == activeEnemyList.Contains(enemy))
-        {
-            //enemy.transform.SetParent(transform);
-            enemy.gameObject.SetActive(false);
-            activeEnemyList.Remove(enemy);
-            enemyPool.Add(enemy.gameObject);
-            await UniTask.Yield();
-        }
-        //else
-        //{
-        //    Debug.LogError("이네미 풀 에러");
-        //}
-    }
+   
 
-    public async UniTask DestroyNote(BaseNote note)
-    {
-        if (true == activeNoteList.Contains(note))
-        {
-            //note.transform.SetParent(transform);
-            note.gameObject.SetActive(false);
-            activeNoteList.Remove(note);
-            notePool.Add(note.gameObject);
-            await UniTask.Yield();
-        }
-        //else
-        //{
-        //    Debug.LogError("노트풀 에러");
-        //}
-    }
+    //public async UniTask DestroyNote(BaseNote note)
+    //{
+    //    if (true == activeNoteList.Contains(note))
+    //    {
+    //        //note.transform.SetParent(transform);
+    //        note.gameObject.SetActive(false);
+    //        activeNoteList.Remove(note);
+    //        notePool.Add(note.gameObject);
+    //        await UniTask.Yield();
+    //    }
+    //    //else
+    //    //{
+    //    //    Debug.LogError("노트풀 에러");
+    //    //}
+    //}
 
     public BaseEnemy GetEnemy()
     {
-        if (activeEnemyList.Count != 0)
+        var list = _activePoolList[ObjectType.Enemy];
+
+        if (list.Count != 0)
         {
-            return activeEnemyList.OrderBy(x => x.transform.position.x).First();
+            return list.OrderBy(x => x.transform.position.x).First().GetComponent<BaseEnemy>();
         }
         else
         {
@@ -116,6 +160,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
     public int GetEnemyCount()
     {
-        return activeEnemyList.Count;
+        return _activePoolList[ObjectType.Enemy].Count;
     }
 }
