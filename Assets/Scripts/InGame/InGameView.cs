@@ -15,7 +15,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private Button _singleRespawnButton;
     [SerializeField] private Button _autoRespawnButton;
     [SerializeField] private GameObject _noteBox;
-    [SerializeField] private float _noteBoxPosY;
+    [SerializeField] private Vector2 _noteBoxPos;
     [SerializeField] private List<Vector3> _notePopDestination;
     [SerializeField] private Image _hpBar;
     [SerializeField] private Text _runnigRecord;
@@ -78,7 +78,7 @@ public class InGameView : MonoBehaviour, IView
         }
 
         _noteBox = GameObject.Find("Field/NoteBox");
-        _noteBoxPosY = _noteBox.transform.position.y;
+        _noteBoxPos = _noteBox.transform.position;
         _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
         _bgController = GameObject.Find("Field/Backgrounds").GetComponent<BackgroundController>();
         _notePopDestination = new List<Vector3>();
@@ -283,9 +283,9 @@ public class InGameView : MonoBehaviour, IView
         return _playerCharacter.GetSpeed();
     }
 
-    public float GetNoteBoxPosY()
+    public Vector2 GetNoteBoxPos()
     {
-        return _noteBoxPosY;
+        return _noteBoxPos;
     }
 
     public List<Vector3> GetNotePopDestination()

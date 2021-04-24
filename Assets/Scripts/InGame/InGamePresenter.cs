@@ -26,9 +26,9 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         await UniTask.Yield();
     }
 
-    public float GetNoteBoxPosY()
+    public Vector2 GetNoteBoxPos()
     {
-        return _inGameView.GetNoteBoxPosY();
+        return _inGameView.GetNoteBoxPos();
     }
     
     public StageModel GetStageModel(int index)

@@ -12,7 +12,8 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     //[SerializeField]private GameObject _noteParent;
     public SkinnedMeshRenderer meshRenderer;
     private Transform _inGamePool;
-   
+    
+
     private void Awake()
     {
         meshRenderer.sortingLayerName = "Background";
@@ -55,7 +56,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     }
     private async UniTaskVoid SetNote(float interval)
     {
-        float notePosY = _inGamePresenter.GetNoteBoxPosY();
+        var notePos = _inGamePresenter.GetNoteBoxPos();
         // 계산된 Hp 개수만큼 Queue에 Note생성 해주는것 필요
         if(status.hp % 2 == 0)
         {
@@ -66,9 +67,9 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
                 note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
                 note.transform.SetParent(_inGamePool.transform);
-                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2) + 0.5f * interval, notePosY, transform.position.z)).Forget();
+                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2) + 0.5f * interval, notePos.y, transform.position.z)).Forget();
                 note.SetParentEnemy(this).Forget();
-                note.SetBoxPosition(-4.5f).Forget();
+                note.SetBoxPosition(notePos.x).Forget();
                 note.SetBoxSize(1f).Forget();
                 note.SetNoteSpeed(status.speed).Forget();
                 note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
@@ -85,8 +86,8 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
                 SetRandomNote(note).Forget();
                 note.transform.SetParent(_inGamePool.transform);
                 note.SetParentEnemy(this).Forget();
-                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePosY, transform.position.z)).Forget();
-                note.SetBoxPosition(-4.5f).Forget();
+                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePos.y, transform.position.z)).Forget();
+                note.SetBoxPosition(notePos.x).Forget();
                 note.SetBoxSize(1f).Forget();
                 note.SetNoteSpeed(status.speed).Forget();
                 note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
