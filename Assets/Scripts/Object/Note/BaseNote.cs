@@ -11,12 +11,14 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private float _boxPosX;
     private float _speed;
     private List<Vector3> _notePopDestination;
+    private SpriteRenderer _renderer;
     public float Position { get { return transform.position.x; } }
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
     private async UniTask Awake()
     {
         _objectPool = ObjectPoolManager.Get();
+        _renderer = GetComponentInChildren<SpriteRenderer>();
         await UniTask.Yield();
     }
 
@@ -58,6 +60,11 @@ public class BaseNote : MonoBehaviour, IPoolObject
     {
         _boxSizeX = halfSizeX;
         await UniTask.Yield();
+    }
+
+    public async UniTaskVoid SetSortingLayer(int sortingOrder)
+    {
+        _renderer.sortingOrder = sortingOrder;
     }
 
     public async UniTaskVoid SetNoteSpeed(float speed)

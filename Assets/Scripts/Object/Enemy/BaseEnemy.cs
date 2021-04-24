@@ -66,6 +66,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
                 BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
                 note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
+                note.SetSortingLayer(status.hp - i - 1).Forget();
                 note.transform.SetParent(_inGamePool.transform);
                 note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2) + 0.5f * interval, notePos.y, transform.position.z)).Forget();
                 note.SetParentEnemy(this).Forget();
@@ -84,6 +85,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
                 BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
                 note.SetInGamePool(_inGamePool).Forget();
                 SetRandomNote(note).Forget();
+                note.SetSortingLayer(status.hp - i - 1).Forget();
                 note.transform.SetParent(_inGamePool.transform);
                 note.SetParentEnemy(this).Forget();
                 note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePos.y, transform.position.z)).Forget();
