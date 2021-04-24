@@ -145,28 +145,18 @@ public class BaseNote : MonoBehaviour, IPoolObject
                 time += Time.deltaTime;
             }
         }
-        await DestroyNote();
+        await ReturnObject();
     }
 
-    private async UniTask DestroyNote()
+    public async UniTask Init()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public async UniTask ReturnObject()
     {
         await _objectPool.ReturnObject(this);
         await UniTask.Yield();
-    }
-
-    public IPoolObject MakeObject()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Init()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void ReturnObject()
-    {
-        throw new System.NotImplementedException();
     }
 
     public GameObject GetObject()

@@ -50,7 +50,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         else
         {
             obj = Instantiate(prefabList[type]).GetComponent<IPoolObject>();
-            //obj.Init();
         }
 
         if(_activePoolList.ContainsKey(type) == true)

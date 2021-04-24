@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public interface IPoolObject
 {
-    IPoolObject MakeObject();
     GameObject GetObject();
     ObjectType GetObjectType();
-    void Init();
-    void ReturnObject();
+    UniTask Init();
+    UniTask ReturnObject();
 }

@@ -133,7 +133,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
 
         if(0 == enemyNotes.Count)
         {
-            await DestroyEnemy();
+            await ReturnObject();
             await _inGamePresenter.OnTargetDestroy();
         }
     }
@@ -165,25 +165,15 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    public async UniTask DestroyEnemy()
+    public async UniTask Init()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public async UniTask ReturnObject()
     {
         await _objectPool.ReturnObject(this);
         await UniTask.Yield();
-    }
-
-    public IPoolObject MakeObject()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Init()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void ReturnObject()
-    {
-        throw new System.NotImplementedException();
     }
 
     public GameObject GetObject()
