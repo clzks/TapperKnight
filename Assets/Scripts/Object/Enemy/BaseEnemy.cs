@@ -12,19 +12,26 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     //[SerializeField]private GameObject _noteParent;
     public SkinnedMeshRenderer meshRenderer;
     private Transform _inGamePool;
-    
+    private float _playerSpeedFactor;
 
-    private void Awake()
+    private async UniTask OnEnable()
     {
         meshRenderer.sortingLayerName = "Background";
         meshRenderer.sortingOrder = 4;
-        _objectPool = ObjectPoolManager.Get();
-        _inGamePresenter = GameManager.Get().GetInGamePresenter();
+        if (null == _objectPool)
+        {
+            _objectPool = ObjectPoolManager.Get();
+        }
+        if(null == _inGamePresenter)
+        {
+            _inGamePresenter = GameManager.Get().GetInGamePresenter();
+        }
     }
 
     private async UniTask Update()
     {
-        transform.position -= new Vector3(status.speed, 0f, 0f) * Time.deltaTime;
+        var playerSpd = _inGamePresenter.GetPlayerSpeed();
+        transform.position -= new Vector3((status.speed + playerSpd * _playerSpeedFactor) * Time.deltaTime, 0f, 0f);
         await UniTask.Yield();
     }
 
@@ -54,6 +61,11 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         status.hp = model.NoteCount;
         await UniTask.Yield();
     }
+    public async UniTaskVoid SetPlayerSpeedFactor(float playerSpeedFactor)
+    {
+        _playerSpeedFactor = playerSpeedFactor;
+    }
+
     private async UniTaskVoid SetNote(float interval)
     {
         var notePos = _inGamePresenter.GetNoteBoxPos();
@@ -72,7 +84,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
                 note.SetParentEnemy(this).Forget();
                 note.SetBoxPosition(notePos.x).Forget();
                 note.SetBoxSize(1f).Forget();
-                note.SetNoteSpeed(status.speed).Forget();
+                note.SetNoteSpeed(status.speed, _playerSpeedFactor).Forget();
                 note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
                 enemyNotes.Enqueue(note);
             }
@@ -91,7 +103,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
                 note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePos.y, transform.position.z)).Forget();
                 note.SetBoxPosition(notePos.x).Forget();
                 note.SetBoxSize(1f).Forget();
-                note.SetNoteSpeed(status.speed).Forget();
+                note.SetNoteSpeed(status.speed, _playerSpeedFactor).Forget();
                 note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
                 enemyNotes.Enqueue(note);
             }

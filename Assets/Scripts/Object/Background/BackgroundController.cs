@@ -12,12 +12,37 @@ public class BackgroundController : MonoBehaviour
     [Range(-10, 10)]
     public List<float> backgroundSpeedList;
     [SerializeField] private SpriteRenderer _stageChangeBlock;
-
+    private float _playerSpeedFactor;
     public void Awake()
     {
 
     }
-    
+    public async UniTask Start()
+    {
+        await UniTask.Yield();
+        _dataManager = DataManager.Get();
+        int count = _maxCount;
+
+        for (int i = 0; i < count; ++i)
+        {
+            if (i == 0)
+            {
+                backgroundList[i].SetLayer(count).Forget();
+            }
+            else
+            {
+                backgroundList[i].SetLayer(count - (1 + i)).Forget();
+            }
+            backgroundList[i].SetPlayerSpeedFactor(_playerSpeedFactor).Forget();
+        }
+    }
+
+    public async UniTask SetPlayerSpeedFactor(float playerSpeedFactor)
+    {
+        _playerSpeedFactor = playerSpeedFactor;
+        await UniTask.Yield();
+    }
+
     public async UniTaskVoid SetBackgroundList(int stageNumber)
     {
         List<BackgroundModel> models = _dataManager.GetBackgroundList(stageNumber);
@@ -44,24 +69,6 @@ public class BackgroundController : MonoBehaviour
         await UniTask.Yield();
     }
 
-    public async UniTask Start()
-    {
-        await UniTask.Yield();
-        _dataManager = DataManager.Get();
-        int count = _maxCount;
-
-        for (int i = 0; i < count; ++i)
-        {
-            if (i == 0)
-            {
-                backgroundList[i].SetLayer(count);
-            }
-            else
-            {
-                backgroundList[i].SetLayer(count - (1 + i));
-            }
-        }
-    }
 
     public async UniTask ExecuteStageChange(int stageNumber, float screenBlackOutTime)
     {
@@ -90,7 +97,7 @@ public class BackgroundController : MonoBehaviour
         for(int i = 0; i < backgroundList.Count; ++i)
         {
             var spd = backgroundSpeedList[i];
-            backgroundList[i].SetSpeed(spd);
+            backgroundList[i].SetSpeed(spd).Forget();
         }
     }
 #endif

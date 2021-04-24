@@ -10,21 +10,29 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private float _boxSizeX;
     private float _boxPosX;
     private float _speed;
+    private float _playerSpeedFactor;
     private List<Vector3> _notePopDestination;
     private SpriteRenderer _renderer;
     public float Position { get { return transform.position.x; } }
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    private async UniTask Awake()
+    private InGamePresenter _inGamePresenter;
+    private async UniTask OnEnable()
     {
         _objectPool = ObjectPoolManager.Get();
         _renderer = GetComponentInChildren<SpriteRenderer>();
         await UniTask.Yield();
+        if (null == _inGamePresenter)
+        {
+            _inGamePresenter = GameManager.Get().GetInGamePresenter();
+        }
     }
 
     public async UniTask Update()
     {
-        transform.position -= new Vector3(_speed * Time.deltaTime, 0f, 0f);
+        var playerSpeed = _inGamePresenter.GetPlayerSpeed();
+
+        transform.position -= new Vector3((_speed + playerSpeed *_playerSpeedFactor) * Time.deltaTime, 0f, 0f);
 
         if (Position <= _boxPosX - _boxSizeX)
         {
@@ -67,9 +75,10 @@ public class BaseNote : MonoBehaviour, IPoolObject
         _renderer.sortingOrder = sortingOrder;
     }
 
-    public async UniTaskVoid SetNoteSpeed(float speed)
+    public async UniTaskVoid SetNoteSpeed(float speed, float playerSpeedFactor)
     {
         _speed = speed;
+        _playerSpeedFactor = playerSpeedFactor;
     }
     public async UniTaskVoid SetNotePopDestination(List<Vector3> dest)
     {

@@ -5,42 +5,50 @@ using System.Collections.Generic;
 [RequireComponent(typeof(MeshRenderer))]
 public class BaseBackground : MonoBehaviour
 {
-    private float OwnSpeedFactor;
-    private MeshRenderer meshRenderer;
-
+    private float _ownSpeedFactor;
+    private float _playerSpeedFactor;
+    private MeshRenderer _meshRenderer;
+    private InGamePresenter _inGamePresenter;
     public void SetBackground(BackgroundModel model)
     {
-        OwnSpeedFactor = model.ScrollSpeed;
+        _ownSpeedFactor = model.ScrollSpeed;
         transform.position = new Vector3(transform.position.x, model.YPosition, transform.position.z);
         transform.localScale = new Vector3(model.XScale, model.YScale, 1);
     }
-
-    public void SetSpeed(float spd)
+    public async UniTaskVoid SetPlayerSpeedFactor(float playerSpeedFactor)
     {
-        OwnSpeedFactor = spd;
+        _playerSpeedFactor = playerSpeedFactor;
+    }
+
+    public async UniTaskVoid SetSpeed(float spd)
+    {
+        _ownSpeedFactor = spd;
     }
     
-    public void SetLayer(int sortOrder)
+    public async UniTaskVoid SetLayer(int sortOrder)
     {
-        meshRenderer.sortingOrder = sortOrder;
+        _meshRenderer.sortingOrder = sortOrder;
     }
 
     public void SetTexture(Texture texture)
     {
-        meshRenderer.material.SetTexture("_MainTex", texture);
+        _meshRenderer.material.SetTexture("_MainTex", texture);
     }
 
-    public async UniTask Awake()
+    public async UniTask Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        meshRenderer.sortingLayerName = "Background";
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _meshRenderer.sortingLayerName = "Background";
         await UniTask.Yield();
+        _inGamePresenter = GameManager.Get().GetInGamePresenter();
     }
 
     public async UniTask Update()
     {
-        Vector2 textureOffset = new Vector2(Time.time * OwnSpeedFactor * 0.1f, 0);
-        meshRenderer.material.mainTextureOffset = textureOffset;
+        var playerSpeed = _inGamePresenter.GetPlayerSpeed();
+
+        Vector2 textureOffset = new Vector2(Time.time * (_ownSpeedFactor * 0.1f + playerSpeed * _playerSpeedFactor ), 0);
+        _meshRenderer.material.mainTextureOffset = textureOffset;
         await UniTask.Yield();
     }
 }

@@ -28,6 +28,9 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private float _maxStageTime;
     [SerializeField] private float _currGenTimer = 3f;
     [SerializeField] private float _genTime;
+    [SerializeField] private float _enemySpeedFactorByPlayer = 0.1f;
+    [SerializeField] private float _backgroundSpeedFactorByPlayer = 0.1f;
+
     private bool _isLastStage = false;
     private float _blackOutTime = 1.3f;
 
@@ -92,6 +95,8 @@ public class InGameView : MonoBehaviour, IView
 
     private async UniTask Start()
     {
+        await _bgController.SetPlayerSpeedFactor(_backgroundSpeedFactorByPlayer);
+
         while (InGameState.Ready == _state)
         {
             await Ready();
@@ -315,6 +320,7 @@ public class InGameView : MonoBehaviour, IView
         await enemy.SetInGamePool(_inGamePool);
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
         await enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
+        enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         SetGenTime().Forget();
         await UniTask.Yield();
     }

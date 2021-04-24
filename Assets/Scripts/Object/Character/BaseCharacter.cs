@@ -7,9 +7,9 @@ public class BaseCharacter : MonoBehaviour
 {
     public CharacterStatus status;
     public SkinnedMeshRenderer meshRenderer;
-    private float _currSpeed;
-    private float _currHp;
-    private float _runningRecord;
+    [SerializeField]private float _currSpeed;
+    [SerializeField] private float _currHp;
+    [SerializeField] private float _runningRecord;
     public void SetSampleCharacter()
     {
         status.Name = "ป๙วร";

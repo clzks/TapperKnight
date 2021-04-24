@@ -786,6 +786,9 @@ MonoBehaviour:
     MaxSpeed: 0
     MinSpeed: 0
   meshRenderer: {fileID: 1061495083}
+  _currSpeed: 0
+  _currHp: 0
+  _runningRecord: 0
 --- !u!137 &315422260
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -1779,6 +1782,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1227154373}
   m_CullTransparentMesh: 1
+--- !u!1 &1233664077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1233664078}
+  - component: {fileID: 1233664079}
+  m_Layer: 0
+  m_Name: InGameView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1233664078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233664077}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1977188478}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1233664079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233664077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7347b6791d638234bafc25dcae81e8b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inGamePresenter: {fileID: 0}
+  _leftButton: {fileID: 0}
+  _rightButton: {fileID: 0}
+  _singleRespawnButton: {fileID: 0}
+  _autoRespawnButton: {fileID: 0}
+  _noteBox: {fileID: 0}
+  _noteBoxPos: {x: 0, y: 0}
+  _notePopDestination: []
+  _hpBar: {fileID: 0}
+  _runnigRecord: {fileID: 0}
+  _score: {fileID: 0}
+  _currentStageNumber: 1
+  _currStageTimer: 0
+  _maxStageTime: 0
+  _currGenTimer: 3
+  _genTime: 0
+  _enemySpeedFactorByPlayer: 0.1
+  _backgroundSpeedFactorByPlayer: 0.01
+  _bothSideDelayTime: 0.05
+  _bgController: {fileID: 0}
+  _playerCharacter: {fileID: 0}
+  _targetEnemy: {fileID: 0}
+  _currClickButton: 3
+  _inGamePool: {fileID: 0}
+  testMaxStageNumber: 0
+  _isAutoMode: 0
 --- !u!1 &1239794928
 GameObject:
   m_ObjectHideFlags: 0
@@ -2693,7 +2765,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1233664078}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2709,7 +2782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb0261eb902addc499f760ce3b60aae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inGameView: {fileID: 0}
+  _inGameView: {fileID: 1233664079}
   _inGamePresenter: {fileID: 0}
   _model: {fileID: 0}
 --- !u!1 &1996860110
