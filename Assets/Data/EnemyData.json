@@ -1,16 +1,16 @@
-{
-    "Description":{
-        "Id":"정보를 구분 짓는 값",
-        "Name":"이름",
-        "Damage":"몬스터 데미지",
+﻿{
+    "Description": {
+        "Id": "정보를 구분 짓는 값",
+        "Name": "이름",
+        "Damage": "몬스터 데미지",
         "MoveSpeed": "초당 이동 거리. 1.0 = 1.0f",
         "NoteCount": "노트 갯수",
-        "NoteInterval" : "노트들간의 시간간격 또는 거리간격. 둘중에 하나 취사선택해서 쓰는게 좋을듯함니다"
-        },
+        "NoteInterval": "노트들간의 시간간격 또는 거리간격. 둘중에 하나 취사선택해서 쓰는게 좋을듯함니다"
+    },
     "Enemy": [
         {
             "Id": 10000,
-            "Name": "나비",
+            "Name": "사람",
             "Damage": 3,
             "MoveSpeed": 5,
             "NoteCount" : 3,
@@ -18,7 +18,7 @@
         },
         {
             "Id": 20000,
-            "Name": "호랑이",
+            "Name": "안사람",
             "Damage": 10,
             "MoveSpeed": 8,
             "NoteCount": 3,
@@ -26,7 +26,7 @@
         },
         {
             "Id": 30000,
-            "Name": "드래곤",
+            "Name": "노사람",
             "Damage": 15,
             "MoveSpeed": 12,
             "NoteCount": 4,
@@ -34,7 +34,7 @@
         },
         {
             "Id": 40000,
-            "Name": "영웅",
+            "Name": "갓",
             "Damage": 20,
             "MoveSpeed": 16,
             "NoteCount": 5,
@@ -42,7 +42,7 @@
         },
         {
             "Id": 50000,
-            "Name": "삼치",
+            "Name": "몬스터",
             "Damage": 30,
             "MoveSpeed": 18,
             "NoteCount": 4,
@@ -50,7 +50,7 @@
         },
         {
             "Id": 60000,
-            "Name": "쭈꾸미",
+            "Name": "토레이서",
             "Damage": 36,
             "MoveSpeed": 20,
             "NoteCount": 5,
@@ -58,7 +58,7 @@
         },
         {
             "Id": 70000,
-            "Name": "뱜",
+            "Name": "킹",
             "Damage": 38,
             "MoveSpeed": 22,
             "NoteCount": 5,
@@ -66,7 +66,7 @@
         },
         {
             "Id": 80000,
-            "Name": "고슴도치",
+            "Name": "킹갓",
             "Damage": 40,
             "MoveSpeed": 24,
             "NoteCount": 5,
@@ -74,7 +74,7 @@
         },
         {
             "Id": 90000,
-            "Name": "고라니",
+            "Name": "좀비",
             "Damage": 42,
             "MoveSpeed": 26,
             "NoteCount": 5,
