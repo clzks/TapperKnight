@@ -16,9 +16,10 @@ public class BaseScore : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    public async UniTaskVoid SetScore(ScoreType type, Vector3 pos)
+    public async UniTaskVoid SetScore(ScoreType type, Vector3 pos, int sortingOrder)
     {
         _renderer.sprite = _objectPool.GetScoreSprite(type);
+        _renderer.sortingOrder = sortingOrder;
         transform.position = pos;
     }
 

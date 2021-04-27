@@ -13,6 +13,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private float _playerSpeedFactor;
     private List<Vector3> _notePopDestination;
     private SpriteRenderer _renderer;
+    private int _sortingOrder;
     public float Position { get { return transform.position.x; } }
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -73,6 +74,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
     public async UniTaskVoid SetSortingLayer(int sortingOrder)
     {
         _renderer.sortingOrder = sortingOrder;
+        _sortingOrder = sortingOrder;
     }
 
     public async UniTaskVoid SetNoteSpeed(float speed, float playerSpeedFactor)
@@ -144,7 +146,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private async UniTask ScorePop(ScoreType score)
     {
         var scoreObj = (BaseScore)_objectPool.MakeObject(ObjectType.Score);
-        scoreObj.SetScore(score, transform.position).Forget();
+        scoreObj.SetScore(score, transform.position, _sortingOrder).Forget();
         await scoreObj.ScorePop();
     }
 
