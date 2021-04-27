@@ -19,8 +19,8 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private InGamePresenter _inGamePresenter;
     private async UniTask OnEnable()
     {
-        _objectPool = ObjectPoolManager.Get();
-        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _objectPool = _objectPool ?? ObjectPoolManager.Get();
+        _renderer = _renderer ?? GetComponentInChildren<SpriteRenderer>();
         await UniTask.Yield();
         if (null == _inGamePresenter)
         {
@@ -136,9 +136,18 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private async UniTask NoteCall(ScoreType score)
     {
         await parentEnemy.OnNoteCall(score);
-        await NotePop(score);
+        NotePop(score).Forget();
+        ScorePop(score).Forget();
         Debug.Log("Á¡¼ö : " + score.ToString());
     }
+
+    private async UniTask ScorePop(ScoreType score)
+    {
+        var scoreObj = (BaseScore)_objectPool.MakeObject(ObjectType.Score);
+        scoreObj.SetScore(score, transform.position).Forget();
+        await scoreObj.ScorePop();
+    }
+
     private async UniTask NotePop(ScoreType score)
     {
         float time = 0f;
@@ -164,15 +173,14 @@ public class BaseNote : MonoBehaviour, IPoolObject
         await ReturnObject();
     }
 
-    public async UniTask Init()
+    public async UniTaskVoid Init()
     {
-        throw new System.NotImplementedException();
+      
     }
 
     public async UniTask ReturnObject()
     {
         await _objectPool.ReturnObject(this);
-        await UniTask.Yield();
     }
 
     public GameObject GetObject()

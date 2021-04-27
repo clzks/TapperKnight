@@ -6,6 +6,7 @@ using UnityEngine.U2D;
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
     public Dictionary<string, Sprite> spriteList;
+    public Dictionary<ScoreType, Sprite> scoreList;
     public Dictionary<ObjectType, GameObject> prefabList;
     public Dictionary<ObjectType, List<GameObject>> _objectPoolList;
     public Dictionary<ObjectType, List<GameObject>> _activePoolList;
@@ -17,10 +18,18 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         spriteList.Add("Right", Resources.Load<Sprite>("Sprites/Right"));
         spriteList.Add("BothSide", Resources.Load<Sprite>("Sprites/BothSide"));
 
+        scoreList = new Dictionary<ScoreType, Sprite>();
+        scoreList.Add(ScoreType.Perfect, Resources.Load<Sprite>("Sprites/Score/Perfect"));
+        scoreList.Add(ScoreType.Great, Resources.Load<Sprite>("Sprites/Score/Great"));
+        scoreList.Add(ScoreType.Good, Resources.Load<Sprite>("Sprites/Score/Good"));
+        scoreList.Add(ScoreType.Bad, Resources.Load<Sprite>("Sprites/Score/Bad"));
+        scoreList.Add(ScoreType.Miss, Resources.Load<Sprite>("Sprites/Score/Miss"));
+
         prefabList = new Dictionary<ObjectType, GameObject>();
 
         prefabList.Add(ObjectType.Note, Resources.Load<GameObject>("Prefabs/Note"));
         prefabList.Add(ObjectType.Enemy, Resources.Load<GameObject>("Prefabs/BaseEnemy"));
+        prefabList.Add(ObjectType.Score, Resources.Load<GameObject>("Prefabs/Score"));
         await UniTask.Yield();
     }
 
@@ -62,6 +71,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             _activePoolList.Add(type, activePool);
         }
 
+        obj.Init();
         activePool.Add(obj.GetObject());
 
         return obj;
@@ -83,66 +93,17 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
     }
 
-    //public BaseEnemy MakeEnemy()
-    //{
-    //    BaseEnemy enemy;
-    //
-    //    if (enemyPool.Count != 0)
-    //    {
-    //        enemy = enemyPool[0].GetComponent<BaseEnemy>();
-    //        enemy.gameObject.SetActive(true);
-    //        enemyPool.Remove(enemy.gameObject);
-    //    }
-    //    else
-    //    {
-    //        enemy = Instantiate(prefabList["BaseEnemy"]).GetComponent<BaseEnemy>();
-    //    }
-    //    activeEnemyList.Add(enemy);
-    //    return enemy;
-    //}
-
-    //public BaseNote MakeNote()
-    //{
-    //    BaseNote note;
-    //
-    //    if (notePool.Count != 0)
-    //    {
-    //        note = notePool[0].GetComponent<BaseNote>();
-    //        note.gameObject.SetActive(true);
-    //        notePool.Remove(note.gameObject);
-    //    }
-    //    else
-    //    {
-    //        note = Instantiate(prefabList["Note"]).GetComponent<BaseNote>();
-    //    }
-    //    activeNoteList.Add(note);
-    //    return note;
-    //}
-
     public void InitPool()
     {
         _objectPoolList = new Dictionary<ObjectType, List<GameObject>>();
         _activePoolList = new Dictionary<ObjectType, List<GameObject>>();
     }
 
-   
-
-    //public async UniTask DestroyNote(BaseNote note)
-    //{
-    //    if (true == activeNoteList.Contains(note))
-    //    {
-    //        //note.transform.SetParent(transform);
-    //        note.gameObject.SetActive(false);
-    //        activeNoteList.Remove(note);
-    //        notePool.Add(note.gameObject);
-    //        await UniTask.Yield();
-    //    }
-    //    //else
-    //    //{
-    //    //    Debug.LogError("노트풀 에러");
-    //    //}
-    //}
-
+    public Sprite GetScoreSprite(ScoreType type)
+    {
+        return scoreList[type];
+    }
+    
     public BaseEnemy GetEnemy()
     {
         var list = _activePoolList[ObjectType.Enemy];

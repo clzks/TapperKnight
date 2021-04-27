@@ -5,6 +5,6 @@ public interface IPoolObject
 {
     GameObject GetObject();
     ObjectType GetObjectType();
-    UniTask Init();
+    UniTaskVoid Init();
     UniTask ReturnObject();
 }

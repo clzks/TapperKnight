@@ -180,15 +180,14 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    public async UniTask Init()
+    public async UniTaskVoid Init()
     {
-        throw new System.NotImplementedException();
+       
     }
 
     public async UniTask ReturnObject()
     {
         await _objectPool.ReturnObject(this);
-        await UniTask.Yield();
     }
 
     public GameObject GetObject()
