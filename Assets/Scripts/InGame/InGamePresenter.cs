@@ -70,16 +70,24 @@ public class InGamePresenter : MonoBehaviour, IPresenter
         return _inGameView.GetNotePopDestination();
     }
 
-    public async UniTaskVoid SetNoteSprite(Sprite sp)
+    public Sprite GetNoteSprite(string noteType)
     {
+        return _model.GetNoteSprite(noteType);
+    }
 
+    public Sprite GetScoreSprite(ScoreType type)
+    {
+        return _model.GetScoreSprite(type);
     }
 
     public async UniTask OnNoteCall(ScoreType score, float damage)
     {
+        var accel = _model.GetAccelerate(score);
+
+
         if (score == ScoreType.Miss)
         {
-            await _inGameView.GetDamage(damage);
+            await _inGameView.TakeDamage(damage);
         }
 
         await _model.AddScore(score);

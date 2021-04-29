@@ -26,6 +26,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         {
             _inGamePresenter = GameManager.Get().GetInGamePresenter();
         }
+        await UniTask.Yield();
     }
 
     private async UniTask Update()
@@ -64,6 +65,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     public async UniTaskVoid SetPlayerSpeedFactor(float playerSpeedFactor)
     {
         _playerSpeedFactor = playerSpeedFactor;
+        await UniTask.Yield();
     }
 
     private async UniTaskVoid SetNote(float interval)
@@ -119,17 +121,17 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         if(0 == r)
         {
             bn.noteType = NoteType.Left;
-            bn.SetNoteSprite(_objectPool.spriteList["Left"]).Forget();
+            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Left")).Forget();
         }
         else if(1 == r)
         {
             bn.noteType = NoteType.Right;
-            bn.SetNoteSprite(_objectPool.spriteList["Right"]).Forget();
+            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Right")).Forget();
         }
         else
         {
             bn.noteType = NoteType.BothSide;
-            bn.SetNoteSprite(_objectPool.spriteList["BothSide"]).Forget();
+            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("BothSide")).Forget();
         }
         await UniTask.Yield();
     }
@@ -137,7 +139,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     private async UniTaskVoid SetBothSideNote(BaseNote bn)
     {
         bn.noteType = NoteType.BothSide;
-        bn.SetNoteSprite(_objectPool.spriteList["BothSide"]).Forget();
+        bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("BothSide")).Forget();
         await UniTask.Yield();
     }
 
@@ -182,7 +184,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
 
     public async UniTaskVoid Init()
     {
-       
+        await UniTask.Yield();
     }
 
     public async UniTask ReturnObject()

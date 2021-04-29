@@ -18,16 +18,19 @@ public class BaseBackground : MonoBehaviour
     public async UniTaskVoid SetPlayerSpeedFactor(float playerSpeedFactor)
     {
         _playerSpeedFactor = playerSpeedFactor;
+        await UniTask.Yield();
     }
 
     public async UniTaskVoid SetSpeed(float spd)
     {
         _ownSpeedFactor = spd;
+        await UniTask.Yield();
     }
-    
+
     public async UniTaskVoid SetLayer(int sortOrder)
     {
         _meshRenderer.sortingOrder = sortOrder;
+        await UniTask.Yield();
     }
 
     public void SetTexture(Texture texture)
@@ -47,7 +50,7 @@ public class BaseBackground : MonoBehaviour
     {
         var playerSpeed = _inGamePresenter.GetPlayerSpeed();
 
-        Vector2 textureOffset = new Vector2(Time.time * (_ownSpeedFactor * 0.1f + playerSpeed * _playerSpeedFactor ), 0);
+        Vector2 textureOffset = new Vector2(Time.time * (_ownSpeedFactor * 0.1f * (1 + playerSpeed * _playerSpeedFactor)), 0);
         _meshRenderer.material.mainTextureOffset = textureOffset;
         await UniTask.Yield();
     }

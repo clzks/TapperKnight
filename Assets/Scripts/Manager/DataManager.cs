@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,24 +9,47 @@ public class DataManager : Singleton<DataManager>
 {
     private string _path = "Assets/Data/";
     private string _texturePath = "Textures/Background/Stage";
-
+    private Dictionary<ScoreType, Sprite> _scoreSpriteList;
+    private Dictionary<string, Sprite> _noteSpriteList;
     private Dictionary<int, StageModel> _stageList;
     private Dictionary<int, EnemyModel> _enemyList;
     private Dictionary<int, List<BackgroundModel>> _backgroundModelList;
     private Dictionary<int, Dictionary<int, Texture>> _textureList;
-    private Dictionary<ScoreType, int> _scoreList; 
+    private Dictionary<ScoreType, ScoreModel> _scoreList; 
     public void Awake()
     {
+        _noteSpriteList = new Dictionary<string, Sprite>();
         _stageList = new Dictionary<int, StageModel>();
         _enemyList = new Dictionary<int, EnemyModel>();
         _backgroundModelList = new Dictionary<int, List<BackgroundModel>>();
         _textureList = new Dictionary<int, Dictionary<int, Texture>>();
-        _scoreList = new Dictionary<ScoreType, int>();
+        _scoreList = new Dictionary<ScoreType, ScoreModel>();
 
-        LoadStageData();
-        LoadEnemyData();
-        LoadBackground();
-        LoadScoreData();
+        LoadScoreSprite().Forget();
+        LoadNoteSprite().Forget();
+        LoadStageData().Forget();
+        LoadEnemyData().Forget();
+        LoadBackground().Forget();
+        LoadScoreData().Forget();
+    }
+
+    public async UniTaskVoid LoadScoreSprite()
+    {
+        _scoreSpriteList = new Dictionary<ScoreType, Sprite>();
+        _scoreSpriteList.Add(ScoreType.Perfect, Resources.Load<Sprite>("Sprites/Score/Perfect"));
+        _scoreSpriteList.Add(ScoreType.Great, Resources.Load<Sprite>("Sprites/Score/Great"));
+        _scoreSpriteList.Add(ScoreType.Good, Resources.Load<Sprite>("Sprites/Score/Good"));
+        _scoreSpriteList.Add(ScoreType.Bad, Resources.Load<Sprite>("Sprites/Score/Bad"));
+        _scoreSpriteList.Add(ScoreType.Miss, Resources.Load<Sprite>("Sprites/Score/Miss"));
+        await UniTask.Yield();
+    }
+
+    public async UniTaskVoid LoadNoteSprite()
+    {
+        _noteSpriteList.Add("Left", Resources.Load<Sprite>("Sprites/Left"));
+        _noteSpriteList.Add("Right", Resources.Load<Sprite>("Sprites/Right"));
+        _noteSpriteList.Add("BothSide", Resources.Load<Sprite>("Sprites/BothSide"));
+        await UniTask.Yield();
     }
 
     public TextAsset LoadTextAsset(string name)
@@ -37,7 +61,7 @@ public class DataManager : Singleton<DataManager>
         return textAsset;
     }
 
-    private void LoadStageData()
+    private async UniTaskVoid LoadStageData()
     {
         TextAsset stageData = LoadTextAsset("Stage");
         JArray stages = JObject.Parse(stageData.text)["Stage"] as JArray;
@@ -46,9 +70,10 @@ public class DataManager : Singleton<DataManager>
             var stage = stages[i].ToObject<StageModel>();
             _stageList.Add(stage.StageNumber, stage);
         }
+        await UniTask.Yield();
     }
 
-    private void LoadEnemyData()
+    private async UniTaskVoid LoadEnemyData()
     {
         TextAsset stageData = LoadTextAsset("Enemy");
         JArray enemys = JObject.Parse(stageData.text)["Enemy"] as JArray;
@@ -57,9 +82,10 @@ public class DataManager : Singleton<DataManager>
             var enemy = enemys[i].ToObject<EnemyModel>();
             _enemyList.Add(enemy.Id, enemy);
         }
+        await UniTask.Yield();
     }
 
-    private void LoadBackground()
+    private async UniTaskVoid LoadBackground()
     {
         TextAsset bgData = LoadTextAsset("Background");
         JArray backgroundListData = JObject.Parse(bgData.text)["Background"] as JArray;
@@ -76,9 +102,10 @@ public class DataManager : Singleton<DataManager>
             _textureList.Add(listModel.StageNumber, singleStageTexList);
             _backgroundModelList.Add(listModel.StageNumber, backgroundList);
         }
+        await UniTask.Yield();
     }
 
-    private void LoadScoreData()
+    private async UniTaskVoid LoadScoreData()
     {
         TextAsset scoreData = LoadTextAsset("Score");
         JArray scores = JObject.Parse(scoreData.text)["Score"] as JArray;
@@ -86,8 +113,9 @@ public class DataManager : Singleton<DataManager>
         for(int i = 0; i < scores.Count; ++i)
         {
             var score = scores[i].ToObject<ScoreModel>();
-            _scoreList.Add(score.Type, score.ScoreValue);
+            _scoreList.Add(score.Type, score);
         }
+        await UniTask.Yield();
     }
 
     private Texture GetTextureFromResources(int stageNumber, int layerNumber)
@@ -132,8 +160,18 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    public Dictionary<ScoreType, int> GetScoreList()
+    public Dictionary<ScoreType, ScoreModel> GetScoreList()
     {
         return _scoreList;
+    }
+
+    public Dictionary<string, Sprite> GetSpriteList()
+    {
+        return _noteSpriteList;
+    }
+
+    public Dictionary<ScoreType, Sprite> GetScoreSpriteList()
+    {
+        return _scoreSpriteList;
     }
 }

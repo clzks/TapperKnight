@@ -281,6 +281,7 @@ public class InGameView : MonoBehaviour, IView
         {
             _genTime = Random.Range(_inGameStageModel.MinimumGenCycle, _inGameStageModel.MaximumGenCycle);
         }
+        await UniTask.Yield();
     }
 
     public float GetPlayerSpeed()
@@ -298,7 +299,7 @@ public class InGameView : MonoBehaviour, IView
         return _notePopDestination;
     }
 
-    public async UniTask GetDamage(float damage)
+    public async UniTask TakeDamage(float damage)
     {
         await _playerCharacter.TakeDamage(damage);
     }

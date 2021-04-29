@@ -35,7 +35,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
 
         transform.position -= new Vector3((_speed + playerSpeed *_playerSpeedFactor) * Time.deltaTime, 0f, 0f);
 
-        if (Position <= _boxPosX - _boxSizeX)
+        if (Position - _boxPosX < -0.4f)
         {
             await NoteCall(ScoreType.Miss);
         }
@@ -75,12 +75,14 @@ public class BaseNote : MonoBehaviour, IPoolObject
     {
         _renderer.sortingOrder = sortingOrder;
         _sortingOrder = sortingOrder;
+        await UniTask.Yield();
     }
 
     public async UniTaskVoid SetNoteSpeed(float speed, float playerSpeedFactor)
     {
         _speed = speed;
         _playerSpeedFactor = playerSpeedFactor;
+        await UniTask.Yield();
     }
     public async UniTaskVoid SetNotePopDestination(List<Vector3> dest)
     {
@@ -115,15 +117,15 @@ public class BaseNote : MonoBehaviour, IPoolObject
         {
             score = ScoreType.Perfect;
         }
-        else if (Mathf.Abs(Position - _boxPosX) <= 0.8f)
+        else if (Position - _boxPosX <= 0.8f)
         {
             score = ScoreType.Great;
         }
-        else if (Mathf.Abs(Position - _boxPosX) <= 1.2f)
+        else if (Position - _boxPosX <= 1.2f)
         {
             score = ScoreType.Good;
         }
-        else if (Mathf.Abs(Position - _boxPosX) < 1.6f)
+        else if (Position - _boxPosX < 1.6f)
         {
             score = ScoreType.Bad;
         }
@@ -146,7 +148,9 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private async UniTask ScorePop(ScoreType score)
     {
         var scoreObj = (BaseScore)_objectPool.MakeObject(ObjectType.Score);
-        scoreObj.SetScore(score, transform.position, _sortingOrder).Forget();
+        var scoreSprite = _inGamePresenter.GetScoreSprite(score);
+        scoreObj.SetScore(scoreSprite, transform.position, _sortingOrder).Forget();
+
         await scoreObj.ScorePop();
     }
 
@@ -177,7 +181,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
 
     public async UniTaskVoid Init()
     {
-      
+        await UniTask.Yield();
     }
 
     public async UniTask ReturnObject()

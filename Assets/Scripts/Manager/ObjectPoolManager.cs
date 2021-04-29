@@ -5,26 +5,12 @@ using System.Linq;
 using UnityEngine.U2D;
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
-    public Dictionary<string, Sprite> spriteList;
-    public Dictionary<ScoreType, Sprite> scoreList;
     public Dictionary<ObjectType, GameObject> prefabList;
     public Dictionary<ObjectType, List<GameObject>> _objectPoolList;
     public Dictionary<ObjectType, List<GameObject>> _activePoolList;
 
     private async UniTask Awake()
     {
-        spriteList = new Dictionary<string, Sprite>();
-        spriteList.Add("Left", Resources.Load<Sprite>("Sprites/Left"));
-        spriteList.Add("Right", Resources.Load<Sprite>("Sprites/Right"));
-        spriteList.Add("BothSide", Resources.Load<Sprite>("Sprites/BothSide"));
-
-        scoreList = new Dictionary<ScoreType, Sprite>();
-        scoreList.Add(ScoreType.Perfect, Resources.Load<Sprite>("Sprites/Score/Perfect"));
-        scoreList.Add(ScoreType.Great, Resources.Load<Sprite>("Sprites/Score/Great"));
-        scoreList.Add(ScoreType.Good, Resources.Load<Sprite>("Sprites/Score/Good"));
-        scoreList.Add(ScoreType.Bad, Resources.Load<Sprite>("Sprites/Score/Bad"));
-        scoreList.Add(ScoreType.Miss, Resources.Load<Sprite>("Sprites/Score/Miss"));
-
         prefabList = new Dictionary<ObjectType, GameObject>();
 
         prefabList.Add(ObjectType.Note, Resources.Load<GameObject>("Prefabs/Note"));
@@ -97,11 +83,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         _objectPoolList = new Dictionary<ObjectType, List<GameObject>>();
         _activePoolList = new Dictionary<ObjectType, List<GameObject>>();
-    }
-
-    public Sprite GetScoreSprite(ScoreType type)
-    {
-        return scoreList[type];
     }
     
     public BaseEnemy GetEnemy()

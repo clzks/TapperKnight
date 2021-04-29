@@ -11,25 +11,29 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     private DataManager _dataManager;
     private Dictionary<int, StageModel> _stageModelList;
     private Dictionary<int, EnemyModel> _enemyModelList;
-    private Dictionary<ScoreType, int> _scoreList;
+    private Dictionary<ScoreType, ScoreModel> _scoreList;
+    private Dictionary<string, Sprite> _noteSpriteList;
+    private Dictionary<ScoreType, Sprite> _scoreSpriteList;
     private PlayerModel _playerModel;
     
     private async UniTask Awake()
     {
         _dataManager = DataManager.Get();
-        await GetStageList();
-        await GetEnemyList();
+        await SetStageList();
+        await SetEnemyList();
         await SetScoreModel();
+        await SetNoteSpriteList();
+        await SetScoreSpriteList();
         _playerModel = new PlayerModel(); // 임시
     }
     
-    public async UniTask GetStageList()
+    public async UniTask SetStageList()
     {
         _stageModelList = DataManager.Get().GetStageList();
         await UniTask.Yield();
     }
 
-    public async UniTask GetEnemyList()
+    public async UniTask SetEnemyList()
     {
         _enemyModelList = DataManager.Get().GetEnemyList();
         await UniTask.Yield();
@@ -37,6 +41,17 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     public async UniTask SetScoreModel()
     {
         _scoreList = _dataManager.GetScoreList();
+        await UniTask.Yield();
+    }
+    public async UniTask SetNoteSpriteList()
+    {
+        _noteSpriteList = _dataManager.GetSpriteList();
+        await UniTask.Yield();
+    }
+
+    public async UniTask SetScoreSpriteList()
+    {
+        _scoreSpriteList = _dataManager.GetScoreSpriteList();
         await UniTask.Yield();
     }
 
@@ -59,6 +74,11 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     {
         return _enemyModelList[id];
     }
+    
+    public float GetAccelerate(ScoreType score)
+    {
+        return _scoreList[score].Accelerate;
+    }
 
     public EnemyModel GetRandomEnemy(int stageNumber)
     {
@@ -79,7 +99,7 @@ public class TapperKinghtModel : MonoBehaviour, IModel
 
     public async UniTask AddScore(ScoreType type)
     {
-        int value = _scoreList[type];
+        int value = _scoreList[type].ScoreValue;
 
         var result = await AddScore(value);
 
@@ -121,5 +141,15 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     public int GetScore()
     {
         return _playerModel.OwnScore;
+    }
+
+    public Sprite GetNoteSprite(string noteType)
+    {
+        return _noteSpriteList[noteType];
+    }
+
+    public Sprite GetScoreSprite(ScoreType type)
+    {
+        return _scoreSpriteList[type];
     }
 }
