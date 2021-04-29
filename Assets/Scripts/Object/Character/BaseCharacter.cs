@@ -54,6 +54,17 @@ public class BaseCharacter : MonoBehaviour
         }
     }
 
+    public async UniTask AddSpeed(float speed)
+    {
+        await UniTask.Yield();
+
+        _currSpeed += speed;
+        if(_currSpeed < status.NormalSpeed)
+        {
+            _currSpeed = status.NormalSpeed;
+        }
+    }
+
     public float GetPositionY()
     {
         return transform.position.y;

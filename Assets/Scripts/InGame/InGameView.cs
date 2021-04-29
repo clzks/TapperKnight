@@ -304,6 +304,11 @@ public class InGameView : MonoBehaviour, IView
         await _playerCharacter.TakeDamage(damage);
     }
 
+    public async UniTask AddSpeed(float accel)
+    {
+        await _playerCharacter.AddSpeed(accel);
+    }
+
     public async UniTask SetTarget(BaseEnemy enemy)
     {
         _targetEnemy = enemy;
