@@ -51,6 +51,7 @@ public class BaseScore : MonoBehaviour, IPoolObject
 
     public async UniTaskVoid Init()
     {
+        transform.position = new Vector3(1000, 1000, 0);
         _renderer.color = new Color(1f, 1f, 1f, 1f);
         await UniTask.Yield();
     }

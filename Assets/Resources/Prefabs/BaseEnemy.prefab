@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b52840edab5c24fb5cd2c18414916b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteParent: {fileID: 6390968954434411045}
+  _noteParent: {fileID: 6390968954434411045}
   meshRenderer: {fileID: 6390968953910547927}
 --- !u!114 &6390968953928820852
 MonoBehaviour:

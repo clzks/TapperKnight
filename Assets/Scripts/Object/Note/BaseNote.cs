@@ -7,13 +7,15 @@ public class BaseNote : MonoBehaviour, IPoolObject
 {
     private ObjectPoolManager _objectPool;
     private BaseEnemy parentEnemy;
-    private float _boxSizeX;
+    //private float _boxSizeX;
     private float _boxPosX;
     private float _speed;
     private float _playerSpeedFactor;
     private List<Vector3> _notePopDestination;
     private SpriteRenderer _renderer;
     private int _sortingOrder;
+    //private bool _isOnNoteCall = false;
+    //private Transform _inGamePool;
     public float Position { get { return transform.position.x; } }
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -33,7 +35,8 @@ public class BaseNote : MonoBehaviour, IPoolObject
     {
         var playerSpeed = _inGamePresenter.GetPlayerSpeed();
 
-        transform.position -= new Vector3((_speed + playerSpeed *_playerSpeedFactor) * Time.deltaTime, 0f, 0f);
+        transform.position -= new Vector3((_speed + playerSpeed * _playerSpeedFactor) * Time.deltaTime, 0f, 0f);
+
 
         if (Position - _boxPosX < -0.4f)
         {
@@ -65,11 +68,11 @@ public class BaseNote : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    public async UniTaskVoid SetBoxSize(float halfSizeX)
-    {
-        _boxSizeX = halfSizeX;
-        await UniTask.Yield();
-    }
+    //public async UniTaskVoid SetBoxSize(float halfSizeX)
+    //{
+    //    _boxSizeX = halfSizeX;
+    //    await UniTask.Yield();
+    //}
 
     public async UniTaskVoid SetSortingLayer(int sortingOrder)
     {
@@ -92,7 +95,6 @@ public class BaseNote : MonoBehaviour, IPoolObject
 
     public async UniTaskVoid SetInGamePool(Transform tr)
     {
-        transform.SetParent(tr);
         await UniTask.Yield();
     }
 
@@ -157,6 +159,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private async UniTask NotePop(ScoreType score)
     {
         float time = 0f;
+        //transform.SetParent(_inGamePool);
 
         if (score != ScoreType.Miss)
         {
@@ -181,6 +184,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
 
     public async UniTaskVoid Init()
     {
+        transform.position = new Vector3(1000, 1000, 0);
         await UniTask.Yield();
     }
 

@@ -460,7 +460,7 @@ GameObject:
   - component: {fileID: 159237133}
   - component: {fileID: 159237136}
   m_Layer: 0
-  m_Name: Layer3
+  m_Name: Layer2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -867,7 +867,7 @@ GameObject:
   - component: {fileID: 410926562}
   - component: {fileID: 410926565}
   m_Layer: 0
-  m_Name: Layer5
+  m_Name: Layer4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1120,7 +1120,7 @@ GameObject:
   - component: {fileID: 750237068}
   - component: {fileID: 750237071}
   m_Layer: 0
-  m_Name: Layer2
+  m_Name: Layer1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1344,13 +1344,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundList:
-  - {fileID: 1311920247}
   - {fileID: 750237071}
   - {fileID: 159237136}
   - {fileID: 1996860115}
   - {fileID: 410926565}
   backgroundSpeedList:
-  - 0
   - 1
   - 0.7
   - 0.4
@@ -2811,7 +2809,7 @@ GameObject:
   - component: {fileID: 1996860112}
   - component: {fileID: 1996860115}
   m_Layer: 0
-  m_Name: Layer4
+  m_Name: Layer3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

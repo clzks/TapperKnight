@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,5 +22,9 @@ public class GameManager : Singleton<GameManager>
         return _inGamePresenter;
     }
 
- 
+    private async UniTask OnApplicationQuit()
+    {
+        ObjectPoolManager.Get().InitPool();
+        await UniTask.Yield();
+    }
 }

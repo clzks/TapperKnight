@@ -1,6 +1,6 @@
 {
     "Description": {
-        "C": "레이어 갯수는 최대 5개까지만으로 합니다. 6개 이상 필요할 시 말씀해주삼",
+        "C": "레이어 갯수는 최대 4개까지만으로 합니다. 5개 이상 필요할 시 말씀해주삼",
         "File": "Texture파일은 Resources/Textures/Background/에 스테이지별로 Stage'N' 폴더를 만들어서 각각의 레이어에 맞게 Layer'N'의 이름으로 집어넣을것",
         "File2": "Stage1 폴더에 샘플로 만들었으니 참고하면 될듯. 그리고 Texture파일은 Type을 Default로하고 WrapMode는 Repeat, Filter는 Point로 해야하는데",
         "File3" : "복잡하면 텍스쳐파일과 폴더만 이름 맞춰두시면 추후에 알아서 바꿔놓겠음",
@@ -18,16 +18,16 @@
                 {
                     "LayerNumber": 1,
                     "ScrollSpeed": 0.0,
-                    "YPosition": 0,
+                    "YPosition": -3.79,
                     "XScale": 27.0,
-                    "YScale": 14.4
+                    "YScale": 4.0
                 },
                 {
                     "LayerNumber": 2,
                     "ScrollSpeed": 0.0,
-                    "YPosition": -3.79,
+                    "YPosition": 0,
                     "XScale": 27.0,
-                    "YScale": 4.0
+                    "YScale": 14.4
                 },
                 {
                     "LayerNumber": 3,
@@ -38,13 +38,6 @@
                 },
                 {
                     "LayerNumber": 4,
-                    "ScrollSpeed": 0.0,
-                    "YPosition": 0,
-                    "XScale": 27.0,
-                    "YScale": 14.4
-                },
-                {
-                    "LayerNumber": 5,
                     "ScrollSpeed": 0.0,
                     "YPosition": 0,
                     "XScale": 19.2,

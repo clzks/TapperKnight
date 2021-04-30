@@ -322,13 +322,13 @@ public class InGameView : MonoBehaviour, IView
 
     public async UniTask MakeEnemy()
     {
+        await UniTask.Yield();
         BaseEnemy enemy = (BaseEnemy)_objectPool.MakeObject(ObjectType.Enemy);
         await enemy.SetInGamePool(_inGamePool);
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
         await enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
         enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         SetGenTime().Forget();
-        await UniTask.Yield();
     }
 
     public async UniTask OnTargetDestroy()

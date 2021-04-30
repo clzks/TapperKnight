@@ -6,7 +6,7 @@ using UnityEngine;
 public class BackgroundController : MonoBehaviour
 {
     private DataManager _dataManager;
-    private int _maxCount = 5;
+    private int _maxCount = 4;
     [Tooltip("Layer숫자가 높을수록 먼 이미지")]
     public List<BaseBackground> backgroundList;
     [Range(-10, 10)]
@@ -29,10 +29,7 @@ public class BackgroundController : MonoBehaviour
             {
                 backgroundList[i].SetLayer(count).Forget();
             }
-            else
-            {
-                backgroundList[i].SetLayer(count - (1 + i)).Forget();
-            }
+
             backgroundList[i].SetPlayerSpeedFactor(_playerSpeedFactor).Forget();
         }
     }

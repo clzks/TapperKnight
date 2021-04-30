@@ -9,7 +9,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     public Queue<BaseNote> enemyNotes;
     public EnemyStatus status;
     private InGamePresenter _inGamePresenter;
-    //[SerializeField]private GameObject _noteParent;
+    [SerializeField]private GameObject _noteParent;
     public SkinnedMeshRenderer meshRenderer;
     private Transform _inGamePool;
     private float _playerSpeedFactor;
@@ -71,46 +71,23 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     private async UniTaskVoid SetNote(float interval)
     {
         var notePos = _inGamePresenter.GetNoteBoxPos();
-        // 계산된 Hp 개수만큼 Queue에 Note생성 해주는것 필요
-        if(status.hp % 2 == 0)
-        {
-            //짝수
-            for (int i = 0; i < status.hp; ++i)
-            {
-                BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
-                note.SetInGamePool(_inGamePool).Forget();
-                SetRandomNote(note).Forget();
-                note.SetSortingLayer(status.hp - i - 1).Forget();
-                note.transform.SetParent(_inGamePool.transform);
-                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2) + 0.5f * interval, notePos.y, transform.position.z)).Forget();
-                note.SetParentEnemy(this).Forget();
-                note.SetBoxPosition(notePos.x).Forget();
-                note.SetBoxSize(1f).Forget();
-                note.SetNoteSpeed(status.speed, _playerSpeedFactor).Forget();
-                note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
-                enemyNotes.Enqueue(note);
-            }
-        }
-        else
-        {
-            //홀수
-            for (int i = 0; i < status.hp; ++i)
-            {
-                BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
-                note.SetInGamePool(_inGamePool).Forget();
-                SetRandomNote(note).Forget();
-                note.SetSortingLayer(status.hp - i - 1).Forget();
-                note.transform.SetParent(_inGamePool.transform);
-                note.SetParentEnemy(this).Forget();
-                note.SetPosition(new Vector3(transform.position.x + i * interval - interval * (status.hp / 2), notePos.y, transform.position.z)).Forget();
-                note.SetBoxPosition(notePos.x).Forget();
-                note.SetBoxSize(1f).Forget();
-                note.SetNoteSpeed(status.speed, _playerSpeedFactor).Forget();
-                note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
-                enemyNotes.Enqueue(note);
-            }
-        }
 
+        for (int i = 0; i < status.hp; ++i)
+        {
+            BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
+            note.SetInGamePool(_inGamePool).Forget();
+            SetRandomNote(note).Forget();
+            note.SetSortingLayer(status.hp - i - 1).Forget();
+            note.transform.SetParent(_inGamePool.transform);
+            note.SetPosition(new Vector3(transform.position.x + i * interval, notePos.y, transform.position.z)).Forget();
+            note.SetParentEnemy(this).Forget();
+            note.SetBoxPosition(notePos.x).Forget();
+            //note.SetBoxSize(1f).Forget();
+            note.SetNoteSpeed(status.speed, _playerSpeedFactor).Forget();
+            note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
+            enemyNotes.Enqueue(note);
+        }
+        
         await UniTask.Yield();
     }
 
@@ -153,6 +130,10 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
             await ReturnObject();
             await _inGamePresenter.OnTargetDestroy();
         }
+        else
+        {
+            transform.position = new Vector3(enemyNotes.Peek().transform.position.x, transform.position.y, transform.position.z);
+        }
     }
 
     public BaseNote GetNote()
@@ -181,9 +162,9 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         note.transform.SetParent(_inGamePool);
         await UniTask.Yield();
     }
-
     public async UniTaskVoid Init()
     {
+        transform.position = new Vector3(1000, 1000, 0);
         await UniTask.Yield();
     }
 
