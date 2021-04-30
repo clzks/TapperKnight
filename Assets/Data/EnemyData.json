@@ -12,7 +12,7 @@
             "Id": 10000,
             "Name": "사람",
             "Damage": 3,
-            "MoveSpeed": 5,
+            "MoveSpeed": 4,
             "NoteCount" : 3,
             "NoteInterval": 1.0
         },
@@ -20,7 +20,7 @@
             "Id": 20000,
             "Name": "안사람",
             "Damage": 10,
-            "MoveSpeed": 8,
+            "MoveSpeed": 5,
             "NoteCount": 3,
             "NoteInterval": 1.0
         },
@@ -28,7 +28,7 @@
             "Id": 30000,
             "Name": "노사람",
             "Damage": 15,
-            "MoveSpeed": 12,
+            "MoveSpeed": 6,
             "NoteCount": 4,
             "NoteInterval": 0.8
         },
@@ -36,14 +36,14 @@
             "Id": 40000,
             "Name": "갓",
             "Damage": 20,
-            "MoveSpeed": 16,
+            "MoveSpeed": 7,
             "NoteCount": 5,
             "NoteInterval": 0.8
         },
         {
             "Id": 50000,
             "Name": "몬스터",
-            "Damage": 30,
+            "Damage": 8,
             "MoveSpeed": 18,
             "NoteCount": 4,
             "NoteInterval": 0.6
@@ -51,7 +51,7 @@
         {
             "Id": 60000,
             "Name": "토레이서",
-            "Damage": 36,
+            "Damage": 7,
             "MoveSpeed": 20,
             "NoteCount": 5,
             "NoteInterval": 0.6
@@ -60,7 +60,7 @@
             "Id": 70000,
             "Name": "킹",
             "Damage": 38,
-            "MoveSpeed": 22,
+            "MoveSpeed": 7,
             "NoteCount": 5,
             "NoteInterval": 0.6
         },
@@ -68,7 +68,7 @@
             "Id": 80000,
             "Name": "킹갓",
             "Damage": 40,
-            "MoveSpeed": 24,
+            "MoveSpeed": 7,
             "NoteCount": 5,
             "NoteInterval": 0.6
         },
@@ -76,7 +76,7 @@
             "Id": 90000,
             "Name": "좀비",
             "Damage": 42,
-            "MoveSpeed": 26,
+            "MoveSpeed": 7,
             "NoteCount": 5,
             "NoteInterval": 0.6
         }
