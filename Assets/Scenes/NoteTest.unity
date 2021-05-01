@@ -796,7 +796,6 @@ MonoBehaviour:
     NormalSpeed: 3
     Accel: 0
     MaxSpeed: 5
-    MinSpeed: 3
   meshRenderer: {fileID: 1061495083}
   _currSpeed: 3
   _currHp: 0
@@ -1354,6 +1353,7 @@ MonoBehaviour:
   - 0.4
   - 0.2
   _stageChangeBlock: {fileID: 1122258461}
+  _playerSpeedFactor: 0.01
 --- !u!1 &975501350
 GameObject:
   m_ObjectHideFlags: 0

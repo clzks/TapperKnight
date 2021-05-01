@@ -12,7 +12,7 @@ public class BackgroundController : MonoBehaviour
     [Range(-10, 10)]
     public List<float> backgroundSpeedList;
     [SerializeField] private SpriteRenderer _stageChangeBlock;
-    private float _playerSpeedFactor;
+    [SerializeField] private float _playerSpeedFactor;
     public void Awake()
     {
 
@@ -32,12 +32,6 @@ public class BackgroundController : MonoBehaviour
 
             backgroundList[i].SetPlayerSpeedFactor(_playerSpeedFactor).Forget();
         }
-    }
-
-    public async UniTask SetPlayerSpeedFactor(float playerSpeedFactor)
-    {
-        _playerSpeedFactor = playerSpeedFactor;
-        await UniTask.Yield();
     }
 
     public async UniTaskVoid SetBackgroundList(int stageNumber)
@@ -95,6 +89,7 @@ public class BackgroundController : MonoBehaviour
         {
             var spd = backgroundSpeedList[i];
             backgroundList[i].SetSpeed(spd).Forget();
+            backgroundList[i].SetPlayerSpeedFactor(_playerSpeedFactor).Forget();
         }
     }
 #endif

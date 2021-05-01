@@ -11,5 +11,4 @@ public class CharacterModel
     public float NormalSpeed { get; set; }
     public float Accel { get; set; }
     public float MaxSpeed { get; set; }
-    public float MinSpeed { get; set; }
 }

@@ -63,6 +63,11 @@ public class BaseCharacter : MonoBehaviour
         {
             _currSpeed = status.NormalSpeed;
         }
+        else if(_currSpeed > status.MaxSpeed)
+        {
+            _currSpeed = status.MaxSpeed;
+        }
+        
     }
 
     public float GetPositionY()
@@ -102,5 +107,4 @@ public struct CharacterStatus
     public float NormalSpeed;
     public float Accel;
     public float MaxSpeed;
-    public float MinSpeed;
 }
