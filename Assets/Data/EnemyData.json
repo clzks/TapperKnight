@@ -14,7 +14,7 @@
             "Damage": 3,
             "MoveSpeed": 4,
             "NoteCount" : 3,
-            "NoteInterval": 1.0
+            "NoteInterval": 1.5
         },
         {
             "Id": 20000,
@@ -22,7 +22,7 @@
             "Damage": 10,
             "MoveSpeed": 5,
             "NoteCount": 3,
-            "NoteInterval": 1.0
+            "NoteInterval": 1.5
         },
         {
             "Id": 30000,
@@ -30,7 +30,7 @@
             "Damage": 15,
             "MoveSpeed": 6,
             "NoteCount": 4,
-            "NoteInterval": 0.8
+            "NoteInterval": 1.5
         },
         {
             "Id": 40000,
@@ -38,7 +38,7 @@
             "Damage": 20,
             "MoveSpeed": 7,
             "NoteCount": 5,
-            "NoteInterval": 0.8
+            "NoteInterval": 1.5
         },
         {
             "Id": 50000,
@@ -46,7 +46,7 @@
             "Damage": 8,
             "MoveSpeed": 18,
             "NoteCount": 4,
-            "NoteInterval": 0.6
+            "NoteInterval": 1.5
         },
         {
             "Id": 60000,
@@ -54,7 +54,7 @@
             "Damage": 7,
             "MoveSpeed": 20,
             "NoteCount": 5,
-            "NoteInterval": 0.6
+            "NoteInterval": 1.5
         },
         {
             "Id": 70000,
@@ -62,7 +62,7 @@
             "Damage": 38,
             "MoveSpeed": 7,
             "NoteCount": 5,
-            "NoteInterval": 0.6
+            "NoteInterval": 1.5
         },
         {
             "Id": 80000,
@@ -70,7 +70,7 @@
             "Damage": 40,
             "MoveSpeed": 7,
             "NoteCount": 5,
-            "NoteInterval": 0.6
+            "NoteInterval": 1.5
         },
         {
             "Id": 90000,
@@ -78,7 +78,7 @@
             "Damage": 42,
             "MoveSpeed": 7,
             "NoteCount": 5,
-            "NoteInterval": 0.6
+            "NoteInterval": 1.5
         }
     ]
 }
