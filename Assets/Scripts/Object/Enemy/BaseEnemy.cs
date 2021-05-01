@@ -36,10 +36,10 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    public async UniTask SetEnemy(EnemyModel em, float playerPosY)
+    public async UniTask SetEnemy(EnemyModel em, Vector3 SpawnObjectPos)
     {
         SetStatus(em).Forget();
-        transform.position = new Vector3(10.5f, playerPosY, transform.position.z);
+        transform.position = new Vector3(SpawnObjectPos.x, SpawnObjectPos.y, transform.position.z);
         enemyNotes = new Queue<BaseNote>();
         float interval = em.NoteInterval;
         if (null == _inGamePresenter)

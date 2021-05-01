@@ -44,6 +44,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private BaseEnemy _targetEnemy;
     [SerializeField] private NoteType _currClickButton = NoteType.Null;
     [SerializeField] private Transform _inGamePool;
+    [SerializeField] private Transform _spawnObject;
     [Header("Test")]
     public int testMaxStageNumber;
     [SerializeField] private bool _isAutoMode = false;
@@ -90,10 +91,14 @@ public class InGameView : MonoBehaviour, IView
         _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
         _score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
         _inGamePool = GameObject.Find("ObjectPool").transform;
+        _spawnObject = GameObject.Find("Field/SpawnSpot").transform;
     }
 
     private async UniTask Start()
     {
+        SpriteRenderer spawnObjectImage = _spawnObject.GetComponentInChildren<SpriteRenderer>();
+        spawnObjectImage.enabled = false;
+
         while (InGameState.Ready == _state)
         {
             await Ready();
@@ -323,7 +328,7 @@ public class InGameView : MonoBehaviour, IView
         BaseEnemy enemy = (BaseEnemy)_objectPool.MakeObject(ObjectType.Enemy);
         await enemy.SetInGamePool(_inGamePool);
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
-        await enemy.SetEnemy(enemyModel, _playerCharacter.GetPositionY());
+        await enemy.SetEnemy(enemyModel, _spawnObject.position);
         enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         SetGenTime().Forget();
     }
