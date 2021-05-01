@@ -50,7 +50,8 @@ public class BaseBackground : MonoBehaviour
     {
         var playerSpeed = _inGamePresenter.GetPlayerSpeed();
 
-        Vector2 textureOffset = new Vector2(Time.time * (_ownSpeedFactor * 0.1f * (1 + playerSpeed * _playerSpeedFactor)), 0);
+        Vector2 textureOffset = _meshRenderer.material.mainTextureOffset;
+        textureOffset += Time.deltaTime * new Vector2(_ownSpeedFactor * 0.1f * (1 + playerSpeed * _playerSpeedFactor), 0);
         _meshRenderer.material.mainTextureOffset = textureOffset;
         await UniTask.Yield();
     }
