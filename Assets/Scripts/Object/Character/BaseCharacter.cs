@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 [RequireComponent(typeof(SkinnedMeshRenderer))]
 public class BaseCharacter : MonoBehaviour
 {
-    public CharacterStatus status;
+    [SerializeField] private CharacterStatus status;
     public SkinnedMeshRenderer meshRenderer;
     [SerializeField]private float _currSpeed;
     [SerializeField] private float _currHp;
@@ -16,7 +16,6 @@ public class BaseCharacter : MonoBehaviour
         status.MaxHp = 60;
         status.HpDecreasePerSecond = 1;
         status.NormalSpeed = 3;
-        status.Accel = 1;
         status.MaxSpeed = 10;
         status.MaxSpeed = 1;
         _currSpeed = status.NormalSpeed;
@@ -105,6 +104,5 @@ public struct CharacterStatus
     public float MaxHp;
     public float HpDecreasePerSecond;
     public float NormalSpeed;
-    public float Accel;
     public float MaxSpeed;
 }

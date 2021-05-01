@@ -134,7 +134,7 @@ public class InGameView : MonoBehaviour, IView
     #region FSM
     private async UniTask Ready()
     {
-        _playerCharacter.SetSampleCharacter();
+        //_playerCharacter.SetSampleCharacter();
         _currClickButton = NoteType.Null;
         await GetStageModelAsync();
 
@@ -326,10 +326,10 @@ public class InGameView : MonoBehaviour, IView
     {
         await UniTask.Yield();
         BaseEnemy enemy = (BaseEnemy)_objectPool.MakeObject(ObjectType.Enemy);
+        enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         await enemy.SetInGamePool(_inGamePool);
         var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
         await enemy.SetEnemy(enemyModel, _spawnObject.position);
-        enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         SetGenTime().Forget();
     }
 
