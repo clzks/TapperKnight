@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class BaseNote : MonoBehaviour, IPoolObject
@@ -20,8 +21,16 @@ public class BaseNote : MonoBehaviour, IPoolObject
     public NoteType noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
     private InGamePresenter _inGamePresenter;
+
+    private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
+
     private async UniTask OnEnable()
     {
+        if (_disableCancellation != null)
+        {
+            _disableCancellation.Dispose();
+        }
+        _disableCancellation = new CancellationTokenSource();
         _objectPool = _objectPool ?? ObjectPoolManager.Get();
         _renderer = _renderer ?? GetComponentInChildren<SpriteRenderer>();
         await UniTask.Yield();
@@ -31,7 +40,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
         }
     }
 
-    public async UniTask Update()
+    private async UniTask Update()
     {
         var playerSpeed = _inGamePresenter.GetPlayerSpeed();
 
@@ -42,6 +51,11 @@ public class BaseNote : MonoBehaviour, IPoolObject
         {
             await NoteCall(ScoreType.Miss);
         }
+    }
+
+    private void OnDisable()
+    {
+        _disableCancellation.Cancel();
     }
 
     public async UniTaskVoid SetNoteSprite(Sprite sp)
@@ -168,7 +182,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
             while (time <= 1f)
             {
                 transform.position = Formula.BezierMove(startPos, _notePopDestination[0], _notePopDestination[1], time);
-                await UniTask.Yield();
+                await UniTask.Yield(_disableCancellation.Token);
                 time += Time.deltaTime * 2f;
             }
         }
@@ -176,27 +190,21 @@ public class BaseNote : MonoBehaviour, IPoolObject
         {
             while (time <= 2f)
             {
-                await UniTask.Yield();
+                await UniTask.Yield(_disableCancellation.Token);
                 time += Time.deltaTime;
             }
         }
-        await ReturnObject();
+        ReturnObject();
     }
 
-    private async UniTask ExecuteDead()
-    {
-        await ReturnObject();
-    }
-
-    public async UniTaskVoid Init()
+    public void Init()
     {
         transform.position = new Vector3(1000, 1000, 0);
-        await UniTask.Yield();
     }
 
-    public async UniTask ReturnObject()
+    public void ReturnObject()
     {
-        await _objectPool.ReturnObject(this);
+        _objectPool.ReturnObject(this);
     }
 
     public GameObject GetObject()

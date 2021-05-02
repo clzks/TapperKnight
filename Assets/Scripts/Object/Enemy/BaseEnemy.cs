@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 [RequireComponent(typeof(SkinnedMeshRenderer))]
 public class BaseEnemy : MonoBehaviour, IPoolObject
@@ -15,8 +16,16 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     private float _playerSpeedFactor;
     private List<Vector3> _popDestination;
 
+    private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
+    //private CancellationTokenSource _destroyCancellation = new CancellationTokenSource();
     private async UniTask OnEnable()
     {
+        if (_disableCancellation != null)
+        {
+            _disableCancellation.Dispose();
+        }
+        _disableCancellation = new CancellationTokenSource();
+
         meshRenderer.sortingLayerName = "Background";
         meshRenderer.sortingOrder = 4;
         if (null == _objectPool)
@@ -40,6 +49,11 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         var playerSpd = _inGamePresenter.GetPlayerSpeed();
         transform.position -= new Vector3((status.speed + playerSpd * _playerSpeedFactor) * Time.deltaTime, 0f, 0f);
         await UniTask.Yield();
+    }
+
+    private void OnDisable()
+    {
+        _disableCancellation.Cancel();
     }
 
     public async UniTask SetEnemy(EnemyModel em, Vector3 SpawnObjectPos)
@@ -124,6 +138,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await DropNote();
         await _inGamePresenter.OnNoteCall(score, status.damage);
 
+        await UniTask.Yield(_disableCancellation.Token);
         if(0 == enemyNotes.Count)
         {
             await ExecuteDead();
@@ -157,7 +172,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     {
         await _inGamePresenter.OnTargetDestroy();
         await EnemyPop();
-        await ReturnObject();
+        ReturnObject();
     }
 
     private async UniTask EnemyPop()
@@ -169,7 +184,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         while (time <= 1f)
         {
             transform.position = Formula.BezierMove(startPos, _popDestination[0], _popDestination[1], time);
-            await UniTask.Yield();
+            await UniTask.Yield(_disableCancellation.Token);
             time += Time.deltaTime * 2f;
         }
     }
@@ -181,15 +196,14 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         note.transform.SetParent(_inGamePool);
         await UniTask.Yield();
     }
-    public async UniTaskVoid Init()
+    public void Init()
     {
         transform.position = new Vector3(1000, 1000, 0);
-        await UniTask.Yield();
     }
 
-    public async UniTask ReturnObject()
+    public void ReturnObject()
     {
-        await _objectPool.ReturnObject(this);
+        _objectPool.ReturnObject(this);
     }
 
     public GameObject GetObject()

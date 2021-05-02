@@ -63,7 +63,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         return obj;
     }
 
-    public async UniTask ReturnObject(IPoolObject poolObject)
+    public void ReturnObject(IPoolObject poolObject)
     {
         ObjectType type = poolObject.GetObjectType();
         var list = _activePoolList[type];
@@ -75,7 +75,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             obj.SetActive(false);
             list.Remove(obj);
             pool.Add(obj);
-            await UniTask.Yield();
         }
     }
 
@@ -89,11 +88,21 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         foreach (var item in _objectPoolList)
         {
+            foreach (var obj in item.Value)
+            {
+                Destroy(obj);
+            }
+
             item.Value.Clear();
         }
 
         foreach (var item in _activePoolList)
         {
+            foreach (var obj in item.Value)
+            {
+                Destroy(obj);
+            }
+
             item.Value.Clear();
         }
     }
