@@ -85,6 +85,19 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         _activePoolList = new Dictionary<ObjectType, List<GameObject>>();
     }
     
+    public void ResetPool()
+    {
+        foreach (var item in _objectPoolList)
+        {
+            item.Value.Clear();
+        }
+
+        foreach (var item in _activePoolList)
+        {
+            item.Value.Clear();
+        }
+    }
+
     public BaseEnemy GetEnemy()
     {
         var list = _activePoolList[ObjectType.Enemy];

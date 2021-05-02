@@ -247,7 +247,7 @@ public class InGameView : MonoBehaviour, IView
 
         var note = _targetEnemy?.GetNote();
 
-        note?.OnNoteCall(_currClickButton);
+        note?.OnNoteCall(_currClickButton).Forget();
         _currClickButton = NoteType.Null;
         delayTimer = 0f;
     }

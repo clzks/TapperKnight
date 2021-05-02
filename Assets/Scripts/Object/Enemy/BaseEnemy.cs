@@ -13,6 +13,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     public SkinnedMeshRenderer meshRenderer;
     private Transform _inGamePool;
     private float _playerSpeedFactor;
+    private List<Vector3> _popDestination;
 
     private async UniTask OnEnable()
     {
@@ -26,6 +27,11 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         {
             _inGamePresenter = GameManager.Get().GetInGamePresenter();
         }
+        if(null == _popDestination)
+        {
+            _popDestination = _inGamePresenter.GetNotePopDestination();
+        }
+
         await UniTask.Yield();
     }
 
@@ -76,7 +82,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         {
             BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
             note.SetInGamePool(_inGamePool).Forget();
-            SetRandomNote(note).Forget();
+            SetRandomNoteType(note).Forget();
             note.SetSortingLayer(status.hp - i - 1).Forget();
             note.transform.SetParent(_inGamePool.transform);
             note.SetPosition(new Vector3(transform.position.x + i * interval, notePos.y, transform.position.z)).Forget();
@@ -91,7 +97,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid SetRandomNote(BaseNote bn)
+    private async UniTaskVoid SetRandomNoteType(BaseNote bn)
     {
         int r = Random.Range(1, 10000) % 3;
 
@@ -113,22 +119,14 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid SetBothSideNote(BaseNote bn)
-    {
-        bn.noteType = NoteType.BothSide;
-        bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("BothSide")).Forget();
-        await UniTask.Yield();
-    }
-
     public async UniTask OnNoteCall(ScoreType score)
     {
-        await ResetNote();
+        await DropNote();
         await _inGamePresenter.OnNoteCall(score, status.damage);
 
         if(0 == enemyNotes.Count)
         {
-            await ReturnObject();
-            await _inGamePresenter.OnTargetDestroy();
+            await ExecuteDead();
         }
         else
         {
@@ -154,8 +152,29 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         transform.SetParent(_inGamePool);
         await UniTask.Yield();
     }
+    
+    public async UniTask ExecuteDead()
+    {
+        await _inGamePresenter.OnTargetDestroy();
+        await EnemyPop();
+        await ReturnObject();
+    }
 
-    private async UniTask ResetNote()
+    private async UniTask EnemyPop()
+    {
+        float time = 0f;
+
+        Vector3 startPos = transform.position;
+
+        while (time <= 1f)
+        {
+            transform.position = Formula.BezierMove(startPos, _popDestination[0], _popDestination[1], time);
+            await UniTask.Yield();
+            time += Time.deltaTime * 2f;
+        }
+    }
+
+    private async UniTask DropNote()
     {
         BaseNote note = enemyNotes.Dequeue();
         note.SetParentEnemy(null).Forget();
@@ -176,6 +195,11 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     public GameObject GetObject()
     {
         return gameObject;
+    }
+
+    public int GetNoteCount()
+    {
+        return enemyNotes.Count;
     }
 
     public ObjectType GetObjectType()

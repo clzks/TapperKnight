@@ -141,10 +141,11 @@ public class BaseNote : MonoBehaviour, IPoolObject
 
     private async UniTask NoteCall(ScoreType score)
     {
-        await parentEnemy.OnNoteCall(score);
+        parentEnemy.OnNoteCall(score).Forget();
         NotePop(score).Forget();
         ScorePop(score).Forget();
         Debug.Log("Á¡¼ö : " + score.ToString());
+        await UniTask.Yield();
     }
 
     private async UniTask ScorePop(ScoreType score)
@@ -179,6 +180,11 @@ public class BaseNote : MonoBehaviour, IPoolObject
                 time += Time.deltaTime;
             }
         }
+        await ReturnObject();
+    }
+
+    private async UniTask ExecuteDead()
+    {
         await ReturnObject();
     }
 

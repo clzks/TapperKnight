@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
 
     private async UniTask OnApplicationQuit()
     {
-        ObjectPoolManager.Get().InitPool();
+        ObjectPoolManager.Get().ResetPool();
         await UniTask.Yield();
     }
 }
