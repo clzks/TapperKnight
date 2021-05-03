@@ -35,6 +35,18 @@ public enum ObjectType
     Count
 }
 
+public enum CharacterAnimType
+{ 
+    Idle,
+    Walk,
+    Run,
+    Attack,
+    Attack2,
+    Skill,
+    Dead,
+    Count
+}
+
 public static class Formula
 {
     public static Vector3 BezierMove(Vector3 start, Vector3 p, Vector3 dest, float t)
