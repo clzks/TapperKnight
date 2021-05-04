@@ -11,39 +11,72 @@
         "XScale": "MeshRenderer X크기(float)",
         "YScale": "MeshRenderer Y크기(float)"
     },
-    "Background": [
+  "Background": [
+    {
+      "StageNumber": 1,
+      "List": [
         {
-            "StageNumber": 1,
-            "List": [
-                {
-                    "LayerNumber": 1,
-                    "ScrollSpeed": 1.0,
-                    "YPosition": -3.79,
-                    "XScale": 27.0,
-                    "YScale": 4.0
-                },
-                {
-                    "LayerNumber": 2,
-                    "ScrollSpeed": 0.7,
-                    "YPosition": 0,
-                    "XScale": 27.0,
-                    "YScale": 14.4
-                },
-                {
-                    "LayerNumber": 3,
-                    "ScrollSpeed": 0.4,
-                    "YPosition": 0,
-                    "XScale": 27.0,
-                    "YScale": 14.4
-                },
-                {
-                    "LayerNumber": 4,
-                  "ScrollSpeed": 0.2,
-                    "YPosition": 0,
-                    "XScale": 19.2,
-                    "YScale": 14.4
-                }
-            ]
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": -3.79,
+          "XScale": 27.0,
+          "YScale": 4.0
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 19.2,
+          "YScale": 14.4
         }
-    ]
+      ]
+    },
+    {
+      "StageNumber": 2,
+      "List": [
+        {
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": -3.79,
+          "XScale": 27.0,
+          "YScale": 4.0
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 19.2,
+          "YScale": 14.4
+        }
+      ]
+    }
+  ]
 }

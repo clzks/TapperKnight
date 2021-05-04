@@ -13,7 +13,7 @@
             "StageNumber": 1,
             "MinimumGenCycle": 3.0,
             "MaximumGenCycle": 4.0,
-            "StageTime": 30,
+            "StageTime": 10,
             "EnemyList": [
                 10000,
                 20000,
