@@ -1962,7 +1962,7 @@ MonoBehaviour:
   _maxStageTime: 0
   _currGenTimer: 3
   _genTime: 0
-  _enemySpeedFactorByPlayer: 1
+  _enemySpeedFactorByPlayer: 0.2
   _bothSideDelayTime: 0.05
   _bgController: {fileID: 0}
   _playerCharacter: {fileID: 0}
