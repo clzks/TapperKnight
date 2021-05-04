@@ -170,9 +170,9 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     
     public async UniTask ExecuteDead()
     {
-        await _inGamePresenter.OnTargetDestroy();
         await EnemyPop();
         ReturnObject();
+        await _inGamePresenter.OnTargetDestroy();
     }
 
     private async UniTask EnemyPop()
