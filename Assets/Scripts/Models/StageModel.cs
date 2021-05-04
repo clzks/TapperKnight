@@ -9,6 +9,7 @@ public class StageModel : IModel
     public float MaximumGenCycle { get; set; }
     public float StageTime { get; set; }
     public List<int> EnemyList { get; set; }
+    public float TrackLength { get; set; }
 }
 
 public struct SpawnEnemyInfo

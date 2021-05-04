@@ -34,10 +34,12 @@ public class BaseCharacter : MonoBehaviour
         }
     }
 
-    public async UniTask AddRecord()
+    public async UniTask<float> AddRecord()
     {
-        _runningRecord += _currSpeed * Time.deltaTime;
+        float runningValue = _currSpeed * Time.deltaTime;
+        _runningRecord += runningValue;
         await UniTask.Yield();
+        return runningValue;
     }
 
     public async UniTask TakeDamage(float damage)

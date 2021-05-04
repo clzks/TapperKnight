@@ -24,12 +24,11 @@ public class InGameView : MonoBehaviour, IView
     private InGameState _state = InGameState.Count;
     private StageModel _inGameStageModel;
     [SerializeField] private int _currentStageNumber = 1;
-    [SerializeField] private float _currStageTimer = 0f;
-    [SerializeField] private float _maxStageTime;
     [SerializeField] private float _currGenTimer = 3f;
     [SerializeField] private float _genTime;
     [SerializeField] private float _enemySpeedFactorByPlayer = 0.1f;
-
+    [SerializeField] private float _currStageRunningDistance;
+    [SerializeField] private float _currStageTrackLength;
     private bool _isLastStage = false;
     private float _blackOutTime = 1.3f;
 
@@ -120,7 +119,7 @@ public class InGameView : MonoBehaviour, IView
     {
         await UniTask.Yield();
         _inGameStageModel = _inGamePresenter.GetStageModel(_currentStageNumber, ref _isLastStage);
-        _maxStageTime = _inGameStageModel.StageTime;
+        _currStageTrackLength = _inGameStageModel.TrackLength;
         _genTime = _inGameStageModel.MaximumGenCycle;
     }
 
@@ -174,13 +173,10 @@ public class InGameView : MonoBehaviour, IView
         if (true == _isAutoMode)
         {
             _currGenTimer += Time.deltaTime;
-            if (_isLastStage == false)
-            {
-                _currStageTimer += Time.deltaTime;
-            }
-            await _playerCharacter.AddRecord();
 
-            if (_currStageTimer >= _maxStageTime)
+            var runDistance = await _playerCharacter.AddRecord();
+            _currStageRunningDistance += runDistance;
+            if (_currStageRunningDistance >= _currStageTrackLength)
             {
                 if (0 == _objectPool.GetEnemyCount())
                 {
@@ -215,7 +211,7 @@ public class InGameView : MonoBehaviour, IView
     private async UniTask InitStageFactor()
     {
         _currGenTimer = 0f;
-        _currStageTimer = 0f;
+        _currStageRunningDistance = 0f;
         await UniTask.Yield();
     }
 
