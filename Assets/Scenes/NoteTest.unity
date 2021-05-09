@@ -1958,11 +1958,11 @@ MonoBehaviour:
   _runnigRecord: {fileID: 0}
   _score: {fileID: 0}
   _currentStageNumber: 1
-  _currStageTimer: 0
-  _maxStageTime: 0
   _currGenTimer: 3
   _genTime: 0
   _enemySpeedFactorByPlayer: 0.2
+  _currStageRunningDistance: 0
+  _currStageTrackLength: 0
   _bothSideDelayTime: 0.05
   _bgController: {fileID: 0}
   _playerCharacter: {fileID: 0}

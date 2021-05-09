@@ -77,6 +77,204 @@
           "YScale": 14.4
         }
       ]
+    },
+    {
+      "StageNumber": 3,
+      "List": [
+        {
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": -1.81,
+          "XScale": 27.0,
+          "YScale": 11.0
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": -2,
+          "XScale": 27.0,
+          "YScale": 3.0
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 30.2,
+          "YScale": 14.4
+        }
+      ]
+    },
+    {
+      "StageNumber": 4,
+      "List": [
+        {
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": -1.6,
+          "XScale": 27.0,
+          "YScale": 11.0
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 30.2,
+          "YScale": 14.4
+        }
+      ]
+    },
+    {
+      "StageNumber": 5,
+      "List": [
+        {
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": -1.1,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": -5,
+          "XScale": 0.1,
+          "YScale": 0.1
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 30.2,
+          "YScale": 14.4
+        }
+      ]
+    },
+    {
+      "StageNumber": 6,
+      "List": [
+        {
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": -2.7,
+          "XScale": 27.0,
+          "YScale": 11.0
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": -1,
+          "XScale": 27.0,
+          "YScale": 6.0
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 5.0
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 30.2,
+          "YScale": 14.4
+        }
+      ]
+    },
+    {
+      "StageNumber": 7,
+      "List": [
+        {
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": 0.4,
+          "XScale": 27.0,
+          "YScale": 15.0
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 5.0,
+          "YScale": 5.0
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 30.2,
+          "YScale": 14.4
+        }
+      ]
+    },
+    {
+      "StageNumber": 8,
+      "List": [
+        {
+          "LayerNumber": 1,
+          "ScrollSpeed": 1.0,
+          "YPosition": -1.75,
+          "XScale": 27.0,
+          "YScale": 11.0
+        },
+        {
+          "LayerNumber": 2,
+          "ScrollSpeed": 0.7,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 3,
+          "ScrollSpeed": 0.4,
+          "YPosition": 0,
+          "XScale": 27.0,
+          "YScale": 14.4
+        },
+        {
+          "LayerNumber": 4,
+          "ScrollSpeed": 0.2,
+          "YPosition": 0,
+          "XScale": 30.2,
+          "YScale": 14.4
+        }
+      ]
     }
   ]
 }
