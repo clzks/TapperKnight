@@ -12,6 +12,8 @@ public class BaseCharacter : MonoBehaviour
     [SerializeField] private float _runningRecord;
     private List<SpriteRenderer> _renderList;
     [SerializeField] private Animator _animator;
+    [Tooltip("CurrSpeed / Divider = 애니메이션 속도")]
+    [Range(1f, 5f)]
     [SerializeField] private float _animSpeedDivider = 3f;
     public void SetSampleCharacter()
     {
