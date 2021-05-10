@@ -774,7 +774,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315422257}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.56, y: -3.5, z: -7.31}
+  m_LocalPosition: {x: -7.56, y: -2.87, z: -7.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 656846712}
@@ -803,6 +803,7 @@ MonoBehaviour:
   _currHp: 60
   _runningRecord: 0
   _animator: {fileID: 719426795}
+  _animSpeedDivider: 3
 --- !u!137 &315422260
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -2125,6 +2126,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 656846712}
     m_Modifications:
+    - target: {fileID: 113882, guid: 449ed149d64c54042b8df20c882446ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 183788, guid: 449ed149d64c54042b8df20c882446ee, type: 3}
       propertyPath: m_Name
       value: gladiator01
