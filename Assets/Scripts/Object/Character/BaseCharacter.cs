@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-[RequireComponent(typeof(SkinnedMeshRenderer))]
+
 public class BaseCharacter : MonoBehaviour
 {
     [SerializeField] private CharacterStatus status;
-    public SkinnedMeshRenderer meshRenderer;
+    //public SkinnedMeshRenderer meshRenderer;
     [SerializeField]private float _currSpeed;
     [SerializeField] private float _currHp;
     [SerializeField] private float _runningRecord;
+    private List<SpriteRenderer> _renderList;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private float _animSpeedDivider = 3f;
     public void SetSampleCharacter()
     {
         status.Name = "샘플";
@@ -22,15 +25,25 @@ public class BaseCharacter : MonoBehaviour
         _currHp = status.MaxHp;
         _runningRecord = 0;
     }
+    private async UniTask Awake()
+    {
+        _renderList = new List<SpriteRenderer>();
+        var list = gameObject.GetComponentsInChildren<SpriteRenderer>(true);
+        foreach (var item in list)
+        {
+            _renderList.Add(item);
+        }
+        await UniTask.Yield();
+    }
 
     private async UniTask Start()
     {
-        SetSortingLayer("Background", 4).Forget();
+        SetSortingLayer("Character").Forget();
         
         while (_currHp >= 0)
         {
             await UniTask.Delay(1000);
-            await TakeDamage(status.HpDecreasePerSecond);
+            TakeDamage(status.HpDecreasePerSecond, false).Forget();
         }
     }
 
@@ -42,23 +55,27 @@ public class BaseCharacter : MonoBehaviour
         return runningValue;
     }
 
-    public async UniTask TakeDamage(float damage)
+    public async UniTaskVoid TakeDamage(float damage, bool changeAnim)
     {
-        await UniTask.Yield();
+        if(true == changeAnim)
+        {
+            _animator.Play("Damage");
+        }
 
         _currHp -= damage;
+
         //Debug.Log("데미지 " + damage + "입음. 현재 체력 : " + _currHp);
         if (_currHp <= 0f)
         {
             _currHp = 0f;
             // 죽음처리
         }
+
+        await UniTask.Yield();
     }
 
-    public async UniTask AddSpeed(float speed)
+    public async UniTaskVoid AddSpeed(float speed)
     {
-        await UniTask.Yield();
-
         _currSpeed += speed;
         if(_currSpeed < status.NormalSpeed)
         {
@@ -68,7 +85,16 @@ public class BaseCharacter : MonoBehaviour
         {
             _currSpeed = status.MaxSpeed;
         }
-        
+
+        _animator.speed = _currSpeed / _animSpeedDivider;
+
+        await UniTask.Yield();
+    }
+    
+    public async UniTaskVoid Attack()
+    {
+        _animator.Play("Attack");
+        await UniTask.Yield();
     }
 
     public float GetPositionY()
@@ -76,10 +102,13 @@ public class BaseCharacter : MonoBehaviour
         return transform.position.y;
     }
 
-    public async UniTaskVoid SetSortingLayer(string layerName, int sortingOrder)
+    public async UniTaskVoid SetSortingLayer(string layerName)
     {
-        meshRenderer.sortingLayerName = layerName;
-        meshRenderer.sortingOrder = sortingOrder;
+        foreach (var item in _renderList)
+        {
+            item.sortingLayerName = layerName;
+        }
+
         await UniTask.Yield();
     }
 

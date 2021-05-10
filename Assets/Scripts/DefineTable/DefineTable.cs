@@ -35,7 +35,7 @@ public enum ObjectType
     Count
 }
 
-public enum CharacterAnimType
+public enum LobbyAnimType
 { 
     Idle,
     Walk,
@@ -46,6 +46,15 @@ public enum CharacterAnimType
     Dead,
     Count
 }
+
+public enum CharacterAnimType
+{
+    Idle,
+    Move,
+    Attack,
+    Damage
+}
+
 
 public static class Formula
 {

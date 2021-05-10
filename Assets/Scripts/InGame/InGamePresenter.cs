@@ -83,12 +83,17 @@ public class InGamePresenter : MonoBehaviour, IPresenter
     public async UniTask OnNoteCall(ScoreType score, float damage)
     {
         var accel = _model.GetAccelerate(score);
-        await _inGameView.AddSpeed(accel);
 
         if (score == ScoreType.Miss)
         {
-            await _inGameView.TakeDamage(damage);
+            _inGameView.TakeDamage(damage).Forget();
         }
+        else
+        {
+            _inGameView.Attack().Forget();
+        }
+
+        _inGameView.AddSpeed(accel).Forget();
 
         await _model.AddScore(score);
     }

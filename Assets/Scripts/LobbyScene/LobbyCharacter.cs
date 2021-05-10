@@ -8,7 +8,7 @@ public class LobbyCharacter : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer _meshRenderer;
     [SerializeField] private Animator _animator;
     public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
-    public List<CharacterAnimType> actionStateList;
+    public List<LobbyAnimType> actionStateList;
     private float _speed;
     private float _leftEnd = -8.0f;
     private float _rightEnd = 8.0f;
@@ -28,7 +28,7 @@ public class LobbyCharacter : MonoBehaviour
 
     private async UniTask Start()
     {;
-        await TakeRandomAction(CharacterAnimType.Idle);
+        await TakeRandomAction(LobbyAnimType.Idle);
     }
 
     private async UniTask Update()
@@ -52,42 +52,42 @@ public class LobbyCharacter : MonoBehaviour
         _disableCancellation.Cancel();
     }
 
-    private void SetAnimationClip(CharacterAnimType type)
+    private void SetAnimationClip(LobbyAnimType type)
     {
         _animator.CrossFade(type.ToString(), 0.3f);
     }
 
-    private async UniTask TakeRandomAction(CharacterAnimType state)
+    private async UniTask TakeRandomAction(LobbyAnimType state)
     {
         SetAnimationClip(state);
 
         switch (state)
         {
-            case CharacterAnimType.Idle:
+            case LobbyAnimType.Idle:
                 await Idle();
                 break;
 
-            case CharacterAnimType.Walk:
+            case LobbyAnimType.Walk:
                 await Walk();
                 break;
 
-            case CharacterAnimType.Run:
+            case LobbyAnimType.Run:
                 await Run();
                 break;
 
-            case CharacterAnimType.Attack:
+            case LobbyAnimType.Attack:
                 await Attack();
                 break;
 
-            case CharacterAnimType.Attack2:
+            case LobbyAnimType.Attack2:
                 await SecondAttack();
                 break;
 
-            case CharacterAnimType.Skill:
+            case LobbyAnimType.Skill:
                 await Skill();
                 break;
 
-            case CharacterAnimType.Dead:
+            case LobbyAnimType.Dead:
                 await Dead();
                 break;
         }
@@ -109,7 +109,7 @@ public class LobbyCharacter : MonoBehaviour
 
     private async UniTask Idle()
     {
-        SetAnimationClip(CharacterAnimType.Idle);
+        SetAnimationClip(LobbyAnimType.Idle);
         await UniTask.Delay(1000);
         _speed = 0f;
 

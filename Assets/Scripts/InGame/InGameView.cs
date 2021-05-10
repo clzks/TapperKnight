@@ -199,9 +199,9 @@ public class InGameView : MonoBehaviour, IView
     private async UniTask Change()
     {
         _currentStageNumber++;
-        _playerCharacter.SetSortingLayer("StageChangeBlock", 4).Forget();
+        _playerCharacter.SetSortingLayer("StageChangeBlock").Forget();
         await _bgController.ExecuteStageChange(_currentStageNumber, _blackOutTime);
-        _playerCharacter.SetSortingLayer("Background", 4).Forget();
+        _playerCharacter.SetSortingLayer("Character").Forget();
         await InitStageFactor();
         await GetStageModelAsync();
         SetGenTime().Forget();
@@ -297,14 +297,22 @@ public class InGameView : MonoBehaviour, IView
         return _notePopDestination;
     }
 
-    public async UniTask TakeDamage(float damage)
+    public async UniTaskVoid TakeDamage(float damage)
     {
-        await _playerCharacter.TakeDamage(damage);
+        _playerCharacter.TakeDamage(damage, true).Forget();
+        await UniTask.Yield();
     }
 
-    public async UniTask AddSpeed(float accel)
+    public async UniTaskVoid AddSpeed(float accel)
     {
-        await _playerCharacter.AddSpeed(accel);
+        _playerCharacter.AddSpeed(accel).Forget();
+        await UniTask.Yield();
+    }
+
+    public async UniTaskVoid Attack()
+    {
+        _playerCharacter.Attack().Forget();
+        await UniTask.Yield();
     }
 
     public async UniTask SetTarget(BaseEnemy enemy)
