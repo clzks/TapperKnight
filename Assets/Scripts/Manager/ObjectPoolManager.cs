@@ -72,6 +72,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
         if (true == list.Contains(obj))
         {
+            obj.transform.rotation = new Quaternion();
             obj.SetActive(false);
             list.Remove(obj);
             pool.Add(obj);

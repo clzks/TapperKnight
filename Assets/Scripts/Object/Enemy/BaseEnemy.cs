@@ -61,7 +61,6 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         SetStatus(em).Forget();
         transform.position = new Vector3(SpawnObjectPos.x, SpawnObjectPos.y, transform.position.z);
         enemyNotes = new Queue<BaseNote>();
-        float interval = em.NoteInterval;
         if (null == _inGamePresenter)
         {
             _inGamePresenter = GameManager.Get().GetInGamePresenter();
@@ -72,6 +71,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
             await _inGamePresenter.SetTarget(this);
         }
 
+        var interval = em.MinNoteInterval == em.MaxNoteInterval ? em.MinNoteInterval : Random.Range(em.MinNoteInterval, em.MaxNoteInterval); 
         SetNote(interval).Forget();
     }
     public async UniTaskVoid SetStatus(EnemyModel model)
@@ -79,7 +79,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         status.name = model.Name;
         status.damage = model.Damage;
         status.speed = model.MoveSpeed;
-        status.hp = model.NoteCount;
+        status.hp = model.MinNoteCount == model.MaxNoteCount ? model.MinNoteCount : Random.Range(model.MinNoteCount, model.MaxNoteCount + 1);
         await UniTask.Yield();
     }
     public async UniTaskVoid SetPlayerSpeedFactor(float playerSpeedFactor)
@@ -184,6 +184,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         while (time <= 1f)
         {
             transform.position = Formula.BezierMove(startPos, _popDestination[0], _popDestination[1], time);
+            transform.Rotate(0, 0, -720f * Time.deltaTime, Space.Self);
             await UniTask.Yield(_disableCancellation.Token);
             time += Time.deltaTime * 2f;
         }

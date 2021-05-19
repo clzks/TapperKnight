@@ -4,8 +4,10 @@
         "Name": "이름",
         "Damage": "몬스터 데미지",
         "MoveSpeed": "초당 이동 거리. 1.0 = 1.0f",
-        "NoteCount": "노트 갯수",
-        "NoteInterval": "노트들간의 시간간격 또는 거리간격. 둘중에 하나 취사선택해서 쓰는게 좋을듯함니다"
+        "MinNoteCount": "노트 최소 갯수",
+        "MaxNoteCount": "노트 최대 갯수. Min과 Max 사이에 랜덤한 체력이 세팅된다",
+        "MinNoteInterval": "노트들간의 최소 거리간격",
+        "MaxNoteInterval": "노트들간의 최대 거리간격, Min과 Max사이에 랜덤한 값이 나온다. 같을 경우는 물론 그 값으로"
     },
     "Enemy": [
         {
@@ -13,72 +15,90 @@
             "Name": "사람",
             "Damage": 3,
             "MoveSpeed": 4,
-            "NoteCount" : 3,
-            "NoteInterval": 1.5
+            "MinNoteCount": 3,
+            "MaxNoteCount": 3,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 20000,
             "Name": "안사람",
             "Damage": 10,
             "MoveSpeed": 5,
-            "NoteCount": 3,
-            "NoteInterval": 1.5
+            "MinNoteCount": 3,
+            "MaxNoteCount": 3,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 30000,
             "Name": "노사람",
             "Damage": 15,
             "MoveSpeed": 6,
-            "NoteCount": 4,
-            "NoteInterval": 1.5
+            "MinNoteCount": 4,
+            "MaxNoteCount": 4,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 40000,
             "Name": "갓",
             "Damage": 20,
             "MoveSpeed": 7,
-            "NoteCount": 5,
-            "NoteInterval": 1.5
+            "MinNoteCount": 5,
+            "MaxNoteCount": 5,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 50000,
             "Name": "몬스터",
             "Damage": 8,
             "MoveSpeed": 18,
-            "NoteCount": 4,
-            "NoteInterval": 1.5
+            "MinNoteCount": 4,
+            "MaxNoteCount": 4,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 60000,
             "Name": "토레이서",
             "Damage": 7,
             "MoveSpeed": 20,
-            "NoteCount": 5,
-            "NoteInterval": 1.5
+            "MinNoteCount": 5,
+            "MaxNoteCount": 5,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 70000,
             "Name": "킹",
             "Damage": 38,
             "MoveSpeed": 7,
-            "NoteCount": 5,
-            "NoteInterval": 1.5
+            "MinNoteCount": 5,
+            "MaxNoteCount": 5,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 80000,
             "Name": "킹갓",
             "Damage": 40,
             "MoveSpeed": 7,
-            "NoteCount": 5,
-            "NoteInterval": 1.5
+            "MinNoteCount": 5,
+            "MaxNoteCount": 5,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         },
         {
             "Id": 90000,
             "Name": "좀비",
             "Damage": 42,
             "MoveSpeed": 7,
-            "NoteCount": 5,
-            "NoteInterval": 1.5
+            "MinNoteCount": 5,
+            "MaxNoteCount": 5,
+            "MinNoteInterval": 1.5,
+            "MaxNoteInterval": 1.5
         }
     ]
 }

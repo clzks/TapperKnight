@@ -7,8 +7,11 @@ public class EnemyModel : IModel
     public string Name { get; set; }
     public float Damage { get; set; }
     public float MoveSpeed { get; set; }
-    public int NoteCount { get; set; }
-    public float NoteInterval { get; set; }
+    public int MinNoteCount { get; set; }
+    public int MaxNoteCount { get; set; }
+    public float MinNoteInterval { get; set; }
+    public float MaxNoteInterval { get; set; }
+
 
     internal static EnemyModel MakeSampleEnemyModel()
     {
@@ -18,8 +21,10 @@ public class EnemyModel : IModel
             Name = "SampleEnemy",
             Damage = 1,
             MoveSpeed = 1f,
-            NoteCount = 3,
-            NoteInterval = 0.5f
+            MinNoteCount = 3,
+            MaxNoteCount = 3,
+            MinNoteInterval = 0.5f,
+            MaxNoteInterval = 0.5f
         };
     }
 
