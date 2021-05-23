@@ -137,6 +137,11 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     {
         await DropNote();
         await _inGamePresenter.OnNoteCall(score, status.damage);
+        
+        if(ScoreType.Miss != score)
+        {
+            status.hp -= 1;
+        }
 
         await UniTask.Yield(_disableCancellation.Token);
         if(0 == enemyNotes.Count)
@@ -170,7 +175,14 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     
     public async UniTask ExecuteDead()
     {
-        await EnemyPop();
+        if(status.hp == 0)
+        { 
+            await EnemyPop();
+        }
+        else
+        {
+            // 공격모션
+        }
         ReturnObject();
         await _inGamePresenter.OnTargetDestroy();
     }
