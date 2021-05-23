@@ -136,9 +136,10 @@ public class InGameView : MonoBehaviour, IView
         //_playerCharacter.SetSampleCharacter();
         _currClickButton = NoteType.Null;
         await GetStageModelAsync();
-
+        
         if (null != _inGameStageModel)
         {
+            _playerCharacter.CastLifeTimer().Forget();
             _state = InGameState.Play;
         }
         else
@@ -198,6 +199,7 @@ public class InGameView : MonoBehaviour, IView
 
     private async UniTask Change()
     {
+        _playerCharacter.StopLifeTimer().Forget();
         _currentStageNumber++;
         _playerCharacter.SetSortingLayer("StageChangeBlock").Forget();
         await _bgController.ExecuteStageChange(_currentStageNumber, _blackOutTime);
@@ -206,6 +208,7 @@ public class InGameView : MonoBehaviour, IView
         await GetStageModelAsync();
         SetGenTime().Forget();
         _state = InGameState.Play;
+        _playerCharacter.CastLifeTimer().Forget();
     }
     #endregion
     private async UniTask InitStageFactor()

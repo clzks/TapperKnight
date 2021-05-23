@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-
+using System.Threading;
 public class BaseCharacter : MonoBehaviour
 {
     [SerializeField] private CharacterStatus status;
@@ -16,6 +16,9 @@ public class BaseCharacter : MonoBehaviour
     [Range(1f, 10f)]
     [SerializeField] private float _animSpeedDivider = 3f;
     [SerializeField] private float _maxAnimSpeed = 2.5f;
+
+    private CancellationTokenSource _lifeTimerCancelToken;
+
     public void SetSampleCharacter()
     {
         status.Name = "ป๙วร";
@@ -28,6 +31,11 @@ public class BaseCharacter : MonoBehaviour
         _currHp = status.MaxHp;
         _runningRecord = 0;
     }
+    private void OnDisable()
+    {
+        _lifeTimerCancelToken.Cancel();
+    }
+
     private async UniTask Awake()
     {
         _renderList = new List<SpriteRenderer>();
@@ -42,12 +50,24 @@ public class BaseCharacter : MonoBehaviour
     private async UniTask Start()
     {
         SetSortingLayer("Character").Forget();
-        
+        await UniTask.Yield();
+    }
+
+    public async UniTaskVoid CastLifeTimer()
+    {
+        _lifeTimerCancelToken = new CancellationTokenSource();
+
         while (_currHp >= 0)
         {
-            await UniTask.Delay(1000);
+            await UniTask.Delay(1000, false, 0f, _lifeTimerCancelToken.Token);
             TakeDamage(status.HpDecreasePerSecond, false).Forget();
         }
+    }
+
+    public async UniTaskVoid StopLifeTimer()
+    {
+        _lifeTimerCancelToken.Cancel();
+        await UniTask.Yield();
     }
 
     public async UniTask<float> AddRecord()
