@@ -339,7 +339,7 @@ public class InGameView : MonoBehaviour, IView
 
     public async UniTask OnTargetDestroy()
     {
-        var nextTarget = _objectPool.GetEnemy();
+        var nextTarget = _objectPool.GetNextEnemy();
         _targetEnemy = nextTarget ? nextTarget : null;
         await UniTask.Yield();
     }

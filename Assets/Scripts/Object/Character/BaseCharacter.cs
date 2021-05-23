@@ -13,8 +13,9 @@ public class BaseCharacter : MonoBehaviour
     private List<SpriteRenderer> _renderList;
     [SerializeField] private Animator _animator;
     [Tooltip("CurrSpeed / Divider = 애니메이션 속도")]
-    [Range(1f, 5f)]
+    [Range(1f, 10f)]
     [SerializeField] private float _animSpeedDivider = 3f;
+    [SerializeField] private float _maxAnimSpeed = 2.5f;
     public void SetSampleCharacter()
     {
         status.Name = "샘플";
@@ -87,8 +88,14 @@ public class BaseCharacter : MonoBehaviour
         {
             _currSpeed = status.MaxSpeed;
         }
+        var animSpeed = 1f + (_currSpeed - 3f) / _animSpeedDivider;
+        
+        if(animSpeed >= _maxAnimSpeed)
+        {
+            animSpeed = _maxAnimSpeed;
+        }
 
-        _animator.speed = _currSpeed / _animSpeedDivider;
+        _animator.speed = animSpeed;
 
         await UniTask.Yield();
     }

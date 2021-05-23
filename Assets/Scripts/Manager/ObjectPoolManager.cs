@@ -122,6 +122,20 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
     }
 
+    public BaseEnemy GetNextEnemy()
+    {
+        var list = _activePoolList[ObjectType.Enemy];
+
+        if (list.Count >= 2)
+        {
+            return list.OrderBy(x => x.transform.position.x).ToList()[1].GetComponent<BaseEnemy>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public int GetEnemyCount()
     {
         return _activePoolList[ObjectType.Enemy].Count;

@@ -175,6 +175,8 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     
     public async UniTask ExecuteDead()
     {
+        await _inGamePresenter.OnTargetDestroy();
+
         if(status.hp == 0)
         { 
             await EnemyPop();
@@ -184,7 +186,6 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
             // 공격모션
         }
         ReturnObject();
-        await _inGamePresenter.OnTargetDestroy();
     }
 
     private async UniTask EnemyPop()
