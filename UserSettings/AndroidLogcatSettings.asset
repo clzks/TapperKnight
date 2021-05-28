@@ -1,0 +1,143 @@
+{
+    "m_SelectedDeviceId": "ce031713dc652e0102",
+    "m_SelectedPackage": {
+        "deviceId": "ce031713dc652e0102",
+        "name": "com.HeekizCompany.TapperKnight",
+        "processId": 32520,
+        "exited": false
+    },
+    "m_SelectedPriority": 1,
+    "m_KnownPackagesForSerialization": [
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 9731,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 10992,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 11834,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 13904,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 16026,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 17843,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 18848,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 20539,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 24078,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 27604,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 30763,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 30241,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 32520,
+            "exited": false
+        }
+    ],
+    "m_Tags": {
+        "m_Entries": [
+            {
+                "m_Name": "Filter by all listed tags",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "No Filter",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Tag Control...",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Unity",
+                "m_Selected": true
+            },
+            {
+                "m_Name": "CRASH",
+                "m_Selected": false
+            }
+        ]
+    },
+    "m_MemoryViewerState": {
+        "MemoryWindowHeight": 300.0,
+        "MemoryWindowWidth": 170.0,
+        "MemoryTypeEnabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "MemoryGroup": 2,
+        "Behavior": 0
+    },
+    "m_Filter": "",
+    "m_FilterIsRegularExpression": false,
+    "m_SymbolPaths": []
+}

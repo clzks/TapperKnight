@@ -1,5 +1,5 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
+#if !UNITY_ANDROID
 using System;
 using System.Linq;
 using System.Reflection;
@@ -60,3 +60,4 @@ namespace Cysharp.Threading.Tasks.Editor
     }
 }
 
+#endif

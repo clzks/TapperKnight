@@ -2,12 +2,16 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class DataManager : Singleton<DataManager>
 {
-    private string _path = "Assets/Data/";
+    //private string _path = "Assets/Data/";
     private string _texturePath = "Textures/Background/Stage";
     private Dictionary<ScoreType, Sprite> _scoreSpriteList;
     private Dictionary<string, Sprite> _noteSpriteList;
@@ -15,9 +19,11 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, EnemyModel> _enemyList;
     private Dictionary<int, List<BackgroundModel>> _backgroundModelList;
     private Dictionary<int, Dictionary<int, Texture>> _textureList;
-    private Dictionary<ScoreType, ScoreModel> _scoreList; 
-    public void Awake()
+    private Dictionary<ScoreType, ScoreModel> _scoreList;
+
+    public async UniTaskVoid GetDataAsync()
     {
+        Debug.Log("DM GetDataAsync Start");
         _noteSpriteList = new Dictionary<string, Sprite>();
         _stageList = new Dictionary<int, StageModel>();
         _enemyList = new Dictionary<int, EnemyModel>();
@@ -31,6 +37,7 @@ public class DataManager : Singleton<DataManager>
         LoadEnemyData().Forget();
         LoadBackground().Forget();
         LoadScoreData().Forget();
+        await UniTask.Yield();
     }
 
     public async UniTaskVoid LoadScoreSprite()
@@ -51,44 +58,85 @@ public class DataManager : Singleton<DataManager>
         _noteSpriteList.Add("BothSide", Resources.Load<Sprite>("Sprites/BothSide"));
         await UniTask.Yield();
     }
-
-    public TextAsset LoadTextAsset(string name)
+    
+    public string LoadTextAsset(string name)
     {
+//#if UNITY_EDITOR
         TextAsset textAsset;
-        name = _path + name + "Data.json";
-
-        textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(name);
-        return textAsset;
+        //textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(name);
+        textAsset = Resources.Load("Data/" + name + "Data") as TextAsset;
+        return textAsset.text;
+        //var filePath = Path.Combine(Application.streamingAssetsPath, name + "Data.json");
+        //var text = await LoadJsonString(filePath);
+        //return text;
+//#elif UNITY_ANDROID
+//        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", name + "Data.json");
+//        var text = await LoadJsonString(filePath);
+//        return text;
+//#endif 
     }
+
+    //private async UniTask<string> LoadJsonString(string url)
+    //{
+    //    UnityWebRequest www = UnityWebRequest.Get($"{url}");
+    //    while(!www.isDone)
+    //    {
+    //        await www.SendWebRequest();
+    //        Debug.Log("SendWebRequest 중");
+    //        await UniTask.Delay(1000);
+    //    }
+    //    return www.downloadHandler.text;
+    //}
 
     private async UniTaskVoid LoadStageData()
     {
-        TextAsset stageData = LoadTextAsset("Stage");
-        JArray stages = JObject.Parse(stageData.text)["Stage"] as JArray;
+        var stageData = LoadTextAsset("Stage");
+        Debug.Log(stageData);
+        JArray stages = JObject.Parse(stageData)["Stage"] as JArray;
         for (int i = 0; i < stages.Count; ++i)
         {
             var stage = stages[i].ToObject<StageModel>();
             _stageList.Add(stage.StageNumber, stage);
+        }
+
+        if(_stageList.Count == 0)
+        {
+            Debug.LogWarning("스테이지 불러오기 실패");
+        }
+        else
+        {
+            Debug.Log("스테이지 불러오기 성공");
         }
         await UniTask.Yield();
     }
 
     private async UniTaskVoid LoadEnemyData()
     {
-        TextAsset stageData = LoadTextAsset("Enemy");
-        JArray enemys = JObject.Parse(stageData.text)["Enemy"] as JArray;
+        var enemyList = LoadTextAsset("Enemy");
+
+        JArray enemys = JObject.Parse(enemyList)["Enemy"] as JArray;
         for (int i = 0; i < enemys.Count; ++i)
         {
             var enemy = enemys[i].ToObject<EnemyModel>();
             _enemyList.Add(enemy.Id, enemy);
+        }
+
+        if (_enemyList.Count == 0)
+        {
+            Debug.LogWarning("이네미 불러오기 실패");
+        }
+        else
+        {
+            Debug.Log("이네미 불러오기 성공");
         }
         await UniTask.Yield();
     }
 
     private async UniTaskVoid LoadBackground()
     {
-        TextAsset bgData = LoadTextAsset("Background");
-        JArray backgroundListData = JObject.Parse(bgData.text)["Background"] as JArray;
+        var bgData = LoadTextAsset("Background");
+
+        JArray backgroundListData = JObject.Parse(bgData)["Background"] as JArray;
         for(int i = 0; i < backgroundListData.Count; ++i)
         {
             var listModel = backgroundListData[i].ToObject<BackgroundListModel>();
@@ -102,18 +150,37 @@ public class DataManager : Singleton<DataManager>
             _textureList.Add(listModel.StageNumber, singleStageTexList);
             _backgroundModelList.Add(listModel.StageNumber, backgroundList);
         }
+
+        if (_backgroundModelList.Count == 0)
+        {
+            Debug.LogWarning("배경정보 불러오기 실패");
+        }
+        else
+        {
+            Debug.Log("배경정보 불러오기 성공");
+        }
         await UniTask.Yield();
     }
 
     private async UniTaskVoid LoadScoreData()
     {
-        TextAsset scoreData = LoadTextAsset("Score");
-        JArray scores = JObject.Parse(scoreData.text)["Score"] as JArray;
+        var scoreData = LoadTextAsset ("Score");
+
+        JArray scores = JObject.Parse(scoreData)["Score"] as JArray;
 
         for(int i = 0; i < scores.Count; ++i)
         {
             var score = scores[i].ToObject<ScoreModel>();
             _scoreList.Add(score.Type, score);
+        }
+
+        if (_scoreList.Count == 0)
+        {
+            Debug.LogWarning("스코어 정보 불러오기 실패");
+        }
+        else
+        {
+            Debug.Log("스코어 불러오기 성공");
         }
         await UniTask.Yield();
     }
@@ -126,6 +193,7 @@ public class DataManager : Singleton<DataManager>
 
     public Dictionary<int, StageModel> GetStageList()
     {
+        Debug.Log("DataManager GetStageList Start");
         return _stageList;
     }
 

@@ -47,7 +47,7 @@ public class InGameView : MonoBehaviour, IView
     [Header("Test")]
     public int testMaxStageNumber;
     [SerializeField] private bool _isAutoMode = false;
-    private void Awake()
+    private async UniTask Awake()
     {
         _gameManager = GameManager.Get();
         _objectPool = ObjectPoolManager.Get();
@@ -91,6 +91,7 @@ public class InGameView : MonoBehaviour, IView
         _score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
         _inGamePool = GameObject.Find("ObjectPool").transform;
         _spawnObject = GameObject.Find("Field/SpawnSpot").transform;
+        await UniTask.Yield();
     }
 
     private async UniTask Start()
@@ -100,7 +101,9 @@ public class InGameView : MonoBehaviour, IView
 
         while (InGameState.Ready == _state)
         {
+            Debug.Log("스타트");
             await Ready();
+            await UniTask.Delay(1000);
         }
     }
 
@@ -133,6 +136,7 @@ public class InGameView : MonoBehaviour, IView
     #region FSM
     private async UniTask Ready()
     {
+        Debug.Log("Ready");
         //_playerCharacter.SetSampleCharacter();
         _currClickButton = NoteType.Null;
         await GetStageModelAsync();
@@ -223,6 +227,7 @@ public class InGameView : MonoBehaviour, IView
         if(NoteType.Null == _currClickButton)
         {
             _currClickButton = type;
+            Debug.Log(_currClickButton.ToString() + "클릭");
         }
         else
         {
