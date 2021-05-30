@@ -34,6 +34,17 @@ public class BackgroundController : MonoBehaviour
         }
     }
 
+    public async UniTask Update()
+    {
+        await UniTask.Yield();
+        for (int i = 0; i < backgroundList.Count; ++i)
+        {
+            var spd = backgroundSpeedList[i];
+            backgroundList[i].SetSpeed(spd).Forget();
+            backgroundList[i].SetPlayerSpeedFactor(_playerSpeedFactor).Forget();
+        }
+    }
+
     public async UniTaskVoid SetBackgroundList(int stageNumber)
     {
         List<BackgroundModel> models = _dataManager.GetBackgroundList(stageNumber);
@@ -80,17 +91,4 @@ public class BackgroundController : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    // 에디터상에서 배경 스크롤 스피드를 조절해볼수 있게 하기위한 코드
-    public async UniTask Update()
-    {
-        await UniTask.Yield();
-        for(int i = 0; i < backgroundList.Count; ++i)
-        {
-            var spd = backgroundSpeedList[i];
-            backgroundList[i].SetSpeed(spd).Forget();
-            backgroundList[i].SetPlayerSpeedFactor(_playerSpeedFactor).Forget();
-        }
-    }
-#endif
 }

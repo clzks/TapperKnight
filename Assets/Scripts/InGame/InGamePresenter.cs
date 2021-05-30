@@ -38,7 +38,6 @@ public class InGamePresenter : MonoBehaviour, IPresenter
 
     public StageModel GetStageModel(int index, ref bool isLast)
     {
-        Debug.Log("GetStageModel Start");
         return _model.GetStageModel(index, ref isLast);
     }
 

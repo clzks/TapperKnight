@@ -12,7 +12,7 @@ public class LoadingScene : MonoBehaviour
 
         _dataManager = DataManager.Get();
 
-        _dataManager.GetDataAsync().Forget();
+        await _dataManager.GetDataAsync();
         await UniTask.Yield();
         SceneManager.LoadScene("NoteTest");
     }

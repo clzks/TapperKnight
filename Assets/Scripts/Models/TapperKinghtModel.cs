@@ -62,7 +62,6 @@ public class TapperKinghtModel : MonoBehaviour, IModel
 
     public StageModel GetStageModel(int index, ref bool isLast)
     {
-        Debug.Log("Model GetStageModel Start");
         if(_stageModelList.Count == index)
         {
             isLast = true;

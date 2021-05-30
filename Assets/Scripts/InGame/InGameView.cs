@@ -10,8 +10,8 @@ public class InGameView : MonoBehaviour, IView
 
     [Header("UI")]
     [SerializeField] private InGamePresenter _inGamePresenter;
-    [SerializeField] private Button _leftButton;
-    [SerializeField] private Button _rightButton;
+    [SerializeField] private NoteButton _leftButton;
+    [SerializeField] private NoteButton _rightButton;
     [SerializeField] private Button _singleRespawnButton;
     [SerializeField] private Button _autoRespawnButton;
     [SerializeField] private GameObject _noteBox;
@@ -57,14 +57,16 @@ public class InGameView : MonoBehaviour, IView
 
         if (null == _leftButton)
         {
-            _leftButton = GameObject.Find("LeftButton").GetComponent<Button>();
-            _leftButton.onClick.AddListener(() => OnClickButton(NoteType.Left).Forget());
+            _leftButton = GameObject.Find("LeftButton").GetComponent<NoteButton>();
+            _leftButton.SetBtnAction(() => OnClickButton(NoteType.Left).Forget());
+            //_leftButton.onClick.AddListener(() => OnClickButton(NoteType.Left).Forget());
         }
 
         if (null == _rightButton)
         {
-            _rightButton = GameObject.Find("RightButton").GetComponent<Button>();
-            _rightButton.onClick.AddListener(() => OnClickButton(NoteType.Right).Forget());
+            _rightButton = GameObject.Find("RightButton").GetComponent<NoteButton>();
+            _rightButton.SetBtnAction(() => OnClickButton(NoteType.Right).Forget());
+            //_rightButton.onClick.AddListener(() => OnClickButton(NoteType.Right).Forget());
         }
 
         if (null == _singleRespawnButton)
@@ -136,7 +138,6 @@ public class InGameView : MonoBehaviour, IView
     #region FSM
     private async UniTask Ready()
     {
-        Debug.Log("Ready");
         //_playerCharacter.SetSampleCharacter();
         _currClickButton = NoteType.Null;
         await GetStageModelAsync();

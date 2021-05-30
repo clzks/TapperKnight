@@ -21,9 +21,8 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, Dictionary<int, Texture>> _textureList;
     private Dictionary<ScoreType, ScoreModel> _scoreList;
 
-    public async UniTaskVoid GetDataAsync()
+    public async UniTask GetDataAsync()
     {
-        Debug.Log("DM GetDataAsync Start");
         _noteSpriteList = new Dictionary<string, Sprite>();
         _stageList = new Dictionary<int, StageModel>();
         _enemyList = new Dictionary<int, EnemyModel>();
@@ -33,10 +32,10 @@ public class DataManager : Singleton<DataManager>
 
         LoadScoreSprite().Forget();
         LoadNoteSprite().Forget();
-        LoadStageData().Forget();
-        LoadEnemyData().Forget();
-        LoadBackground().Forget();
-        LoadScoreData().Forget();
+        await LoadStageData();
+        await LoadEnemyData();
+        await LoadBackground();
+        await LoadScoreData();
         await UniTask.Yield();
     }
 
@@ -59,38 +58,35 @@ public class DataManager : Singleton<DataManager>
         await UniTask.Yield();
     }
     
-    public string LoadTextAsset(string name)
+    public async UniTask<string> LoadTextAsset(string name)
     {
-//#if UNITY_EDITOR
-        TextAsset textAsset;
+#if UNITY_EDITOR
+        //TextAsset textAsset;
         //textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(name);
-        textAsset = Resources.Load("Data/" + name + "Data") as TextAsset;
-        return textAsset.text;
-        //var filePath = Path.Combine(Application.streamingAssetsPath, name + "Data.json");
-        //var text = await LoadJsonString(filePath);
-        //return text;
-//#elif UNITY_ANDROID
-//        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", name + "Data.json");
-//        var text = await LoadJsonString(filePath);
-//        return text;
-//#endif 
+        //textAsset = Resources.Load("Data/" + name + "Data") as TextAsset;
+        //return textAsset.text;
+        var filePath = Path.Combine(Application.streamingAssetsPath, name + "Data.json");
+#elif UNITY_ANDROID
+        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", name + "Data.json");
+#endif 
+        var text = await LoadJsonString(filePath);
+        return text;
     }
 
-    //private async UniTask<string> LoadJsonString(string url)
-    //{
-    //    UnityWebRequest www = UnityWebRequest.Get($"{url}");
-    //    while(!www.isDone)
-    //    {
-    //        await www.SendWebRequest();
-    //        Debug.Log("SendWebRequest Сп");
-    //        await UniTask.Delay(1000);
-    //    }
-    //    return www.downloadHandler.text;
-    //}
-
-    private async UniTaskVoid LoadStageData()
+    private async UniTask<string> LoadJsonString(string url)
     {
-        var stageData = LoadTextAsset("Stage");
+        UnityWebRequest www = UnityWebRequest.Get($"{url}");
+        while(!www.isDone)
+        {
+            await www.SendWebRequest();
+            Debug.Log("SendWebRequest Сп");
+        }
+        return www.downloadHandler.text;
+    }
+
+    private async UniTask LoadStageData()
+    {
+        var stageData = await LoadTextAsset("Stage");
         Debug.Log(stageData);
         JArray stages = JObject.Parse(stageData)["Stage"] as JArray;
         for (int i = 0; i < stages.Count; ++i)
@@ -110,9 +106,9 @@ public class DataManager : Singleton<DataManager>
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid LoadEnemyData()
+    private async UniTask LoadEnemyData()
     {
-        var enemyList = LoadTextAsset("Enemy");
+        var enemyList = await LoadTextAsset("Enemy");
 
         JArray enemys = JObject.Parse(enemyList)["Enemy"] as JArray;
         for (int i = 0; i < enemys.Count; ++i)
@@ -132,9 +128,9 @@ public class DataManager : Singleton<DataManager>
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid LoadBackground()
+    private async UniTask LoadBackground()
     {
-        var bgData = LoadTextAsset("Background");
+        var bgData = await LoadTextAsset("Background");
 
         JArray backgroundListData = JObject.Parse(bgData)["Background"] as JArray;
         for(int i = 0; i < backgroundListData.Count; ++i)
@@ -162,9 +158,9 @@ public class DataManager : Singleton<DataManager>
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid LoadScoreData()
+    private async UniTask LoadScoreData()
     {
-        var scoreData = LoadTextAsset ("Score");
+        var scoreData = await LoadTextAsset("Score");
 
         JArray scores = JObject.Parse(scoreData)["Score"] as JArray;
 
