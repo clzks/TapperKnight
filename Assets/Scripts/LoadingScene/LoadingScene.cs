@@ -8,8 +8,9 @@ public class LoadingScene : MonoBehaviour
     private DataManager _dataManager;
     private async UniTask Awake()
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
         Application.targetFrameRate = 60;
-
+#endif
         _dataManager = DataManager.Get();
 
         await _dataManager.GetDataAsync();

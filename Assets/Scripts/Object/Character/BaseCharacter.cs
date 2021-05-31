@@ -17,7 +17,7 @@ public class BaseCharacter : MonoBehaviour
     [SerializeField] private float _animSpeedDivider = 3f;
     [SerializeField] private float _maxAnimSpeed = 2.5f;
 
-    private CancellationTokenSource _lifeTimerCancelToken;
+    private CancellationTokenSource _lifeTimerCancelToken = new CancellationTokenSource();
 
     public void SetSampleCharacter()
     {
