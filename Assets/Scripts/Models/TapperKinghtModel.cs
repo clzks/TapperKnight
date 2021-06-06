@@ -114,7 +114,7 @@ public class TapperKinghtModel : MonoBehaviour, IModel
         if(_playerModel.OwnScore + score >= 0)
         {
             _playerModel.OwnScore += score;
-            Debug.Log("점수" + score + "점 획득. 현재 스코어 : " + _playerModel.OwnScore);
+            //Debug.Log("점수" + score + "점 획득. 현재 스코어 : " + _playerModel.OwnScore);
             await UniTask.Yield();
             return true;
         }

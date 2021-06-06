@@ -194,8 +194,17 @@ public class InGameView : MonoBehaviour, IView
             {
                 if (_currGenTimer >= _genTime)
                 {
-                    _currGenTimer = 0f;
-                    await MakeEnemy();
+                    var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
+                    var delayTime = CheckEnemyInterval(enemyModel);
+                    if (delayTime > 0f)
+                    {
+                        _currGenTimer = _genTime - delayTime;
+                    }
+                    else
+                    {
+                        _currGenTimer = 0f;
+                        await MakeEnemy(enemyModel);
+                    }
                 }
             }
         }
@@ -228,7 +237,7 @@ public class InGameView : MonoBehaviour, IView
         if(NoteType.Null == _currClickButton)
         {
             _currClickButton = type;
-            Debug.Log(_currClickButton.ToString() + "클릭");
+            //Debug.Log(_currClickButton.ToString() + "클릭");
         }
         else
         {
@@ -259,7 +268,8 @@ public class InGameView : MonoBehaviour, IView
 
     private async UniTask OnClickSingleRespawnButton()
     {
-        await MakeEnemy();
+        var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
+        await MakeEnemy(enemyModel);
     }
 
     private async UniTask OnClickAutoRespawnButton()
@@ -335,15 +345,50 @@ public class InGameView : MonoBehaviour, IView
         return _targetEnemy;
     }
 
-    public async UniTask MakeEnemy()
+    public async UniTask MakeEnemy(EnemyModel enemyModel)
     {
-        await UniTask.Yield();
         BaseEnemy enemy = (BaseEnemy)_objectPool.MakeObject(ObjectType.Enemy);
         enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         await enemy.SetInGamePool(_inGamePool);
-        var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
         await enemy.SetEnemy(enemyModel, _spawnObject.position);
         SetGenTime().Forget();
+    }
+
+    public float CheckEnemyInterval(EnemyModel WaitingEnemy)
+    {
+        var lastEnemy = _objectPool.GetLastEnemy();
+
+        if (null != lastEnemy && lastEnemy.GetLastNote() != null)
+        {
+            var playerSpd = _inGamePresenter.GetPlayerSpeed();
+            var LastNote = lastEnemy.GetLastNote();
+            float firstArriveTime = LastNote.GetEstimatedArrivalTime();
+            float secondArriveTime = (_spawnObject.position.x - _noteBoxPos.x) / (WaitingEnemy.MoveSpeed + playerSpd * _enemySpeedFactorByPlayer);
+
+            if(secondArriveTime < firstArriveTime)
+            {
+                Debug.Log("후속노트가 선행노트를 앞지르므로 " + (firstArriveTime - secondArriveTime + 0.3f) + "초 만큼 뒤로 미룹니다");
+                return firstArriveTime - secondArriveTime + 0.3f;
+            }
+            else if(secondArriveTime - 0.1f < firstArriveTime)
+            {
+                Debug.Log("후속노트가 선행노트를 앞지르므로 0.2초 만큼 뒤로 미룹니다");
+                return 0.2f;
+            }
+            else if (secondArriveTime - 0.2f < firstArriveTime)
+            {
+                Debug.Log("후속노트가 선행노트를 앞지르므로 0.1초 만큼 뒤로 미룹니다");
+                return 0.1f;
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+        else
+        {
+            return 0f;
+        }
     }
 
     public async UniTask OnTargetDestroy()

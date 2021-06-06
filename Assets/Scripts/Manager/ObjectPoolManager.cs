@@ -136,6 +136,25 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
     }
 
+    public BaseEnemy GetLastEnemy()
+    {
+        if(false == _activePoolList.ContainsKey(ObjectType.Enemy))
+        {
+            return null;
+        }
+
+        var list = _activePoolList[ObjectType.Enemy];
+
+        if (list.Count != 0)
+        {
+            return list.OrderBy(x => x.transform.position.x).Last().GetComponent<BaseEnemy>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public int GetEnemyCount()
     {
         return _activePoolList[ObjectType.Enemy].Count;

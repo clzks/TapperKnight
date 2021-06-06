@@ -158,7 +158,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
         parentEnemy.OnNoteCall(score).Forget();
         NotePop(score).Forget();
         ScorePop(score).Forget();
-        Debug.Log("점수 : " + score.ToString());
+        //Debug.Log("점수 : " + score.ToString());
         await UniTask.Yield();
     }
 
@@ -212,6 +212,12 @@ public class BaseNote : MonoBehaviour, IPoolObject
         return gameObject;
     }
 
+    public float GetEstimatedArrivalTime()
+    {
+        var playerSpeed = _inGamePresenter.GetPlayerSpeed();
+
+        return (Position - _boxPosX) / (_speed + playerSpeed * _playerSpeedFactor);
+    }
     public ObjectType GetObjectType()
     {
         return ObjectType.Note;

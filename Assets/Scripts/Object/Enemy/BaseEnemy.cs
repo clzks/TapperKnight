@@ -15,7 +15,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     private Transform _inGamePool;
     private float _playerSpeedFactor;
     private List<Vector3> _popDestination;
-
+    private BaseNote _lastNote;
     private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
     //private CancellationTokenSource _destroyCancellation = new CancellationTokenSource();
     private async UniTask OnEnable()
@@ -106,6 +106,11 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
             note.SetNoteSpeed(status.speed, _playerSpeedFactor).Forget();
             note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
             enemyNotes.Enqueue(note);
+
+            if(status.hp - 1 == i)
+            {
+                _lastNote = note;
+            }
         }
         
         await UniTask.Yield();
@@ -146,6 +151,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield(_disableCancellation.Token);
         if(0 == enemyNotes.Count)
         {
+            _lastNote = null;
             await ExecuteDead();
         }
         else
@@ -233,6 +239,11 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     public ObjectType GetObjectType()
     {
         return ObjectType.Enemy;
+    }
+
+    public BaseNote GetLastNote()
+    {
+        return _lastNote;
     }
 }
 
