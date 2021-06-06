@@ -182,7 +182,7 @@ public class InGameView : MonoBehaviour, IView
 
             var runDistance = await _playerCharacter.AddRecord();
             _currStageRunningDistance += runDistance;
-            if (_currStageRunningDistance >= _currStageTrackLength)
+            if (_currStageRunningDistance >= _currStageTrackLength && !_isLastStage)
             {
                 if (0 == _objectPool.GetEnemyCount())
                 {
