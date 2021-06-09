@@ -8,14 +8,20 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     public Dictionary<ObjectType, GameObject> prefabList;
     public Dictionary<ObjectType, List<GameObject>> _objectPoolList;
     public Dictionary<ObjectType, List<GameObject>> _activePoolList;
-
+    public Dictionary<string, GameObject> _characterPrefabList;
+    private GameObject _characterIconPrefab;
+    private Dictionary<string, Sprite> _characterIconImageList;
     private async UniTask Awake()
     {
         prefabList = new Dictionary<ObjectType, GameObject>();
-
         prefabList.Add(ObjectType.Note, Resources.Load<GameObject>("Prefabs/Note"));
         prefabList.Add(ObjectType.Enemy, Resources.Load<GameObject>("Prefabs/BaseEnemy"));
         prefabList.Add(ObjectType.Score, Resources.Load<GameObject>("Prefabs/Score"));
+        _characterPrefabList = new Dictionary<string, GameObject>();
+        LoadCharacterPrefabs().Forget();
+        _characterIconPrefab = Resources.Load<GameObject>("Prefabs/Characters/Icon/CharacterIcon");
+        _characterIconImageList = new Dictionary<string, Sprite>();
+        LoadCharacterIconImageList().Forget();
         await UniTask.Yield();
     }
 
@@ -158,5 +164,39 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     public int GetEnemyCount()
     {
         return _activePoolList[ObjectType.Enemy].Count;
+    }
+
+    private async UniTask LoadCharacterPrefabs()
+    {
+        var prefabArray = Resources.LoadAll<GameObject>("Prefabs/Characters");
+
+        foreach (var item in prefabArray)
+        {
+            _characterPrefabList.Add(item.name, item);
+        }
+
+        await UniTask.Yield();
+    }
+
+    private async UniTask LoadCharacterIconImageList()
+    {
+        var prefabArray = Resources.LoadAll<Sprite>("Sprites/CharacterIcon");
+
+        foreach (var item in prefabArray)
+        {
+            _characterIconImageList.Add(item.name, item);
+        }
+        
+        await UniTask.Yield();
+    }
+
+    public GameObject GetCharcterIcon()
+    {
+        return _characterIconPrefab;
+    }
+
+    public Dictionary<string, Sprite> GetCharacterIconImageList()
+    {
+        return _characterIconImageList;
     }
 }

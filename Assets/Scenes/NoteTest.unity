@@ -2083,6 +2083,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 157420, guid: 449ed149d64c54042b8df20c882446ee, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 183788, guid: 449ed149d64c54042b8df20c882446ee, type: 3}
       propertyPath: m_Name
       value: gladiator01

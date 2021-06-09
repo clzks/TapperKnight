@@ -15,6 +15,6 @@ public class LoadingScene : MonoBehaviour
 
         await _dataManager.GetDataAsync();
         await UniTask.Yield();
-        SceneManager.LoadScene("NoteTest");
+        SceneManager.LoadScene("CharacterSelectScene");
     }
 }

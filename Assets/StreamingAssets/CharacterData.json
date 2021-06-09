@@ -1,0 +1,147 @@
+{
+    "Description": {
+        "Id": "정보를 구분 짓는 값",
+        "NameKR": "캐릭터 선택 화면에 보여줄 이름",
+        "PrefabName" :"Resources/Prefabs/Charters/ 안 프리팹 이름(ENG)",
+        "Hp": "캐릭터 체력",
+        "MinSpeed": "캐릭터 최소 속도 및 시작 속도(float)",
+        "MaxSpeed": "캐릭터 최대 속도(float)",
+        "HpDecreasePerSecond": "캐릭터 초당 체력 감소량(float)",
+        "Defence": "방어력(임시로 만들어둠, 쓰이지 않고 있음. float)",
+        "Cost" : "캐릭터 구매에 필요한 값?(int)"
+    },
+  "Character": [
+    {
+      "Id": 10000,
+      "NameKR": "글라디에이터",
+      "PrefabName" : "gladiator01",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 0
+    },
+    {
+      "Id": 20000,
+      "NameKR": "워리어",
+      "PrefabName" : "gladiator02",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 100
+    },
+    {
+  	  "Id": 30000,
+      "NameKR": "바바리안",
+      "PrefabName" : "gladiator03",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 200
+    },
+    {
+      "Id": 40000,
+      "NameKR": "아쳐",
+      "PrefabName" : "archer01",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 300
+    },
+    {
+      "Id": 50000,
+      "NameKR": "샤프슈터",
+      "PrefabName" : "archer02",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 400
+    },
+    {
+   	  "Id": 60000,
+      "NameKR": "레인저",
+      "PrefabName" : "archer03",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 500
+    },
+    {
+      "Id": 70000,
+      "NameKR": "위자드",
+      "PrefabName" : "wizard01",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 600
+    },
+    {
+      "Id": 80000,
+      "NameKR": "프리스트",
+      "PrefabName" : "wizard02",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 700
+    },
+    {
+      "Id": 90000,
+      "NameKR": "메이지",
+      "PrefabName" : "wizard03",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 800
+    },
+    {
+      "Id": 100000,
+      "NameKR": "아사신",
+      "PrefabName" : "assassin01",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 900
+    },
+    {
+      "Id": 110000,
+      "NameKR": "시프",
+      "PrefabName" : "assassin02",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 1000
+    },
+    {
+      "Id": 120000,
+      "NameKR": "트릭스터",
+      "PrefabName" : "assassin03",
+      "Hp": 100.0,
+      "MinSpeed": 1.0,
+      "MaxSpeed": 10.0,
+      "HpDecreasePerSecond": 1,
+      "Defence": 3.0,
+      "Cost": 1000
+    }
+  ]
+}

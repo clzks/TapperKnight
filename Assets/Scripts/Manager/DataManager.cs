@@ -19,8 +19,9 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, EnemyModel> _enemyList;
     private Dictionary<int, List<BackgroundModel>> _backgroundModelList;
     private Dictionary<int, Dictionary<int, Texture>> _textureList;
+    private Dictionary<int, CharacterModel> _characterList;
     private Dictionary<ScoreType, ScoreModel> _scoreList;
-
+    private PlayerModel _playerModel;
     public async UniTask GetDataAsync()
     {
         _noteSpriteList = new Dictionary<string, Sprite>();
@@ -29,6 +30,7 @@ public class DataManager : Singleton<DataManager>
         _backgroundModelList = new Dictionary<int, List<BackgroundModel>>();
         _textureList = new Dictionary<int, Dictionary<int, Texture>>();
         _scoreList = new Dictionary<ScoreType, ScoreModel>();
+        _characterList = new Dictionary<int, CharacterModel>();
 
         LoadScoreSprite().Forget();
         LoadNoteSprite().Forget();
@@ -36,6 +38,8 @@ public class DataManager : Singleton<DataManager>
         await LoadEnemyData();
         await LoadBackground();
         await LoadScoreData();
+        await LoadCharacterData();
+        await LoadPlayerData();
         await UniTask.Yield();
     }
 
@@ -181,6 +185,38 @@ public class DataManager : Singleton<DataManager>
         await UniTask.Yield();
     }
 
+    private async UniTask LoadCharacterData()
+    {
+        var characterData = await LoadTextAsset("Character");
+
+        JArray characters = JObject.Parse(characterData)["Character"] as JArray;
+
+        for (int i = 0; i < characters.Count; ++i)
+        {
+            var character = characters[i].ToObject<CharacterModel>();
+            _characterList.Add(character.Id, character);
+        }
+
+        if (_characterList.Count == 0)
+        {
+            Debug.LogWarning("캐릭터 정보 불러오기 실패");
+        }
+        else
+        {
+            Debug.Log("캐릭터 불러오기 성공");
+        }
+        await UniTask.Yield();
+    }
+
+    private async UniTask LoadPlayerData()
+    {
+        var playerData = await LoadTextAsset("Player");
+
+        JObject player = JObject.Parse(playerData)["Player"] as JObject;
+
+        _playerModel = player.ToObject<PlayerModel>();
+    }
+
     private Texture GetTextureFromResources(int stageNumber, int layerNumber)
     {
         Texture texture = Resources.Load<Texture>(_texturePath + stageNumber.ToString() + "/Layer" + layerNumber);
@@ -237,5 +273,15 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<ScoreType, Sprite> GetScoreSpriteList()
     {
         return _scoreSpriteList;
+    }
+
+    public Dictionary<int, CharacterModel> GetCharacterList()
+    {
+        return _characterList;
+    }
+
+    public PlayerModel GetPlayerModel()
+    {
+        return _playerModel;
     }
 }
