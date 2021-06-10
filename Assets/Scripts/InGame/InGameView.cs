@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class InGameView : MonoBehaviour, IView
 {
     private GameManager _gameManager;
@@ -14,6 +15,7 @@ public class InGameView : MonoBehaviour, IView
     [SerializeField] private NoteButton _rightButton;
     [SerializeField] private Button _singleRespawnButton;
     [SerializeField] private Button _autoRespawnButton;
+    [SerializeField] private Button _returnToCharacterSelectButton;
     [SerializeField] private GameObject _noteBox;
     [SerializeField] private Vector2 _noteBoxPos;
     [SerializeField] private List<Vector3> _notePopDestination;
@@ -79,6 +81,12 @@ public class InGameView : MonoBehaviour, IView
         {
             _autoRespawnButton = GameObject.Find("AutoRespawn").GetComponent<Button>();
             _autoRespawnButton.onClick.AddListener(async () => await OnClickAutoRespawnButton());
+        }
+
+        if(null == _returnToCharacterSelectButton)
+        {
+            _returnToCharacterSelectButton = GameObject.Find("ReturnToSelectButton").GetComponent<Button>();
+            _returnToCharacterSelectButton.onClick.AddListener(() => OnClickReturnToCharacterSelectButton());
         }
 
         _noteBox = GameObject.Find("Field/NoteBox");
@@ -220,7 +228,7 @@ public class InGameView : MonoBehaviour, IView
         _playerCharacter.SetSortingLayer("Character").Forget();
         await InitStageFactor();
         await GetStageModelAsync();
-        SetGenTime().Forget();
+        SetGenTime();
         _state = InGameState.Play;
         _playerCharacter.CastLifeTimer().Forget();
     }
@@ -278,6 +286,10 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
     }
 
+    private void OnClickReturnToCharacterSelectButton()
+    {
+        SceneManager.LoadScene("CharacterSelectScene");
+    }
 
     private async UniTask UpdateCharacterHp()
     {
@@ -292,13 +304,12 @@ public class InGameView : MonoBehaviour, IView
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid SetGenTime()
+    private void SetGenTime()
     {
         if(_inGameStageModel != null)
         {
             _genTime = Random.Range(_inGameStageModel.MinimumGenCycle, _inGameStageModel.MaximumGenCycle);
         }
-        await UniTask.Yield();
     }
 
     public float GetPlayerSpeed()
@@ -348,7 +359,7 @@ public class InGameView : MonoBehaviour, IView
         enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         await enemy.SetInGamePool(_inGamePool);
         await enemy.SetEnemy(enemyModel, _spawnObject.position);
-        SetGenTime().Forget();
+        SetGenTime();
     }
 
     public float CheckEnemyInterval(EnemyModel WaitingEnemy)
