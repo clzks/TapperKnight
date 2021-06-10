@@ -199,4 +199,9 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         return _characterIconImageList;
     }
+
+    public GameObject GetCharacterPrefab(string prefabName)
+    {
+        return _characterPrefabList[prefabName];
+    }
 }

@@ -13,7 +13,7 @@ public class CharacterIcon : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject _lockText;
     [SerializeField] private GameObject _unSelectImage;
     public UnityAction clickAction;
- 
+    
 
 
     public void SetCharacter(CharacterModel character)

@@ -86,14 +86,14 @@ public class InGamePresenter : MonoBehaviour, IPresenter
 
         if (score == ScoreType.Miss)
         {
-            _inGameView.TakeDamage(damage).Forget();
+            _inGameView.TakeDamage(damage);
         }
         else
         {
-            _inGameView.Attack().Forget();
+            _inGameView.Attack();
         }
 
-        _inGameView.AddSpeed(accel).Forget();
+        _inGameView.AddSpeed(accel);
 
         await _model.AddScore(score);
     }

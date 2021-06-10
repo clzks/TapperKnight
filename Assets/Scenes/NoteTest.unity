@@ -728,12 +728,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84927a3ff89e749448cde9dc5e7ffbe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prefabParent: {fileID: 656846712}
   status:
     Name: "\uC0D8\uD50C"
     MaxHp: 60
     HpDecreasePerSecond: 1
-    NormalSpeed: 3
     MaxSpeed: 50
+    MinSpeed: 0
   _currSpeed: 5
   _currHp: 60
   _runningRecord: 0
@@ -2090,6 +2091,10 @@ PrefabInstance:
     - target: {fileID: 183788, guid: 449ed149d64c54042b8df20c882446ee, type: 3}
       propertyPath: m_Name
       value: gladiator01
+      objectReference: {fileID: 0}
+    - target: {fileID: 183788, guid: 449ed149d64c54042b8df20c882446ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 419356, guid: 449ed149d64c54042b8df20c882446ee, type: 3}
       propertyPath: m_RootOrder

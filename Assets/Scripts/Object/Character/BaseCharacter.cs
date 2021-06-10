@@ -5,32 +5,24 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 public class BaseCharacter : MonoBehaviour
 {
+    private GameManager _gameManager;
+    private ObjectPoolManager _objectPool;
+    [SerializeField] private Transform _prefabParent;
     [SerializeField] private CharacterStatus status;
     //public SkinnedMeshRenderer meshRenderer;
     [SerializeField]private float _currSpeed;
     [SerializeField] private float _currHp;
     [SerializeField] private float _runningRecord;
     private List<SpriteRenderer> _renderList;
-    [SerializeField] private Animator _animator;
+    private Animator _animator;
     [Tooltip("CurrSpeed / Divider = 局聪皋捞记 加档")]
     [Range(1f, 10f)]
-    [SerializeField] private float _animSpeedDivider = 3f;
-    [SerializeField] private float _maxAnimSpeed = 2.5f;
-
+    [SerializeField] private float _animSpeedDivider = 5f;
+    [SerializeField] private float _maxAnimSpeed = 2f;
+    [SerializeField] private float _minAnimSpeed = 1f;
     private CancellationTokenSource _lifeTimerCancelToken = new CancellationTokenSource();
 
-    public void SetSampleCharacter()
-    {
-        status.Name = "基敲";
-        status.MaxHp = 60;
-        status.HpDecreasePerSecond = 1;
-        status.NormalSpeed = 3;
-        status.MaxSpeed = 10;
-        status.MaxSpeed = 1;
-        _currSpeed = status.NormalSpeed;
-        _currHp = status.MaxHp;
-        _runningRecord = 0;
-    }
+    
     private void OnDisable()
     {
         _lifeTimerCancelToken.Cancel();
@@ -38,19 +30,43 @@ public class BaseCharacter : MonoBehaviour
 
     private async UniTask Awake()
     {
+        _gameManager = GameManager.Get();
+        _objectPool = ObjectPoolManager.Get();
+
+        CharacterModel model = _gameManager.GetSelectModel();
+        string prefabName = model.PrefabName;
+        GameObject prefab = Instantiate(_objectPool.GetCharacterPrefab(prefabName));
+        prefab.transform.SetParent(_prefabParent);
+        prefab.transform.localPosition = new Vector3(0, 0, 0);
+        SetCharacterStatus(model);
+        await UniTask.Yield();
+    }
+
+    private async UniTask Start()
+    {
+        _animator = gameObject.GetComponentInChildren<Animator>();
+
         _renderList = new List<SpriteRenderer>();
         var list = gameObject.GetComponentsInChildren<SpriteRenderer>(true);
         foreach (var item in list)
         {
             _renderList.Add(item);
         }
+
+        SetSortingLayer("Character").Forget();
         await UniTask.Yield();
     }
 
-    private async UniTask Start()
+    public void SetCharacterStatus(CharacterModel model)
     {
-        SetSortingLayer("Character").Forget();
-        await UniTask.Yield();
+        status.Name = model.NameKR;
+        status.MaxHp = model.Hp;
+        status.HpDecreasePerSecond = model.HpDecreasePerSecond;
+        status.MaxSpeed = model.MaxSpeed;
+        status.MinSpeed = model.MinSpeed;
+        _currSpeed = status.MinSpeed;
+        _currHp = status.MaxHp;
+        _runningRecord = 0;
     }
 
     public async UniTaskVoid CastLifeTimer()
@@ -60,14 +76,13 @@ public class BaseCharacter : MonoBehaviour
         while (_currHp >= 0)
         {
             await UniTask.Delay(1000, false, 0f, _lifeTimerCancelToken.Token);
-            TakeDamage(status.HpDecreasePerSecond, false).Forget();
+            TakeDamage(status.HpDecreasePerSecond, false);
         }
     }
 
-    public async UniTaskVoid StopLifeTimer()
+    public void StopLifeTimer()
     {
         _lifeTimerCancelToken.Cancel();
-        await UniTask.Yield();
     }
 
     public async UniTask<float> AddRecord()
@@ -78,7 +93,7 @@ public class BaseCharacter : MonoBehaviour
         return runningValue;
     }
 
-    public async UniTaskVoid TakeDamage(float damage, bool changeAnim)
+    public void TakeDamage(float damage, bool changeAnim)
     {
         if(true == changeAnim)
         {
@@ -93,16 +108,14 @@ public class BaseCharacter : MonoBehaviour
             _currHp = 0f;
             // 磷澜贸府
         }
-
-        await UniTask.Yield();
     }
 
-    public async UniTaskVoid AddSpeed(float speed)
+    public void AddSpeed(float speed)
     {
         _currSpeed += speed;
-        if(_currSpeed < status.NormalSpeed)
+        if(_currSpeed < status.MinSpeed)
         {
-            _currSpeed = status.NormalSpeed;
+            _currSpeed = status.MinSpeed;
         }
         else if(_currSpeed > status.MaxSpeed)
         {
@@ -114,16 +127,18 @@ public class BaseCharacter : MonoBehaviour
         {
             animSpeed = _maxAnimSpeed;
         }
+        
+        if(animSpeed <= _minAnimSpeed)
+        {
+            animSpeed = _minAnimSpeed;
+        }
 
         _animator.speed = animSpeed;
-
-        await UniTask.Yield();
     }
     
-    public async UniTaskVoid Attack()
+    public void Attack()
     {
         _animator.Play("Attack");
-        await UniTask.Yield();
     }
 
     public float GetPositionY()
@@ -163,6 +178,6 @@ public struct CharacterStatus
     public string Name;
     public float MaxHp;
     public float HpDecreasePerSecond;
-    public float NormalSpeed;
     public float MaxSpeed;
+    public float MinSpeed;
 }

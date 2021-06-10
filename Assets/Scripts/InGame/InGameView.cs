@@ -213,7 +213,7 @@ public class InGameView : MonoBehaviour, IView
 
     private async UniTask Change()
     {
-        _playerCharacter.StopLifeTimer().Forget();
+        _playerCharacter.StopLifeTimer();
         _currentStageNumber++;
         _playerCharacter.SetSortingLayer("StageChangeBlock").Forget();
         await _bgController.ExecuteStageChange(_currentStageNumber, _blackOutTime);
@@ -316,22 +316,19 @@ public class InGameView : MonoBehaviour, IView
         return _notePopDestination;
     }
 
-    public async UniTaskVoid TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
-        _playerCharacter.TakeDamage(damage, true).Forget();
-        await UniTask.Yield();
+        _playerCharacter.TakeDamage(damage, true);
     }
 
-    public async UniTaskVoid AddSpeed(float accel)
+    public void AddSpeed(float accel)
     {
-        _playerCharacter.AddSpeed(accel).Forget();
-        await UniTask.Yield();
+        _playerCharacter.AddSpeed(accel);
     }
 
-    public async UniTaskVoid Attack()
+    public void Attack()
     {
-        _playerCharacter.Attack().Forget();
-        await UniTask.Yield();
+        _playerCharacter.Attack();
     }
 
     public async UniTask SetTarget(BaseEnemy enemy)

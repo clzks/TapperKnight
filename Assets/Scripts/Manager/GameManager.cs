@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     private InGamePresenter _inGamePresenter;
+    private CharacterModel _currSelectCharacter;
 
     public void SetInGamePresenter(InGamePresenter presenter)
     {
@@ -20,6 +21,16 @@ public class GameManager : Singleton<GameManager>
         }
 
         return _inGamePresenter;
+    }
+
+    public void SetSelectCharacter(CharacterModel model)
+    {
+        _currSelectCharacter = model;
+    }
+
+    public CharacterModel GetSelectModel()
+    {
+        return _currSelectCharacter;
     }
 
     private async UniTask OnApplicationQuit()
