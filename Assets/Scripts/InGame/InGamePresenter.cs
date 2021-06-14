@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InGamePresenter : MonoBehaviour, IPresenter
+public class InGamePresenter : MonoBehaviour
 {
     [SerializeField]private InGameView _inGameView;
     [SerializeField]private TapperKinghtModel _model;

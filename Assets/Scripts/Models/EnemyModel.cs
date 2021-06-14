@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-
-public class EnemyModel : IModel
+public class EnemyModel
 {
     public int Id { get; set; }
     public string Name { get; set; }

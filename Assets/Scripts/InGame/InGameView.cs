@@ -1,10 +1,9 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-public class InGameView : MonoBehaviour, IView
+public class InGameView : MonoBehaviour
 {
     private GameManager _gameManager;
     private ObjectPoolManager _objectPool;

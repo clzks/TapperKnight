@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageModel : IModel
+public class StageModel
 {
     public int Id { get; set; }
     public int StageNumber { get; set; }

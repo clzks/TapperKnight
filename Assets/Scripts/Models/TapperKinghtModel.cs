@@ -1,9 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TapperKinghtModel : MonoBehaviour, IModel
+public class TapperKinghtModel : MonoBehaviour
 {
     // 스테이지 별 몬스터 등장 데이터를 들고있어야 하며
     // 프레젠터에게 요청받을 시 해당 몬스터의 정보를 뷰에게 넘겨준다.
@@ -16,43 +15,38 @@ public class TapperKinghtModel : MonoBehaviour, IModel
     private Dictionary<ScoreType, Sprite> _scoreSpriteList;
     private PlayerModel _playerModel;
     
-    private async UniTask Awake()
+    private void Awake()
     {
         _dataManager = DataManager.Get();
-        await SetStageList();
-        await SetEnemyList();
-        await SetScoreModel();
-        await SetNoteSpriteList();
-        await SetScoreSpriteList();
-        _playerModel = new PlayerModel(); // 임시
+        SetStageList();
+        SetEnemyList();
+        SetScoreModel();
+        SetNoteSpriteList();
+        SetScoreSpriteList();
+        _playerModel = _dataManager.GetPlayerModel();
     }
     
-    public async UniTask SetStageList()
+    public void SetStageList()
     {
         _stageModelList = DataManager.Get().GetStageList();
-        await UniTask.Yield();
     }
 
-    public async UniTask SetEnemyList()
+    public void SetEnemyList()
     {
         _enemyModelList = DataManager.Get().GetEnemyList();
-        await UniTask.Yield();
     }
-    public async UniTask SetScoreModel()
+    public void SetScoreModel()
     {
         _scoreList = _dataManager.GetScoreList();
-        await UniTask.Yield();
     }
-    public async UniTask SetNoteSpriteList()
+    public void SetNoteSpriteList()
     {
         _noteSpriteList = _dataManager.GetSpriteList();
-        await UniTask.Yield();
     }
 
-    public async UniTask SetScoreSpriteList()
+    public void SetScoreSpriteList()
     {
         _scoreSpriteList = _dataManager.GetScoreSpriteList();
-        await UniTask.Yield();
     }
 
     public StageModel GetStageModel(int index)
