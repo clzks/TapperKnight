@@ -15,10 +15,11 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private List<Vector3> _notePopDestination;
     private SpriteRenderer _renderer;
     private int _sortingOrder;
+    private bool _isDiscriminated;
     //private bool _isOnNoteCall = false;
     //private Transform _inGamePool;
     public float Position { get { return transform.position.x; } }
-    public NoteType noteType;
+    private NoteType _noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
     private InGamePresenter _inGamePresenter;
 
@@ -30,6 +31,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
         {
             _disableCancellation.Dispose();
         }
+        _isDiscriminated = false;
         _disableCancellation = new CancellationTokenSource();
         _objectPool = _objectPool ?? ObjectPoolManager.Get();
         _renderer = _renderer ?? GetComponentInChildren<SpriteRenderer>();
@@ -122,7 +124,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
             return;
         }
 
-        if (type != noteType)
+        if (type != _noteType)
         {
             Debug.Log("노트와 버튼정보 불일치");
             await NoteCall(score);
@@ -155,6 +157,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
 
     private async UniTask NoteCall(ScoreType score)
     {
+        _isDiscriminated = true;
         parentEnemy.OnNoteCall(score).Forget();
         NotePop(score).Forget();
         ScorePop(score).Forget();
@@ -221,5 +224,25 @@ public class BaseNote : MonoBehaviour, IPoolObject
     public ObjectType GetObjectType()
     {
         return ObjectType.Note;
+    }
+    
+    public bool IsScoreDiscrimitated()
+    {
+        return _isDiscriminated;
+    }
+
+    public float GetPosition()
+    {
+        return Position;
+    }
+
+    public NoteType GetNoteType()
+    {
+        return _noteType;
+    }
+
+    public void SetNoteType(NoteType type)
+    {
+        _noteType = type;
     }
 }

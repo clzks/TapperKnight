@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
     private InGamePresenter _inGamePresenter;
     private CharacterModel _currSelectCharacter;
-
+    public bool isTitle;
     public void SetInGamePresenter(InGamePresenter presenter)
     {
         _inGamePresenter = presenter;

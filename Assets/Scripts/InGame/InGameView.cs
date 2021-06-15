@@ -48,56 +48,64 @@ public class InGameView : MonoBehaviour
     [Header("Test")]
     public int testMaxStageNumber;
     [SerializeField] private bool _isAutoMode = false;
+    [Header("TitleAutoMode")]
+    [SerializeField] private bool _isTitleMode;
+    [SerializeField] private float _autoPlayDelay;
+    [SerializeField] private float _autoPlayTimer = 0f;
+
     private async UniTask Awake()
     {
         _gameManager = GameManager.Get();
+        _isTitleMode = _gameManager.isTitle;
         _objectPool = ObjectPoolManager.Get();
         _objectPool.InitPool();
 
         _state = InGameState.Ready;
 
-        if (null == _leftButton)
+        if (false == _isTitleMode)
         {
-            _leftButton = GameObject.Find("LeftButton").GetComponent<NoteButton>();
-            _leftButton.SetBtnAction(() => OnClickButton(NoteType.Left).Forget());
-            //_leftButton.onClick.AddListener(() => OnClickButton(NoteType.Left).Forget());
+            if (null == _leftButton)
+            {
+                _leftButton = GameObject.Find("LeftButton").GetComponent<NoteButton>();
+                _leftButton.SetBtnAction(() => OnClickButton(NoteType.Left).Forget());
+            }
+
+            if (null == _rightButton)
+            {
+                _rightButton = GameObject.Find("RightButton").GetComponent<NoteButton>();
+                _rightButton.SetBtnAction(() => OnClickButton(NoteType.Right).Forget());
+            }
+
+            if (null == _singleRespawnButton)
+            {
+                _singleRespawnButton = GameObject.Find("SingleRespawn").GetComponent<Button>();
+                _singleRespawnButton.onClick.AddListener(async () => await OnClickSingleRespawnButton());
+            }
+
+            if (null == _autoRespawnButton)
+            {
+                _autoRespawnButton = GameObject.Find("AutoRespawn").GetComponent<Button>();
+                _autoRespawnButton.onClick.AddListener(async () => await OnClickAutoRespawnButton());
+            }
+
+            if (null == _returnToCharacterSelectButton)
+            {
+                _returnToCharacterSelectButton = GameObject.Find("ReturnToSelectButton").GetComponent<Button>();
+                _returnToCharacterSelectButton.onClick.AddListener(() => OnClickReturnToCharacterSelectButton());
+            }
+
+            _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
+            _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
+            _score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
         }
 
-        if (null == _rightButton)
-        {
-            _rightButton = GameObject.Find("RightButton").GetComponent<NoteButton>();
-            _rightButton.SetBtnAction(() => OnClickButton(NoteType.Right).Forget());
-            //_rightButton.onClick.AddListener(() => OnClickButton(NoteType.Right).Forget());
-        }
-
-        if (null == _singleRespawnButton)
-        {
-            _singleRespawnButton = GameObject.Find("SingleRespawn").GetComponent<Button>();
-            _singleRespawnButton.onClick.AddListener(async () => await OnClickSingleRespawnButton());
-        }
-
-        if (null == _autoRespawnButton)
-        {
-            _autoRespawnButton = GameObject.Find("AutoRespawn").GetComponent<Button>();
-            _autoRespawnButton.onClick.AddListener(async () => await OnClickAutoRespawnButton());
-        }
-
-        if(null == _returnToCharacterSelectButton)
-        {
-            _returnToCharacterSelectButton = GameObject.Find("ReturnToSelectButton").GetComponent<Button>();
-            _returnToCharacterSelectButton.onClick.AddListener(() => OnClickReturnToCharacterSelectButton());
-        }
-
+        _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
         _noteBox = GameObject.Find("Field/NoteBox");
         _noteBoxPos = _noteBox.transform.position;
-        _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
         _bgController = GameObject.Find("Field/Backgrounds").GetComponent<BackgroundController>();
         _notePopDestination = new List<Vector3>();
         _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Bezier").transform.position);
         _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Destination").transform.position);
-        _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
-        _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
-        _score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
         _inGamePool = GameObject.Find("ObjectPool").transform;
         _spawnObject = GameObject.Find("Field/SpawnSpot").transform;
         await UniTask.Yield();
@@ -118,13 +126,16 @@ public class InGameView : MonoBehaviour
 
     private async UniTask Update()
     {
-        if (InGameState.Play != _state)
+        if (_state == InGameState.Play)
         {
-            return;
+            await Play();
+            await UpdateCharacterRecord();
+            await UpdateCharacterHp();
         }
-        await Play();
-        await UpdateCharacterRecord();
-        await UpdateCharacterHp();
+        else if(_state == InGameState.AutoPlay)
+        {
+            await AutoPlay();
+        }
     }
 
     public async UniTask GetStageModelAsync()
@@ -135,7 +146,13 @@ public class InGameView : MonoBehaviour
         _genTime = _inGameStageModel.MaximumGenCycle;
     }
 
-    
+    public async UniTask GetRandomStageModelAsync()
+    {
+        await UniTask.Yield();
+        _inGameStageModel = _inGamePresenter.GetRandomStageModel();
+        _currStageTrackLength = _inGameStageModel.TrackLength;
+        _genTime = _inGameStageModel.MaximumGenCycle;
+    }
 
     public void SetPresenter(InGamePresenter presenter)
     {
@@ -145,7 +162,13 @@ public class InGameView : MonoBehaviour
     #region FSM
     private async UniTask Ready()
     {
-        //_playerCharacter.SetSampleCharacter();
+        if(true == _isTitleMode)
+        {
+            await GetRandomStageModelAsync();
+            _state = InGameState.AutoPlay;
+            return;
+        }
+        
         _currClickButton = NoteType.Null;
         await GetStageModelAsync();
         
@@ -158,6 +181,48 @@ public class InGameView : MonoBehaviour
         {
             Debug.Log("게임데이터 로드 실패");
             await UniTask.Delay(1000);
+        }
+    }
+
+    private async UniTask AutoPlay()
+    {
+        _currGenTimer += Time.deltaTime;
+        _autoPlayTimer += Time.deltaTime;
+
+        if (_currGenTimer >= _genTime)
+        {
+            var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
+            var delayTime = CheckEnemyInterval(enemyModel);
+            if (delayTime > 0f)
+            {
+                _currGenTimer = _genTime - delayTime;
+            }
+            else
+            {
+                _currGenTimer = 0f;
+                await MakeEnemy(enemyModel);
+            }
+        }
+
+        if(_autoPlayTimer >= _autoPlayDelay)
+        {
+            _autoPlayTimer = 0f;
+
+            var Note = _objectPool.GetNote();
+
+            if(Note.GetPosition() - _noteBoxPos.x <= 1f)
+            {
+                int r = Random.Range(0, 101);
+                
+                if(r % 5 >= 1)
+                {
+                    OnClickButton(Note.GetNoteType()).Forget();
+                }
+                else
+                {
+
+                }
+            }    
         }
     }
 

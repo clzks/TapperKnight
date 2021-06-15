@@ -28,11 +28,11 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     public IPoolObject MakeObject(ObjectType type)
     {
         IPoolObject obj;
-       
+
         List<GameObject> pool;
         List<GameObject> activePool;
 
-        if(_objectPoolList.ContainsKey(type) == true)
+        if (_objectPoolList.ContainsKey(type) == true)
         {
             pool = _objectPoolList[type];
         }
@@ -42,7 +42,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             _objectPoolList.Add(type, pool);
         }
 
-        if(pool.Count != 0)
+        if (pool.Count != 0)
         {
             obj = pool[0].GetComponent<IPoolObject>();
             obj.GetObject().SetActive(true);
@@ -53,7 +53,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             obj = Instantiate(prefabList[type]).GetComponent<IPoolObject>();
         }
 
-        if(_activePoolList.ContainsKey(type) == true)
+        if (_activePoolList.ContainsKey(type) == true)
         {
             activePool = _activePoolList[type];
         }
@@ -90,7 +90,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         _objectPoolList = new Dictionary<ObjectType, List<GameObject>>();
         _activePoolList = new Dictionary<ObjectType, List<GameObject>>();
     }
-    
+
     public void ResetPool()
     {
         foreach (var item in _objectPoolList)
@@ -144,7 +144,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
     public BaseEnemy GetLastEnemy()
     {
-        if(false == _activePoolList.ContainsKey(ObjectType.Enemy))
+        if (false == _activePoolList.ContainsKey(ObjectType.Enemy))
         {
             return null;
         }
@@ -154,6 +154,21 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         if (list.Count != 0)
         {
             return list.OrderBy(x => x.transform.position.x).Last().GetComponent<BaseEnemy>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public BaseNote GetNote()
+    {
+        var list = _activePoolList[ObjectType.Note];
+
+        if (list.Count != 0)
+        {
+            list = list.FindAll(x => !x.GetComponent<BaseNote>().IsScoreDiscrimitated());
+            return list.OrderBy(x => x.transform.position.x).First().GetComponent<BaseNote>();
         }
         else
         {

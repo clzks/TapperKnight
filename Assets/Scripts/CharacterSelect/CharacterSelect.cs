@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class CharacterSelectScene : MonoBehaviour
+public class CharacterSelect : MonoBehaviour
 {
     private DataManager _dataManager;
     private ObjectPoolManager _objectPool;
@@ -78,6 +78,7 @@ public class CharacterSelectScene : MonoBehaviour
 
     public void ExecuteStart()
     {
+        GameManager.Get().isTitle = false;
         SceneManager.LoadScene("NoteTest");
     }
 }

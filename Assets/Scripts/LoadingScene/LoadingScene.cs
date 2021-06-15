@@ -15,6 +15,7 @@ public class LoadingScene : MonoBehaviour
 
         await _dataManager.GetDataAsync();
         await UniTask.Yield();
-        SceneManager.LoadScene("CharacterSelectScene");
+        GameManager.Get().isTitle = true;
+        SceneManager.LoadScene("TitleScene");
     }
 }

@@ -41,6 +41,11 @@ public class InGamePresenter : MonoBehaviour
         return _model.GetStageModel(index, ref isLast);
     }
 
+    public StageModel GetRandomStageModel()
+    {
+        return _model.GetRandomStageModel();
+    }
+
     public EnemyModel GetRandomEnemy(int stageNumber)
     {
         return _model.GetRandomEnemy(stageNumber);

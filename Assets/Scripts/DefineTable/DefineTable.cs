@@ -23,6 +23,7 @@ public enum InGameState
 { 
     Ready,
     Play,
+    AutoPlay,
     Change,
     Count
 }

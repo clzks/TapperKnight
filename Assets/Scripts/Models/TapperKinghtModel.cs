@@ -54,6 +54,13 @@ public class TapperKinghtModel : MonoBehaviour
         return _stageModelList[index];
     }
 
+    public StageModel GetRandomStageModel()
+    {
+        int count = _stageModelList.Count;
+
+        return _stageModelList[Random.Range(1, count + 1)];
+    }
+
     public StageModel GetStageModel(int index, ref bool isLast)
     {
         if(_stageModelList.Count == index)

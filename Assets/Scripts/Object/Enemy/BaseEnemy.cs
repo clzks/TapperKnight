@@ -122,17 +122,17 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
 
         if(0 == r)
         {
-            bn.noteType = NoteType.Left;
+            bn.SetNoteType(NoteType.Left);
             bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Left")).Forget();
         }
         else if(1 == r)
         {
-            bn.noteType = NoteType.Right;
+            bn.SetNoteType(NoteType.Right);
             bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Right")).Forget();
         }
         else
         {
-            bn.noteType = NoteType.BothSide;
+            bn.SetNoteType(NoteType.BothSide);
             bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("BothSide")).Forget();
         }
         await UniTask.Yield();
