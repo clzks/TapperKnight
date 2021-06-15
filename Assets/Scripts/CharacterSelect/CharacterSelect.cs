@@ -10,22 +10,30 @@ public class CharacterSelect : MonoBehaviour
     private DataManager _dataManager;
     private ObjectPoolManager _objectPool;
     private GameManager _gameManager;
+    [SerializeField] private GameObject _scrollView;
+    [SerializeField] private GameObject _statusUI;
+
     [SerializeField] private RectTransform _contentTransform;
     [SerializeField] private Text _nameText;
     [SerializeField] private Text _hpText;
     [SerializeField] private Text _maxSpeedText;
     [SerializeField] private Text _minSpeedText;
-    [SerializeField] private Button _startButton;
+    [SerializeField] private Button _enterInGameButton;
+    [SerializeField] private Button _backToLobbyButton;
     private CharacterIcon _selectIcon;
+    private List<GameObject> _uiObjectList;
     private void Awake()
     {
         _objectPool = ObjectPoolManager.Get();
         _dataManager = DataManager.Get();
         _gameManager = GameManager.Get();
+        _uiObjectList = new List<GameObject>();
     }
 
     private void Start()
     {
+        _uiObjectList.Add(_scrollView);
+        _uiObjectList.Add(_statusUI);
         LoadCharacterIcon();
     }
 
@@ -69,7 +77,8 @@ public class CharacterSelect : MonoBehaviour
             _selectIcon = icon;
         }
         _gameManager.SetSelectCharacter(model);
-        _startButton.gameObject.SetActive(true);
+        _enterInGameButton.gameObject.SetActive(true);
+        _backToLobbyButton.gameObject.SetActive(true);
         _nameText.text = model.NameKR;
         _hpText.text = model.Hp.ToString();
         _maxSpeedText.text = model.MaxSpeed.ToString();
@@ -80,5 +89,13 @@ public class CharacterSelect : MonoBehaviour
     {
         GameManager.Get().isTitle = false;
         SceneManager.LoadScene("NoteTest");
+    }
+
+    public void SetActiveCharacterSelectUI(bool enabled)
+    {
+        foreach (var item in _uiObjectList)
+        {
+            item.SetActive(enabled);
+        }
     }
 }

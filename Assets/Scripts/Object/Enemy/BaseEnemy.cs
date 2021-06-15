@@ -176,7 +176,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     {
         _inGamePool = tr;
         transform.SetParent(_inGamePool);
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
     }
     
     public async UniTask ExecuteDead()

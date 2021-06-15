@@ -99,5 +99,6 @@ public class TitleScene : MonoBehaviour
     {
         _isStart = true;
         SceneManager.LoadScene("LobbyScene");
+        //SceneManager.LoadScene("CharacterSelectScene");
     }
 }

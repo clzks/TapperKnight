@@ -1592,12 +1592,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff991f132e54c3643ac9dab4b5645486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scrollView: {fileID: 628880663}
+  _statusUI: {fileID: 1519561778}
   _contentTransform: {fileID: 1592679669}
   _nameText: {fileID: 797772956}
   _hpText: {fileID: 2045252848}
   _maxSpeedText: {fileID: 54420346}
   _minSpeedText: {fileID: 1813563308}
-  _startButton: {fileID: 2129366874}
+  _enterInGameButton: {fileID: 2129366874}
 --- !u!1 &1813563306
 GameObject:
   m_ObjectHideFlags: 0

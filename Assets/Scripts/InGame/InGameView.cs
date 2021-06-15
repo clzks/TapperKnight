@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Threading;
+
 public class InGameView : MonoBehaviour
 {
     private GameManager _gameManager;
@@ -45,13 +47,26 @@ public class InGameView : MonoBehaviour
     [SerializeField] private NoteType _currClickButton = NoteType.Null;
     [SerializeField] private Transform _inGamePool;
     [SerializeField] private Transform _spawnObject;
+
     [Header("Test")]
     public int testMaxStageNumber;
     [SerializeField] private bool _isAutoMode = false;
+
     [Header("TitleAutoMode")]
     [SerializeField] private bool _isTitleMode;
     [SerializeField] private float _autoPlayDelay;
     [SerializeField] private float _autoPlayTimer = 0f;
+
+    private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
+
+    private void OnEnable()
+    {
+        if (_disableCancellation != null)
+        {
+            _disableCancellation.Dispose();
+        }
+        _disableCancellation = new CancellationTokenSource();
+    }
 
     private async UniTask Awake()
     {
@@ -91,7 +106,7 @@ public class InGameView : MonoBehaviour
             if (null == _returnToCharacterSelectButton)
             {
                 _returnToCharacterSelectButton = GameObject.Find("ReturnToSelectButton").GetComponent<Button>();
-                _returnToCharacterSelectButton.onClick.AddListener(() => OnClickReturnToCharacterSelectButton());
+                _returnToCharacterSelectButton.onClick.AddListener(() => OnClickReturnToLobbySceneButton());
             }
 
             _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
@@ -301,7 +316,7 @@ public class InGameView : MonoBehaviour
     {
         _currGenTimer = 0f;
         _currStageRunningDistance = 0f;
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
     }
 
     private async UniTaskVoid OnClickButton(NoteType type)
@@ -328,7 +343,7 @@ public class InGameView : MonoBehaviour
         while(delayTimer <= _bothSideDelayTime)
         {
             delayTimer += Time.deltaTime;
-            await UniTask.Yield();
+            await UniTask.Yield(_disableCancellation.Token);
         }
 
         var note = _targetEnemy?.GetNote();
@@ -347,25 +362,25 @@ public class InGameView : MonoBehaviour
     private async UniTask OnClickAutoRespawnButton()
     {
         _isAutoMode = !_isAutoMode;
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
     }
 
-    private void OnClickReturnToCharacterSelectButton()
+    private void OnClickReturnToLobbySceneButton()
     {
-        SceneManager.LoadScene("CharacterSelectScene");
+        SceneManager.LoadScene("LobbyScene");
     }
 
     private async UniTask UpdateCharacterHp()
     {
         _hpBar.fillAmount = _playerCharacter.GetHpPercent();
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
     }
 
     private async UniTask UpdateCharacterRecord()
     {
         _runnigRecord.text = _playerCharacter.GetRunningRecord().ToString();
         _score.text = _inGamePresenter.GetScore().ToString();
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
     }
 
     private void SetGenTime()
@@ -409,7 +424,7 @@ public class InGameView : MonoBehaviour
     public async UniTask SetTarget(BaseEnemy enemy)
     {
         _targetEnemy = enemy;
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
     }
 
     public BaseEnemy GetTarget()
@@ -467,6 +482,11 @@ public class InGameView : MonoBehaviour
     {
         var nextTarget = _objectPool.GetNextEnemy();
         _targetEnemy = nextTarget ? nextTarget : null;
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
+    }
+
+    private void OnDisable()
+    {
+        _disableCancellation.Cancel();
     }
 }
