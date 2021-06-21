@@ -44,13 +44,15 @@ public class FPS : MonoBehaviour
 
     void OnGUI()//소스로 GUI 표시.
     {
+        if (Time.timeScale != 0f)
+        {
+            msec = deltaTime * 1000.0f;
+            fps = 1.0f / deltaTime;  //초당 프레임 - 1초에
 
-        msec = deltaTime * 1000.0f;
-        fps = 1.0f / deltaTime;  //초당 프레임 - 1초에
-
-        if (fps < worstFps)  //새로운 최저 fps가 나왔다면 worstFps 바꿔줌.
-            worstFps = fps;
-        text = msec.ToString("F1") + "ms (" + fps.ToString("F1") + ") //worst : " + worstFps.ToString("F1");
-        GUI.Label(rect, text, style);
+            if (fps < worstFps)  //새로운 최저 fps가 나왔다면 worstFps 바꿔줌.
+                worstFps = fps;
+            text = msec.ToString("F1") + "ms (" + fps.ToString("F1") + ") //worst : " + worstFps.ToString("F1");
+            GUI.Label(rect, text, style);
+        }
     }
 }

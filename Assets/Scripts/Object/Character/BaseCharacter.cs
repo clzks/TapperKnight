@@ -94,7 +94,9 @@ public class BaseCharacter : MonoBehaviour
 
     public void TakeDamage(float damage, bool changeAnim)
     {
-        if(true == changeAnim)
+        _currSpeed = status.MinSpeed;
+
+        if (true == changeAnim)
         {
             _animator.Play("Damage");
         }

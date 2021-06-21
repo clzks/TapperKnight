@@ -14,6 +14,7 @@ public class InGameScene : MonoBehaviour
         SetMvpPattern();
         _gameManager = GameManager.Get();
         _gameManager.SetInGamePresenter(_inGamePresenter);
+        _gameManager.SetSceneType(SceneType.InGame);
     }
 
     private void MakeMvpPattern()

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    private SceneType _currSceneType;
     private InGamePresenter _inGamePresenter;
     private CharacterModel _currSelectCharacter;
     public bool isTitle;
@@ -33,9 +34,18 @@ public class GameManager : Singleton<GameManager>
         return _currSelectCharacter;
     }
 
-    private async UniTask OnApplicationQuit()
+    private void OnApplicationQuit()
     {
         ObjectPoolManager.Get().ResetPool();
-        await UniTask.Yield();
+    }
+
+    public void SetSceneType(SceneType type)
+    {
+        _currSceneType = type;
+    }
+
+    public SceneType GetSceneType()
+    {
+        return _currSceneType;
     }
 }

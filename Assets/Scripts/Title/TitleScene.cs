@@ -20,6 +20,7 @@ public class TitleScene : MonoBehaviour
         SetMvpPattern();
         _gameManager = GameManager.Get();
         _gameManager.SetInGamePresenter(_inGamePresenter);
+        _gameManager.SetSceneType(SceneType.Title);
     }
 
     private async UniTask Start()

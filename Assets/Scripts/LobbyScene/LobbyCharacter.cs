@@ -46,6 +46,10 @@ public class LobbyCharacter : MonoBehaviour
 
         await UniTask.Yield();
     }
+    private void OnDestroy()
+    {
+        _disableCancellation.Cancel();
+    }
 
     private void OnDisable()
     {
@@ -59,6 +63,8 @@ public class LobbyCharacter : MonoBehaviour
 
     private async UniTask TakeRandomAction(LobbyAnimType state)
     {
+        await UniTask.Yield(_disableCancellation.Token);
+
         SetAnimationClip(state);
 
         switch (state)
@@ -91,7 +97,6 @@ public class LobbyCharacter : MonoBehaviour
                 await Dead();
                 break;
         }
-
         var nextState = actionStateList[UnityEngine.Random.Range(0, actionStateList.Count)];
 
         await TakeRandomAction(nextState);

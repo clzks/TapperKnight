@@ -56,6 +56,15 @@ public enum CharacterAnimType
     Damage
 }
 
+public enum SceneType
+{
+    Loading,
+    Title,
+    Lobby,
+    InGame,
+    Count
+}
+
 
 public static class Formula
 {
