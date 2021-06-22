@@ -80,6 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noteParent: {fileID: 6390968954434411045}
   meshRenderer: {fileID: 6390968953910547927}
+  _animator: {fileID: 6390968953906376783}
 --- !u!114 &6390968953928820852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +104,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -242,6 +244,11 @@ PrefabInstance:
 --- !u!4 &6390968953915837221 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 427550, guid: 718f809cac638134bbceb321c8c8c50f, type: 3}
+  m_PrefabInstance: {fileID: 6390968953915739451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6390968953906376783 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9518452, guid: 718f809cac638134bbceb321c8c8c50f, type: 3}
   m_PrefabInstance: {fileID: 6390968953915739451}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &6390968953910547927 stripped

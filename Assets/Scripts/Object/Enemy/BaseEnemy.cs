@@ -17,6 +17,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     private List<Vector3> _popDestination;
     private BaseNote _lastNote;
     private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
+    [SerializeField] private Animator _animator;
     //private CancellationTokenSource _destroyCancellation = new CancellationTokenSource();
     private async UniTask OnEnable()
     {
@@ -145,7 +146,12 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         
         if(ScoreType.Miss != score)
         {
+            _animator.Play("Damage");
             status.hp -= 1;
+        }
+        else
+        {
+            _animator.Play("Attack");
         }
 
         await UniTask.Yield(_disableCancellation.Token);
@@ -182,6 +188,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     public async UniTask ExecuteDead()
     {
         await _inGamePresenter.OnTargetDestroy();
+        float time = 0f;
 
         if(status.hp == 0)
         { 
@@ -189,7 +196,12 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         }
         else
         {
-            // 공격모션
+            // 끝까지 이동하는 코드
+            while (time <= 2f)
+            {
+                await UniTask.Yield(_disableCancellation.Token);
+                time += Time.deltaTime;
+            }
         }
         ReturnObject();
     }

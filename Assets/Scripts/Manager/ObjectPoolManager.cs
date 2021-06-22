@@ -146,7 +146,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
         if (list.Count >= 2)
         {
-            return list.OrderBy(x => x.transform.position.x).ToList()[1].GetComponent<BaseEnemy>();
+            return list.FindAll(x => x.GetComponent<BaseEnemy>().GetNoteCount() != 0).OrderBy(x => x.transform.position.x).First().GetComponent<BaseEnemy>();
         }
         else
         {
