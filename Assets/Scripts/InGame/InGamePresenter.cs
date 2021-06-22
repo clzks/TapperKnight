@@ -65,6 +65,11 @@ public class InGamePresenter : MonoBehaviour
     {
         return _model.GetScore();
     }
+
+    public void SetScore(int score)
+    {
+        _model.SetScore(score);
+    }
     public float GetPlayerSpeed()
     {
         return _inGameView.GetPlayerSpeed();

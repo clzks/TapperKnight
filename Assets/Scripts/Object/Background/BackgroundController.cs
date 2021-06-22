@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
@@ -13,9 +14,14 @@ public class BackgroundController : MonoBehaviour
     public List<float> backgroundSpeedList;
     [SerializeField] private SpriteRenderer _stageChangeBlock;
     [SerializeField] private float _playerSpeedFactor;
-    public void Awake()
+    private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
+    public void OnEnable()
     {
-
+        if (_disableCancellation != null)
+        {
+            _disableCancellation.Dispose();
+        }
+        _disableCancellation = new CancellationTokenSource();
     }
     public async UniTask Start()
     {
@@ -79,7 +85,7 @@ public class BackgroundController : MonoBehaviour
         while (_stageChangeBlock.color.a < 1f)
         {
             _stageChangeBlock.color += new Color(0, 0, 0, Time.deltaTime * screenBlackOutTime);
-            await UniTask.Yield();
+            await UniTask.Yield(_disableCancellation.Token);
         }
         
         SetBackgroundList(stageNumber).Forget();
@@ -87,7 +93,7 @@ public class BackgroundController : MonoBehaviour
         while(_stageChangeBlock.color.a > 0f)
         {
             _stageChangeBlock.color -= new Color(0, 0, 0, Time.deltaTime * screenBlackOutTime);
-            await UniTask.Yield();
+            await UniTask.Yield(_disableCancellation.Token);
         }
     }
 

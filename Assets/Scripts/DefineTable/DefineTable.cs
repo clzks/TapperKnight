@@ -25,6 +25,7 @@ public enum InGameState
     Play,
     AutoPlay,
     Change,
+    GameOver,
     Count
 }
 public enum ObjectType

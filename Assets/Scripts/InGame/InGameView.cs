@@ -23,6 +23,7 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Image _hpBar;
     [SerializeField] private Text _runnigRecord;
     [SerializeField] private Text _score;
+    [SerializeField] private ResultPanel _result;
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
     private StageModel _inGameStageModel;
@@ -109,6 +110,12 @@ public class InGameView : MonoBehaviour
                 _returnToCharacterSelectButton.onClick.AddListener(() => OnClickReturnToLobbySceneButton());
             }
 
+            if (null == _result)
+            {
+                _result = GameObject.Find("ResultPanel").GetComponent<ResultPanel>();
+            }
+
+            _result.RetryButton.onClick.AddListener(async () => await Retry());
             _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
             _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
             _score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
@@ -173,7 +180,6 @@ public class InGameView : MonoBehaviour
     {
         _inGamePresenter = presenter;
     }
-
     #region FSM
     private async UniTask Ready()
     {
@@ -183,7 +189,7 @@ public class InGameView : MonoBehaviour
             _state = InGameState.AutoPlay;
             return;
         }
-        
+
         _currClickButton = NoteType.Null;
         await GetStageModelAsync();
         
@@ -265,6 +271,13 @@ public class InGameView : MonoBehaviour
 
         if (true == _isAutoMode)
         {
+            if(_playerCharacter.GetHp() <= 0f)
+            {
+                _state = InGameState.GameOver;
+                await GameOver();
+                return;
+            }
+
             _currGenTimer += Time.deltaTime;
 
             var runDistance = await _playerCharacter.AddRecord();
@@ -275,6 +288,7 @@ public class InGameView : MonoBehaviour
                 {
                     _state = InGameState.Change;
                     await Change();
+                    return;
                 }
             }
             else
@@ -300,8 +314,35 @@ public class InGameView : MonoBehaviour
 
     private async UniTask Change()
     {
-        _playerCharacter.StopLifeTimer();
         _currentStageNumber++;
+        await PrepareNextStage();
+    }
+
+    private async UniTask GameOver()
+    {
+        await _playerCharacter.ExecuteDead();
+        Time.timeScale = 0f;
+        _result.SetScore(_inGamePresenter.GetScore());
+        _result.SetRecord(_playerCharacter.GetRunningRecord());
+        _result.SetActive(true);
+    }
+    #endregion
+    public async UniTask Retry()
+    {
+        _targetEnemy = null;
+        _objectPool.ReturnAllObject();
+        _result.SetActive(false);
+        Time.timeScale = 1f;
+        _currentStageNumber = 1;
+        _playerCharacter.ResetCharacter();
+        _inGamePresenter.SetScore(0);
+        await UpdateCharacterRecord();
+        await PrepareNextStage();
+    }
+
+    public async UniTask PrepareNextStage()
+    {
+        _playerCharacter.StopLifeTimer();
         _playerCharacter.SetSortingLayer("StageChangeBlock").Forget();
         await _bgController.ExecuteStageChange(_currentStageNumber, _blackOutTime);
         _playerCharacter.SetSortingLayer("Character").Forget();
@@ -311,7 +352,7 @@ public class InGameView : MonoBehaviour
         _state = InGameState.Play;
         _playerCharacter.CastLifeTimer().Forget();
     }
-    #endregion
+
     private async UniTask InitStageFactor()
     {
         _currGenTimer = 0f;
@@ -487,6 +528,7 @@ public class InGameView : MonoBehaviour
 
     private void OnDisable()
     {
+        Time.timeScale = 1f;
         _disableCancellation.Cancel();
     }
 }

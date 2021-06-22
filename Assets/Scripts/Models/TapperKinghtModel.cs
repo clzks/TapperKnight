@@ -144,6 +144,11 @@ public class TapperKinghtModel : MonoBehaviour
         return _playerModel.OwnScore;
     }
 
+    public void SetScore(int score)
+    {
+        _playerModel.OwnScore = score;
+    }
+
     public Sprite GetNoteSprite(string noteType)
     {
         return _noteSpriteList[noteType];

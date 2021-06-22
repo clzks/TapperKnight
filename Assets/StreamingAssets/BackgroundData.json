@@ -18,7 +18,7 @@
         {
           "LayerNumber": 1,
           "ScrollSpeed": 1.0,
-          "YPosition": -3.79,
+          "YPosition": -4.6,
           "XScale": 27.0,
           "YScale": 6.0
         },
@@ -40,7 +40,7 @@
           "LayerNumber": 4,
           "ScrollSpeed": 0.2,
           "YPosition": 0,
-          "XScale": 19.2,
+          "XScale": 27,
           "YScale": 14.4
         }
       ]

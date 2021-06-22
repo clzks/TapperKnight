@@ -94,11 +94,10 @@ public class BaseCharacter : MonoBehaviour
 
     public void TakeDamage(float damage, bool changeAnim)
     {
-        _currSpeed = status.MinSpeed;
-
-        if (true == changeAnim)
+        if (true == changeAnim && _currHp > 0f)
         {
             _animator.Play("Damage");
+            _currSpeed = status.MinSpeed;
         }
 
         _currHp -= damage;
@@ -107,13 +106,13 @@ public class BaseCharacter : MonoBehaviour
         if (_currHp <= 0f)
         {
             _currHp = 0f;
-            // Á×À½Ã³¸®
         }
     }
 
     public void AddSpeed(float speed)
     {
         _currSpeed += speed;
+
         if(_currSpeed < status.MinSpeed)
         {
             _currSpeed = status.MinSpeed;
@@ -142,6 +141,18 @@ public class BaseCharacter : MonoBehaviour
         _animator.Play("Attack");
     }
 
+    public void Move()
+    {
+        _animator.Play("Move");   
+    }
+
+    public void ResetCharacter()
+    {
+        CharacterModel model = _gameManager.GetSelectModel();
+        Move();
+        SetCharacterStatus(model);
+    }
+
     public float GetPositionY()
     {
         return transform.position.y;
@@ -157,6 +168,11 @@ public class BaseCharacter : MonoBehaviour
         await UniTask.Yield();
     }
 
+    public async UniTask ExecuteDead()
+    {
+        _animator.Play("Dead");
+        await UniTask.Delay(1200);
+    }
     public float GetHpPercent()
     {
         return _currHp / status.MaxHp;
@@ -170,6 +186,11 @@ public class BaseCharacter : MonoBehaviour
     public float GetSpeed()
     {
         return _currSpeed;
+    }
+
+    public float GetHp()
+    {
+        return _currHp;
     }
 }
 

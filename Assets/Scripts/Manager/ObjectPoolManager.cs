@@ -91,6 +91,18 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         _activePoolList = new Dictionary<ObjectType, List<GameObject>>();
     }
 
+    public void ReturnAllObject()
+    {
+        foreach (var item in _activePoolList)
+        {
+            for(int i = item.Value.Count -1; i > -1; --i)
+            {
+                IPoolObject iObj = item.Value[i].GetComponent<IPoolObject>();
+                ReturnObject(iObj);
+            }
+        }
+    }
+
     public void ResetPool()
     {
         foreach (var item in _objectPoolList)
