@@ -1,20 +1,20 @@
 {
     "Description": {
-        "Id": "정보를 구분 짓는 값",
-        "Name": "이름",
-        "Damage": "몬스터 데미지",
-        "MoveSpeed": "초당 이동 거리. 1.0 = 1.0f",
-        "MinNoteCount": "노트 최소 갯수",
-        "MaxNoteCount": "노트 최대 갯수. Min과 Max 사이에 랜덤한 체력이 세팅된다",
-        "MinNoteInterval": "노트들간의 최소 거리간격",
-        "MaxNoteInterval": "노트들간의 최대 거리간격, Min과 Max사이에 랜덤한 값이 나온다. 같을 경우는 물론 그 값으로"
+        "Id": "?�보�?구분 짓는 �?,
+        "Name": "?�름",
+        "Damage": "몬스???��?지",
+        "MoveSpeed": "초당 ?�동 거리. 1.0 = 1.0f",
+        "MinNoteCount": "?�트 최소 �?��",
+        "MaxNoteCount": "?�트 최�? �?��. Min�?Max ?�이???�덤??체력???�팅?�다",
+        "MinNoteInterval": "?�트?�간??최소 거리간격",
+        "MaxNoteInterval": "?�트?�간??최�? 거리간격, Min�?Max?�이???�덤??값이 ?�온?? 같을 경우??물론 �?값으�?
     },
   "Enemy": [
     {
       "Id": 10000,
       "Name": "Mob",
       "Damage": 1,
-      "MoveSpeed": 4,
+      "MoveSpeed": 3,
       "MinNoteCount": 1,
       "MaxNoteCount": 1,
       "MinNoteInterval": 3.0,
@@ -24,7 +24,7 @@
       "Id": 20000,
       "Name": "Mob",
       "Damage": 1,
-      "MoveSpeed": 5,
+      "MoveSpeed": 4,
       "MinNoteCount": 1,
       "MaxNoteCount": 1,
       "MinNoteInterval": 2.5,
@@ -34,9 +34,9 @@
       "Id": 30000,
       "Name": "Mob",
       "Damage": 1,
-      "MoveSpeed": 5,
+      "MoveSpeed": 3.4,
       "MinNoteCount": 1,
-      "MaxNoteCount": 3,
+      "MaxNoteCount": 2,
       "MinNoteInterval": 2.5,
       "MaxNoteInterval": 3.0
     },
@@ -46,7 +46,7 @@
       "Damage": 2,
       "MoveSpeed": 5,
       "MinNoteCount": 1,
-      "MaxNoteCount": 3,
+      "MaxNoteCount": 2,
       "MinNoteInterval": 2.5,
       "MaxNoteInterval": 3.0
     },
@@ -54,9 +54,9 @@
       "Id": 50000,
       "Name": "Mob",
       "Damage": 2,
-      "MoveSpeed": 5,
+      "MoveSpeed": 4.5,
       "MinNoteCount": 1,
-      "MaxNoteCount": 3,
+      "MaxNoteCount": 2,
       "MinNoteInterval": 2.0,
       "MaxNoteInterval": 3.0
     },
@@ -64,9 +64,9 @@
       "Id": 60000,
       "Name": "Mob",
       "Damage": 1,
-      "MoveSpeed": 5,
+      "MoveSpeed": 5.5,
       "MinNoteCount": 2,
-      "MaxNoteCount": 3,
+      "MaxNoteCount": 2,
       "MinNoteInterval": 2.5,
       "MaxNoteInterval": 3.0
     },
@@ -74,9 +74,9 @@
       "Id": 70000,
       "Name": "Mob",
       "Damage": 2,
-      "MoveSpeed": 5,
+      "MoveSpeed": 4.3,
       "MinNoteCount": 2,
-      "MaxNoteCount": 3,
+      "MaxNoteCount": 2,
       "MinNoteInterval": 2.0,
       "MaxNoteInterval": 3.5
     },
@@ -84,9 +84,9 @@
       "Id": 80000,
       "Name": "Mob",
       "Damage": 3,
-      "MoveSpeed": 5,
+      "MoveSpeed": 5.7,
       "MinNoteCount": 1,
-      "MaxNoteCount": 4,
+      "MaxNoteCount": 1,
       "MinNoteInterval": 2.5,
       "MaxNoteInterval": 3.5
     },
@@ -98,17 +98,17 @@
       "MinNoteCount": 1,
       "MaxNoteCount": 3,
       "MinNoteInterval": 2.0,
-      "MaxNoteInterval": 3.5
+      "MaxNoteInterval": 3.0
     },
     {
       "Id": 100000,
       "Name": "Mob",
       "Damage": 4,
-      "MoveSpeed": 5,
+      "MoveSpeed": 5.5,
       "MinNoteCount": 2,
-      "MaxNoteCount": 3,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 4.0
+      "MaxNoteCount": 2,
+      "MinNoteInterval": 2.0,
+      "MaxNoteInterval": 2.3
     },
     {
       "Id": 110000,
@@ -118,37 +118,37 @@
       "MinNoteCount": 3,
       "MaxNoteCount": 3,
       "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 3.5
+      "MaxNoteInterval": 2.5
     },
     {
       "Id": 120000,
       "Name": "Mob",
       "Damage": 4,
-      "MoveSpeed": 5.3,
-      "MinNoteCount": 3,
+      "MoveSpeed": 5.7,
+      "MinNoteCount": 2,
       "MaxNoteCount": 3,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 4.0
+      "MinNoteInterval": 1.5,
+      "MaxNoteInterval": 2.6
     },
     {
       "Id": 130000,
       "Name": "Mob",
       "Damage": 4,
-      "MoveSpeed": 5.3,
+      "MoveSpeed": 5.0,
       "MinNoteCount": 3,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 3.5
+      "MinNoteInterval": 2.2,
+      "MaxNoteInterval": 2.5
     },
     {
       "Id": 140000,
       "Name": "Mob",
       "Damage": 4,
-      "MoveSpeed": 5.3,
+      "MoveSpeed": 5.9,
       "MinNoteCount": 3,
-      "MaxNoteCount": 4,
-      "MinNoteInterval": 2.0,
-      "MaxNoteInterval": 3.5
+      "MaxNoteCount": 3,
+      "MinNoteInterval": 2.5,
+      "MaxNoteInterval": 3.0
     },
     {
       "Id": 150000,
@@ -157,44 +157,44 @@
       "MoveSpeed": 5.3,
       "MinNoteCount": 2,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 3.0,
-      "MaxNoteInterval": 4.5
+      "MinNoteInterval": 2.8,
+      "MaxNoteInterval": 3.3
     },
     {
       "Id": 160000,
       "Name": "Mob",
       "Damage": 5,
-      "MoveSpeed": 5.4,
-      "MinNoteCount": 2,
+      "MoveSpeed": 5.7,
+      "MinNoteCount": 1,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 3.0,
-      "MaxNoteInterval": 4.0
+      "MinNoteInterval": 1.7,
+      "MaxNoteInterval": 2.5
     },
     {
       "Id": 170000,
       "Name": "Mob",
       "Damage": 5,
-      "MoveSpeed": 5.4,
+      "MoveSpeed": 6.0,
       "MinNoteCount": 2,
-      "MaxNoteCount": 5,
-      "MinNoteInterval": 3.0,
-      "MaxNoteInterval": 4.0
+      "MaxNoteCount": 3,
+      "MinNoteInterval": 1.4,
+      "MaxNoteInterval": 2.0
     },
     {
       "Id": 180000,
       "Name": "Mob",
       "Damage": 5,
-      "MoveSpeed": 5.4,
-      "MinNoteCount": 1,
-      "MaxNoteCount": 5,
-      "MinNoteInterval": 2.0,
-      "MaxNoteInterval": 2.5
+      "MoveSpeed": 4.4,
+      "MinNoteCount": 2,
+      "MaxNoteCount": 3,
+      "MinNoteInterval": 1.2,
+      "MaxNoteInterval": 2.0
     },
     {
       "Id": 190000,
       "Name": "Mob",
       "Damage": 5,
-      "MoveSpeed": 5.4,
+      "MoveSpeed": 5.2,
       "MinNoteCount": 2,
       "MaxNoteCount": 4,
       "MinNoteInterval": 2.0,
@@ -207,18 +207,18 @@
       "MoveSpeed": 5.5,
       "MinNoteCount": 1,
       "MaxNoteCount": 3,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 3.5
+      "MinNoteInterval": 1.5,
+      "MaxNoteInterval": 3.0
     },
     {
       "Id": 210000,
       "Name": "Mob",
       "Damage": 6,
-      "MoveSpeed": 5.5,
+      "MoveSpeed": 6.5,
       "MinNoteCount": 1,
-      "MaxNoteCount": 5,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 3.5
+      "MaxNoteCount": 2,
+      "MinNoteInterval": 1.3,
+      "MaxNoteInterval": 1.9
     },
     {
       "Id": 220000,
@@ -227,38 +227,38 @@
       "MoveSpeed": 5.5,
       "MinNoteCount": 1,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 2.0,
-      "MaxNoteInterval": 3.5
+      "MinNoteInterval": 1.2,
+      "MaxNoteInterval": 1.9
     },
     {
       "Id": 230000,
       "Name": "Mob",
       "Damage": 6,
-      "MoveSpeed": 5.5,
+      "MoveSpeed": 4.5,
       "MinNoteCount": 2,
       "MaxNoteCount": 4,
       "MinNoteInterval": 2.0,
-      "MaxNoteInterval": 3.0
+      "MaxNoteInterval": 2.4
     },
     {
       "Id": 240000,
       "Name": "Mob",
       "Damage": 6,
-      "MoveSpeed": 5.5,
+      "MoveSpeed": 7.0,
       "MinNoteCount": 2,
-      "MaxNoteCount": 5,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 3.0
+      "MaxNoteCount": 3,
+      "MinNoteInterval": 1.0,
+      "MaxNoteInterval": 1.5
     },
     {
       "Id": 250000,
       "Name": "Mob",
       "Damage": 6,
-      "MoveSpeed": 5.5,
+      "MoveSpeed": 4.5,
       "MinNoteCount": 1,
       "MaxNoteCount": 6,
-      "MinNoteInterval": 1.5,
-      "MaxNoteInterval": 2.5
+      "MinNoteInterval": 1.3,
+      "MaxNoteInterval": 1.8
     },
     {
       "Id": 260000,
@@ -267,38 +267,38 @@
       "MoveSpeed": 5.6,
       "MinNoteCount": 1,
       "MaxNoteCount": 5,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 3.5
+      "MinNoteInterval": 1.2,
+      "MaxNoteInterval": 1.5
     },
     {
       "Id": 270000,
       "Name": "Mob",
       "Damage": 8,
-      "MoveSpeed": 5.6,
-      "MinNoteCount": 2,
-      "MaxNoteCount": 6,
-      "MinNoteInterval": 2.0,
-      "MaxNoteInterval": 2.5
+      "MoveSpeed": 6.6,
+      "MinNoteCount": 3,
+      "MaxNoteCount": 5,
+      "MinNoteInterval": 1.5,
+      "MaxNoteInterval": 1.8
     },
     {
       "Id": 280000,
       "Name": "Mob",
       "Damage": 8,
-      "MoveSpeed": 5.5,
+      "MoveSpeed": 7.0,
       "MinNoteCount": 4,
       "MaxNoteCount": 5,
-      "MinNoteInterval": 2.5,
-      "MaxNoteInterval": 3.5
+      "MinNoteInterval": 1.2,
+      "MaxNoteInterval": 1.6
     },
     {
       "Id": 290000,
       "Name": "Mob",
       "Damage": 10,
-      "MoveSpeed": 5.7,
+      "MoveSpeed": 6.7,
       "MinNoteCount": 3,
       "MaxNoteCount": 6,
-      "MinNoteInterval": 1.5,
-      "MaxNoteInterval": 2.5
+      "MinNoteInterval": 1.0,
+      "MaxNoteInterval": 1.2
     }
   ]
 }

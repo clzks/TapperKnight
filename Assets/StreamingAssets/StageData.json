@@ -1,19 +1,19 @@
 {
     "Description": {
-        "Id": "정보를 구분짓는 값(int)",
-        "StageNumber": "스테이지 서순(int)",
-        "MinimumGenCycle": "최소 젠 시간(float)",
-        "MaximumGenCycle": "최대 젠 시간(float)",
-        "StageTime": "스테이지가 진행되는 총 시간. 시간이 초과하면 몬스터가 더이상 생산되지 않고 마지막 몬스터가 사라진 후 다음스테이지로 넘어감(int)",
-        "EnemyList": "등장하는 몬스터 Id 리스트",
-        "TrackLength" : "스테이지 트랙 길이"
+        "Id": "?�보�?구분짓는 �?int)",
+        "StageNumber": "?�테?��? ?�순(int)",
+        "MinimumGenCycle": "최소 ???�간(float)",
+        "MaximumGenCycle": "최�? ???�간(float)",
+        "StageTime": "?�테?��?가 진행?�는 �??�간. ?�간??초과?�면 몬스?��? ?�이???�산?��? ?�고 마�?�?몬스?��? ?�라�????�음?�테?��?�??�어�?int)",
+        "EnemyList": "?�장?�는 몬스??Id 리스??,
+        "TrackLength" : "?�테?��? ?�랙 길이"
     },
     "Stage": [
         {
             "Id": 10000,
             "StageNumber": 1,
             "MinimumGenCycle": 1.8,
-            "MaximumGenCycle": 3.0,
+            "MaximumGenCycle": 2.7,
             "StageTime": 2,
             "EnemyList": [
                 10000,
@@ -28,7 +28,7 @@
             "Id": 20000,
             "StageNumber": 2,
             "MinimumGenCycle": 1.8,
-            "MaximumGenCycle": 2.5,
+            "MaximumGenCycle": 2.3,
             "StageTime": 5,
           "EnemyList": [
             10000,
@@ -46,7 +46,7 @@
             "Id": 30000,
             "StageNumber": 3,
             "MinimumGenCycle": 1.5,
-            "MaximumGenCycle": 2.4,
+            "MaximumGenCycle": 2.0,
             "StageTime": 5,
           "EnemyList": [
             30000,
@@ -60,8 +60,8 @@
         {
             "Id": 40000,
             "StageNumber": 4,
-            "MinimumGenCycle": 1.3,
-            "MaximumGenCycle": 2.1,
+            "MinimumGenCycle": 1.0,
+            "MaximumGenCycle": 1.8,
             "StageTime": 5,
           "EnemyList": [
             50000,
@@ -78,8 +78,8 @@
         {
             "Id": 50000,
             "StageNumber": 5,
-            "MinimumGenCycle": 1.2,
-            "MaximumGenCycle": 1.9,
+            "MinimumGenCycle": 1.0,
+            "MaximumGenCycle": 1.7,
             "StageTime": 5,
           "EnemyList": [
             100000,
@@ -96,8 +96,8 @@
         {
             "Id": 60000,
             "StageNumber": 6,
-            "MinimumGenCycle": 1.1,
-            "MaximumGenCycle": 1.7,
+            "MinimumGenCycle": 0.8,
+            "MaximumGenCycle": 1.5,
             "StageTime": 5,
           "EnemyList": [
             150000,
@@ -116,8 +116,8 @@
         {
             "Id": 70000,
             "StageNumber": 7,
-            "MinimumGenCycle": 1.0,
-            "MaximumGenCycle": 1.7,
+            "MinimumGenCycle": 0.7,
+            "MaximumGenCycle": 1.4,
             "StageTime": 5,
           "EnemyList": [
             180000,
@@ -136,8 +136,8 @@
         {
             "Id": 80000,
             "StageNumber": 8,
-            "MinimumGenCycle": 0.7,
-            "MaximumGenCycle": 1.5,
+            "MinimumGenCycle": 0.6,
+            "MaximumGenCycle": 1.2,
             "StageTime": 5,
           "EnemyList": [
             200000,
