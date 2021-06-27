@@ -20,7 +20,7 @@ public class BaseCharacter : MonoBehaviour
     [SerializeField] private float _maxAnimSpeed = 2f;
     [SerializeField] private float _minAnimSpeed = 1f;
     private CancellationTokenSource _lifeTimerCancelToken = new CancellationTokenSource();
-
+    private bool _isInvincible;
     
     private void OnDisable()
     {
@@ -29,6 +29,7 @@ public class BaseCharacter : MonoBehaviour
 
     private async UniTask Awake()
     {
+        _isInvincible = false;
         _gameManager = GameManager.Get();
         _objectPool = ObjectPoolManager.Get();
 
@@ -94,6 +95,11 @@ public class BaseCharacter : MonoBehaviour
 
     public void TakeDamage(float damage, bool changeAnim)
     {
+        if(true == _isInvincible)
+        {
+            return;
+        }
+
         if (true == changeAnim && _currHp > 0f)
         {
             _animator.Play("Damage");
@@ -191,6 +197,12 @@ public class BaseCharacter : MonoBehaviour
     public float GetHp()
     {
         return _currHp;
+    }
+
+    public void SetInvincible()
+    {
+        _isInvincible = !_isInvincible;
+        Debug.Log("무적모드 = " + _isInvincible);
     }
 }
 

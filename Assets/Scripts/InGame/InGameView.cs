@@ -17,6 +17,7 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Button _singleRespawnButton;
     [SerializeField] private Button _autoRespawnButton;
     [SerializeField] private Button _returnToCharacterSelectButton;
+    [SerializeField] private Button _invincibleButton;
     [SerializeField] private GameObject _noteBox;
     [SerializeField] private Vector2 _noteBoxPos;
     [SerializeField] private List<Vector3> _notePopDestination;
@@ -108,6 +109,12 @@ public class InGameView : MonoBehaviour
             {
                 _returnToCharacterSelectButton = GameObject.Find("ReturnToSelectButton").GetComponent<Button>();
                 _returnToCharacterSelectButton.onClick.AddListener(() => OnClickReturnToLobbySceneButton());
+            }
+
+            if (null == _invincibleButton)
+            {
+                _invincibleButton = GameObject.Find("InvincibleButton").GetComponent<Button>();
+                _invincibleButton.onClick.AddListener(() => OnClickInvincibleButton());
             }
 
             if (null == _result)
@@ -409,6 +416,11 @@ public class InGameView : MonoBehaviour
     private void OnClickReturnToLobbySceneButton()
     {
         SceneManager.LoadScene("LobbyScene");
+    }
+
+    private void OnClickInvincibleButton()
+    {
+        _playerCharacter.SetInvincible();
     }
 
     private async UniTask UpdateCharacterHp()
