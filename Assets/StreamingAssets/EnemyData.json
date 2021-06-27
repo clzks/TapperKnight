@@ -1,14 +1,4 @@
 {
-    "Description": {
-        "Id": "정보를 구분 짓는 값",
-        "Name": "이름",
-        "Damage": "몬스터 데미지",
-        "MoveSpeed": "초당 이동 거리. 1.0 = 1.0f",
-        "MinNoteCount": "노트 최소 갯수",
-        "MaxNoteCount": "노트 최대 갯수. Min과 Max 사이에 랜덤한 체력이 세팅된다",
-        "MinNoteInterval": "노트들간의 최소 거리간격",
-        "MaxNoteInterval": "노트들간의 최대 거리간격, Min과 Max사이에 랜덤한 값이 나온다. 같을 경우는 물론 그 값으로"
-    },
   "Enemy": [
     {
       "Id": 10000,

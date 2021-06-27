@@ -1,13 +1,4 @@
 {
-    "Description": {
-        "Id": "정보를 구분짓는 값(int)",
-        "StageNumber": "스테이지 서순(int)",
-        "MinimumGenCycle": "최소 젠 시간(float)",
-        "MaximumGenCycle": "최대 젠 시간(float)",
-        "StageTime": "스테이지가 진행되는 총 시간. 시간이 초과하면 몬스터가 더이상 생산되지 않고 마지막 몬스터가 사라진 후 다음스테이지로 넘어감(int)",
-        "EnemyList": "등장하는 몬스터 Id 리스트",
-        "TrackLength" : "스테이지 트랙 길이"
-    },
     "Stage": [
         {
             "Id": 10000,

@@ -1,10 +1,4 @@
 {
-    "Description": {
-        "Id": "정보를 구분짓는 값(int)",
-        "Type" : "스코어 enum값",
-        "ScoreValue": "실제 획득 점수(int)",
-        "Accelerate" : "판정 후 가속"
-    },
     "Score": [
         {
             "Id": 10000,
