@@ -247,7 +247,7 @@
       "MoveSpeed": 7.0,
       "MinNoteCount": 2,
       "MaxNoteCount": 3,
-      "MinNoteInterval": 0.5,
+      "MinNoteInterval": 0.7,
       "MaxNoteInterval": 0.9
     },
     {
@@ -257,7 +257,7 @@
       "MoveSpeed": 7.5,
       "MinNoteCount": 1,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 0.5,
+      "MinNoteInterval": 0.7,
       "MaxNoteInterval": 0.8
     },
     {
@@ -267,7 +267,7 @@
       "MoveSpeed": 7.6,
       "MinNoteCount": 2,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 0.5,
+      "MinNoteInterval": 0.7,
       "MaxNoteInterval": 0.8
     },
     {
@@ -277,7 +277,7 @@
       "MoveSpeed": 7.6,
       "MinNoteCount": 3,
       "MaxNoteCount": 5,
-      "MinNoteInterval": 0.4,
+      "MinNoteInterval": 0.7,
       "MaxNoteInterval": 0.7
     },
     {
@@ -287,7 +287,7 @@
       "MoveSpeed": 7.0,
       "MinNoteCount": 4,
       "MaxNoteCount": 5,
-      "MinNoteInterval": 0.4,
+      "MinNoteInterval": 0.7,
       "MaxNoteInterval": 0.8
     },
     {
@@ -297,7 +297,7 @@
       "MoveSpeed": 7.7,
       "MinNoteCount": 3,
       "MaxNoteCount": 6,
-      "MinNoteInterval": 0.3,
+      "MinNoteInterval": 0.7,
       "MaxNoteInterval": 0.7
     }
   ]
