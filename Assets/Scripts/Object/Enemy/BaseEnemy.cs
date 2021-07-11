@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -18,6 +17,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     private BaseNote _lastNote;
     private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
     [SerializeField] private Animator _animator;
+    public bool isDead = false;
     //private CancellationTokenSource _destroyCancellation = new CancellationTokenSource();
     private async UniTask OnEnable()
     {
@@ -59,6 +59,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
 
     public async UniTask SetEnemy(EnemyModel em, Vector3 SpawnObjectPos)
     {
+        isDead = false;
         SetStatus(em).Forget();
         transform.position = new Vector3(SpawnObjectPos.x, SpawnObjectPos.y, transform.position.z);
         enemyNotes = new Queue<BaseNote>();
@@ -81,7 +82,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         status.damage = model.Damage;
         status.speed = model.MoveSpeed;
         status.hp = model.MinNoteCount == model.MaxNoteCount ? model.MinNoteCount : Random.Range(model.MinNoteCount, model.MaxNoteCount + 1);
-        await UniTask.Yield();
+        await UniTask.Yield(_disableCancellation.Token);
     }
     public async UniTaskVoid SetPlayerSpeedFactor(float playerSpeedFactor)
     {
@@ -187,6 +188,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     
     public async UniTask ExecuteDead()
     {
+        isDead = true;
         await _inGamePresenter.OnTargetDestroy();
         float time = 0f;
 

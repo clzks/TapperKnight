@@ -140,13 +140,36 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
     }
 
+    //public BaseEnemy GetNextEnemy()
+    //{
+    //    var list = _activePoolList[ObjectType.Enemy];
+    //
+    //    if (list.Count >= 2)
+    //    {
+    //        return list.FindAll(x => x.GetComponent<BaseEnemy>().GetNoteCount() != 0).OrderBy(x => x.transform.position.x).First().GetComponent<BaseEnemy>();
+    //    }
+    //    else
+    //    {
+    //        return null;
+    //    }
+    //}
+
     public BaseEnemy GetNextEnemy()
     {
         var list = _activePoolList[ObjectType.Enemy];
 
-        if (list.Count >= 2)
+        if(list.Count != 0)
         {
-            return list.FindAll(x => x.GetComponent<BaseEnemy>().GetNoteCount() != 0).OrderBy(x => x.transform.position.x).First().GetComponent<BaseEnemy>();
+            list = list.FindAll(x => x.GetComponent<BaseEnemy>().GetNoteCount() != 0);
+
+            if(list.Count != 0)
+            {
+                return list.OrderBy(x => x.transform.position.x).First().GetComponent<BaseEnemy>();
+            }
+            else
+            {
+                return null;
+            }
         }
         else
         {
