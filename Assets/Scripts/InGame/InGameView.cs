@@ -431,9 +431,9 @@ public class InGameView : MonoBehaviour
 
     private async UniTask UpdateCharacterRecord()
     {
+        await UniTask.Yield(_disableCancellation.Token);
         _runnigRecord.text = _playerCharacter.GetRunningRecord().ToString();
         _score.text = _inGamePresenter.GetScore().ToString();
-        await UniTask.Yield(_disableCancellation.Token);
     }
 
     private void SetGenTime()

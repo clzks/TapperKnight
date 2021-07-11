@@ -22,7 +22,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
     private NoteType _noteType;
     [SerializeField] private SpriteRenderer spriteRenderer;
     private InGamePresenter _inGamePresenter;
-
+    //private CircleCollider2D _collider;
     private CancellationTokenSource _disableCancellation = new CancellationTokenSource();
 
     private async UniTask OnEnable()
@@ -35,6 +35,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
         _disableCancellation = new CancellationTokenSource();
         _objectPool = _objectPool ?? ObjectPoolManager.Get();
         _renderer = _renderer ?? GetComponentInChildren<SpriteRenderer>();
+        //_collider = _collider ?? GetComponentInChildren<CircleCollider2D>();
         await UniTask.Yield();
         if (null == _inGamePresenter)
         {
@@ -60,28 +61,24 @@ public class BaseNote : MonoBehaviour, IPoolObject
         _disableCancellation.Cancel();
     }
 
-    public async UniTaskVoid SetNoteSprite(Sprite sp)
+    public void SetNoteSprite(Sprite sp)
     {
         spriteRenderer.sprite = sp;
-        await UniTask.Yield();
     }
 
-    public async UniTaskVoid SetPosition(Vector2 v)
+    public void SetPosition(Vector2 v)
     {
         transform.position = v;
-        await UniTask.Yield();
     }
 
-    public async UniTaskVoid SetParentEnemy(BaseEnemy enemy)
+    public void SetParentEnemy(BaseEnemy enemy)
     {
         parentEnemy = enemy;
-        await UniTask.Yield();
     }
 
-    public async UniTaskVoid SetBoxPosition(float xPos)
+    public void SetBoxPosition(float xPos)
     {
         _boxPosX = xPos;
-        await UniTask.Yield();
     }
 
     //public async UniTaskVoid SetBoxSize(float halfSizeX)
@@ -90,23 +87,26 @@ public class BaseNote : MonoBehaviour, IPoolObject
     //    await UniTask.Yield();
     //}
 
-    public async UniTaskVoid SetSortingLayer(int sortingOrder)
+    public void SetSortingLayer(int sortingOrder)
     {
         _renderer.sortingOrder = sortingOrder;
         _sortingOrder = sortingOrder;
-        await UniTask.Yield();
     }
 
-    public async UniTaskVoid SetNoteSpeed(float speed, float playerSpeedFactor)
+    public void SetNoteSpeed(float speed, float playerSpeedFactor)
     {
         _speed = speed;
         _playerSpeedFactor = playerSpeedFactor;
-        await UniTask.Yield();
     }
-    public async UniTaskVoid SetNotePopDestination(List<Vector3> dest)
+
+    public void SetNoteSpeed(float speed)
+    {
+        _speed = speed;
+    }
+
+    public void SetNotePopDestination(List<Vector3> dest)
     {
         _notePopDestination = dest;
-        await UniTask.Yield();
     }
 
     public async UniTaskVoid SetInGamePool(Transform tr)
@@ -157,6 +157,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
 
     private async UniTask NoteCall(ScoreType score)
     {
+        gameObject.layer = 0;
         _isDiscriminated = true;
         parentEnemy.OnNoteCall(score).Forget();
         NotePop(score).Forget();
@@ -215,6 +216,11 @@ public class BaseNote : MonoBehaviour, IPoolObject
         return gameObject;
     }
 
+    public float GetSpeed()
+    {
+        return _speed;
+    }
+
     public float GetEstimatedArrivalTime()
     {
         var playerSpeed = _inGamePresenter.GetPlayerSpeed();
@@ -244,5 +250,30 @@ public class BaseNote : MonoBehaviour, IPoolObject
     public void SetNoteType(NoteType type)
     {
         _noteType = type;
+    }
+
+    public void SetLayer(int layerIndex)
+    {
+        gameObject.layer = layerIndex;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        // LastNote or FirstLastNote
+        if(gameObject.layer == 7 || gameObject.layer == 8)
+        {
+            var note = collision.gameObject.GetComponent<BaseNote>();
+            
+            if(note.parentEnemy == parentEnemy)
+            {
+                return;
+            }
+            else
+            {
+                Debug.Log("선행 Enemy의 노트와 충돌했으므로 속력을 일치하게 합니다");
+                _speed = note.GetSpeed();
+                parentEnemy.SetSpeed(_speed);
+            }
+        }
     }
 }

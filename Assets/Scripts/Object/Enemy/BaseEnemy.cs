@@ -99,18 +99,39 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
             BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
             note.SetInGamePool(_inGamePool).Forget();
             SetRandomNoteType(note).Forget();
-            note.SetSortingLayer(status.hp - i - 1).Forget();
+            note.SetSortingLayer(status.hp - i - 1);
             note.transform.SetParent(_inGamePool.transform);
-            note.SetPosition(new Vector3(transform.position.x + i * interval, notePos.y, transform.position.z)).Forget();
-            note.SetParentEnemy(this).Forget();
-            note.SetBoxPosition(notePos.x).Forget();
+            note.SetPosition(new Vector3(transform.position.x + i * interval, notePos.y, transform.position.z));
+            note.SetParentEnemy(this);
+            note.SetBoxPosition(notePos.x);
             //note.SetBoxSize(1f).Forget();
-            note.SetNoteSpeed(status.speed, _playerSpeedFactor).Forget();
-            note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination()).Forget();
+            note.SetNoteSpeed(status.speed, _playerSpeedFactor);
+            note.SetNotePopDestination(_inGamePresenter.GetNotePopDestination());
             enemyNotes.Enqueue(note);
 
-            if(status.hp - 1 == i)
+            //if(status.hp - 1 == i)
+            //{
+            //    _lastNote = note;
+            //}
+
+            if(0 == i)
             {
+                if(status.hp - 1 == i)
+                {
+                    //FirstLastNote
+                    note.SetLayer(7);
+                    _lastNote = note;
+                }
+                else
+                {
+                    //FirstNote
+                    note.SetLayer(6);
+                }
+            }
+            else if(status.hp - 1 == i)
+            {
+                //LastNote
+                note.SetLayer(8);
                 _lastNote = note;
             }
         }
@@ -125,17 +146,17 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         if(0 == r)
         {
             bn.SetNoteType(NoteType.Left);
-            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Left")).Forget();
+            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Left"));
         }
         else if(1 == r)
         {
             bn.SetNoteType(NoteType.Right);
-            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Right")).Forget();
+            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("Right"));
         }
         else
         {
             bn.SetNoteType(NoteType.BothSide);
-            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("BothSide")).Forget();
+            bn.SetNoteSprite(_inGamePresenter.GetNoteSprite("BothSide"));
         }
         await UniTask.Yield();
     }
@@ -226,13 +247,22 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     private async UniTask DropNote()
     {
         BaseNote note = enemyNotes.Dequeue();
-        note.SetParentEnemy(null).Forget();
+        note.SetParentEnemy(null);
         note.transform.SetParent(_inGamePool);
         await UniTask.Yield();
     }
     public void Init()
     {
         transform.position = new Vector3(1000, 1000, 0);
+    }
+
+    public void SetSpeed(float speed)
+    {
+        status.speed = speed;
+        foreach (var note in enemyNotes)
+        {
+            note.SetNoteSpeed(speed);
+        }
     }
 
     public void ReturnObject()
