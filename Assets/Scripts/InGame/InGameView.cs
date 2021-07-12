@@ -31,7 +31,6 @@ public class InGameView : MonoBehaviour
     [SerializeField] private int _currentStageNumber = 1;
     [SerializeField] private float _currGenTimer = 3f;
     [SerializeField] private float _genTime;
-    [SerializeField] private float _enemySpeedFactorByPlayer = 0.1f;
     [SerializeField] private float _currStageRunningDistance;
     [SerializeField] private float _currStageTrackLength;
     private bool _isLastStage = false;
@@ -41,6 +40,9 @@ public class InGameView : MonoBehaviour
     [Tooltip("버튼 동시 입력을 위한 대기시간(초)")]
     [SerializeField] private float _bothSideDelayTime = 0.05f;
     private float delayTimer = 0f;
+    [Tooltip("멀티노트가 등장할 수 있는 최소 간격")]
+    [SerializeField] private float _multiNoteIntervalLimit = 2.0f;
+    [SerializeField] private float _enemySpeedFactorByPlayer = 0.1f;
 
     [Header("Object")]
     [SerializeField] private BackgroundController _bgController;
@@ -490,7 +492,7 @@ public class InGameView : MonoBehaviour
         BaseEnemy enemy = (BaseEnemy)_objectPool.MakeObject(ObjectType.Enemy);
         enemy.SetPlayerSpeedFactor(_enemySpeedFactorByPlayer).Forget();
         await enemy.SetInGamePool(_inGamePool);
-        await enemy.SetEnemy(enemyModel, _spawnObject.position);
+        await enemy.SetEnemy(enemyModel, _spawnObject.position, _multiNoteIntervalLimit);
         SetGenTime();
     }
 

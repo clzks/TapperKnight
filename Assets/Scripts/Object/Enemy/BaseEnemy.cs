@@ -57,7 +57,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         _disableCancellation.Cancel();
     }
 
-    public async UniTask SetEnemy(EnemyModel em, Vector3 SpawnObjectPos)
+    public async UniTask SetEnemy(EnemyModel em, Vector3 SpawnObjectPos, float multiIntervalLimit)
     {
         isDead = false;
         SetStatus(em).Forget();
@@ -74,7 +74,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         }
 
         var interval = em.MinNoteInterval == em.MaxNoteInterval ? em.MinNoteInterval : Random.Range(em.MinNoteInterval, em.MaxNoteInterval); 
-        SetNote(interval).Forget();
+        SetNote(interval, multiIntervalLimit).Forget();
     }
     public async UniTaskVoid SetStatus(EnemyModel model)
     {
@@ -90,7 +90,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid SetNote(float interval)
+    private async UniTaskVoid SetNote(float interval, float multiIntervalLimit)
     {
         var notePos = _inGamePresenter.GetNoteBoxPos();
 
@@ -98,7 +98,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         {
             BaseNote note = (BaseNote)_objectPool.MakeObject(ObjectType.Note);
             note.SetInGamePool(_inGamePool).Forget();
-            SetRandomNoteType(note).Forget();
+            SetRandomNoteType(note, interval >= multiIntervalLimit).Forget();
             note.SetSortingLayer(status.hp - i - 1);
             note.transform.SetParent(_inGamePool.transform);
             note.SetPosition(new Vector3(transform.position.x + i * interval, notePos.y, transform.position.z));
@@ -139,10 +139,17 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
         await UniTask.Yield();
     }
 
-    private async UniTaskVoid SetRandomNoteType(BaseNote bn)
+    private async UniTaskVoid SetRandomNoteType(BaseNote bn, bool isMultiAvailable)
     {
-        int r = Random.Range(1, 10000) % 3;
-
+        int r;
+        if (true == isMultiAvailable)
+        {
+            r = Random.Range(1, 10000) % 3;
+        }
+        else
+        {
+            r = Random.Range(1, 3000) % 2;
+        }
         if(0 == r)
         {
             bn.SetNoteType(NoteType.Left);
