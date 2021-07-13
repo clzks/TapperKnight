@@ -1751,6 +1751,7 @@ MonoBehaviour:
   _singleRespawnButton: {fileID: 0}
   _autoRespawnButton: {fileID: 0}
   _returnToCharacterSelectButton: {fileID: 0}
+  _invincibleButton: {fileID: 0}
   _noteBox: {fileID: 0}
   _noteBoxPos: {x: 0, y: 0}
   _notePopDestination: []
@@ -1761,10 +1762,11 @@ MonoBehaviour:
   _currentStageNumber: 1
   _currGenTimer: 3
   _genTime: 0
-  _enemySpeedFactorByPlayer: 0.2
   _currStageRunningDistance: 0
   _currStageTrackLength: 0
   _bothSideDelayTime: 0.05
+  _multiNoteIntervalLimit: 1
+  _enemySpeedFactorByPlayer: 0.2
   _bgController: {fileID: 0}
   _playerCharacter: {fileID: 0}
   _targetEnemy: {fileID: 0}

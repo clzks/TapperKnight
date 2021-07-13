@@ -96,7 +96,7 @@
         {
             "Id": 60000,
             "StageNumber": 6,
-            "MinimumGenCycle": 0.5,
+            "MinimumGenCycle": 0.7,
             "MaximumGenCycle": 1.1,
             "StageTime": 5,
           "EnemyList": [
@@ -116,7 +116,7 @@
         {
             "Id": 70000,
             "StageNumber": 7,
-            "MinimumGenCycle": 0.5,
+            "MinimumGenCycle": 0.7,
             "MaximumGenCycle": 1.0,
             "StageTime": 5,
           "EnemyList": [
@@ -136,7 +136,7 @@
         {
             "Id": 80000,
             "StageNumber": 8,
-            "MinimumGenCycle": 0.5,
+            "MinimumGenCycle": 0.7,
             "MaximumGenCycle": 0.8,
             "StageTime": 5,
           "EnemyList": [
