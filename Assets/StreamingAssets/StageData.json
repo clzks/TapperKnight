@@ -45,7 +45,7 @@
         {
             "Id": 30000,
             "StageNumber": 3,
-            "MinimumGenCycle": 0.8,
+            "MinimumGenCycle": 0.9,
             "MaximumGenCycle": 1.5,
             "StageTime": 5,
           "EnemyList": [
@@ -60,7 +60,7 @@
         {
             "Id": 40000,
             "StageNumber": 4,
-            "MinimumGenCycle": 0.8,
+            "MinimumGenCycle": 0.9,
             "MaximumGenCycle": 1.25,
             "StageTime": 5,
           "EnemyList": [
@@ -78,8 +78,8 @@
         {
             "Id": 50000,
             "StageNumber": 5,
-            "MinimumGenCycle": 0.7,
-            "MaximumGenCycle": 1.2,
+            "MinimumGenCycle": 0.9,
+            "MaximumGenCycle": 1.3,
             "StageTime": 5,
           "EnemyList": [
             100000,
@@ -96,8 +96,8 @@
         {
             "Id": 60000,
             "StageNumber": 6,
-            "MinimumGenCycle": 0.7,
-            "MaximumGenCycle": 1.1,
+            "MinimumGenCycle": 0.9,
+            "MaximumGenCycle": 1.25,
             "StageTime": 5,
           "EnemyList": [
             150000,
@@ -116,8 +116,8 @@
         {
             "Id": 70000,
             "StageNumber": 7,
-            "MinimumGenCycle": 0.7,
-            "MaximumGenCycle": 1.0,
+            "MinimumGenCycle": 0.9,
+            "MaximumGenCycle": 1.2,
             "StageTime": 5,
           "EnemyList": [
             180000,
@@ -136,8 +136,8 @@
         {
             "Id": 80000,
             "StageNumber": 8,
-            "MinimumGenCycle": 0.7,
-            "MaximumGenCycle": 0.8,
+            "MinimumGenCycle": 0.9,
+            "MaximumGenCycle": 1.1,
             "StageTime": 5,
           "EnemyList": [
             200000,
