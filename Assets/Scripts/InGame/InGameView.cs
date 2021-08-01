@@ -466,6 +466,11 @@ public class InGameView : MonoBehaviour
         _playerCharacter.TakeDamage(damage, true);
     }
 
+    public void Recovery(float recover)
+    {
+        _playerCharacter.TakeDamage(-recover, false);
+    }
+
     public void AddSpeed(float accel)
     {
         _playerCharacter.AddSpeed(accel);

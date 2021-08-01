@@ -3,38 +3,44 @@
         "Id": "정보를 구분짓는 값(int)",
         "Type" : "스코어 enum값",
         "ScoreValue": "실제 획득 점수(int)",
-        "Accelerate" : "판정 후 가속"
+        "Accelerate" : "판정 후 가속",
+        "Recovery" : "판정 후 회복량"
     },
     "Score": [
         {
             "Id": 10000,
             "Type": "Perfect",
             "ScoreValue": 50,
-            "Accelerate" : 0.3
+            "Accelerate" : 0.3,
+            "Recovery" : 1.0
         },
         {
             "Id": 20000,
             "Type": "Great",
             "ScoreValue": 30,
-            "Accelerate": 0.15
+            "Accelerate": 0.15,
+            "Recovery" : 0.7
         },
         {
             "Id": 30000,
             "Type": "Good",
             "ScoreValue": 20,
-            "Accelerate": 0
+            "Accelerate": 0,
+            "Recovery" : 0.3
         },
         {
             "Id": 40000,
             "Type": "Bad",
             "ScoreValue": 10,
-            "Accelerate": -0.15
+            "Accelerate": -0.15,
+            "Recovery" : 0
         },
         {
             "Id": 50000,
             "Type": "Miss",
             "ScoreValue": 0,
-            "Accelerate": -0.3
+            "Accelerate": -0.3,
+            "Recovery" : 0
         }
     ]
 }

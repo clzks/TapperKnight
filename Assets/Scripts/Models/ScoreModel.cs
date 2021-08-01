@@ -4,4 +4,5 @@ public class ScoreModel
     public ScoreType Type { get; set; }
     public int ScoreValue { get; set; }
     public float Accelerate { get; set; }
+    public float Recovery { get; set; }
 }

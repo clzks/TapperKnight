@@ -93,6 +93,7 @@ public class InGamePresenter : MonoBehaviour
     public async UniTask OnNoteCall(ScoreType score, float damage)
     {
         var accel = _model.GetAccelerate(score);
+        var recovery = _model.GetRecoveryHp(score);
 
         if (score == ScoreType.Miss)
         {
@@ -101,6 +102,7 @@ public class InGamePresenter : MonoBehaviour
         else
         {
             _inGameView.Attack();
+            _inGameView.Recovery(recovery);
         }
 
         _inGameView.AddSpeed(accel);

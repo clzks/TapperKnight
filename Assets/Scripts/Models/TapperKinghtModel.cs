@@ -81,6 +81,11 @@ public class TapperKinghtModel : MonoBehaviour
         return _scoreList[score].Accelerate;
     }
 
+    public float GetRecoveryHp(ScoreType score)
+    {
+        return _scoreList[score].Recovery;
+    }
+
     public EnemyModel GetRandomEnemy(int stageNumber)
     {
         var enemyList = _stageModelList[stageNumber].EnemyList;
