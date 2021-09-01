@@ -4,21 +4,67 @@
         "OwnCharacterList": "보유 캐릭터",
         "OwnGold" : "소지 골드",
         "OwnScore": "점수?",
+        "RequiredExperience" : "1레벨일때 다음 레벨업에 필요한 경험치",
+        "IncreaseRequiredExperience" : "레벨 업 마다 늘어나는 요구 경험치",
+        "HpPerLevelUp" : "레벨업 시 늘어나는 체력",
         "BulaBula": "해당 Json은 최초 실행 시 구글플레이와 연동시킬때만 접근하고 그 이상은 사용되지 않는것을 목표"
     },
     "Player": {
             "Id": "TestId",
             "OwnCharacterList": [
-                10000,
-                20000,
-                30000,
-                40000,
-                50000,
-                70000,
-                90000,
-                100000
+                {
+                    "Id" : 10000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                },
+                {
+                    "Id" : 20000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                },
+                {
+                    "Id" : 30000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                },
+                {
+                    "Id" : 40000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                },
+                {
+                    "Id" : 50000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                },
+                {
+                    "Id" : 70000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                },
+                {
+                    "Id" : 90000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                },
+                {
+                    "Id" : 100000,
+                    "Level" : 1,
+                    "MaxLevel" : 10,
+                    "CurrExp" : 0
+                }
             ],
             "OwnGold": 0,
-            "OwnScore" : 0
+            "OwnScore" : 0,
+            "RequiredExperience" : 100,
+            "IncreaseRequiredExperience" : 300,
+            "HpPerLevelUp" : 5
     }
 }

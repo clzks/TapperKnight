@@ -171,7 +171,7 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
     public async UniTask OnNoteCall(ScoreType score)
     {
         await DropNote();
-        await _inGamePresenter.OnNoteCall(score, status.damage);
+        _inGamePresenter.OnNoteCall(score, status.damage);
         
         if(ScoreType.Miss != score)
         {

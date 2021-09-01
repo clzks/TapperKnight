@@ -7,6 +7,7 @@ public class TapperKinghtModel : MonoBehaviour
     // 스테이지 별 몬스터 등장 데이터를 들고있어야 하며
     // 프레젠터에게 요청받을 시 해당 몬스터의 정보를 뷰에게 넘겨준다.
     // 뷰는 몬스터의 정보를 받아서 생성 및 세팅한다.
+    private GameManager _gameManager;
     private DataManager _dataManager;
     private Dictionary<int, StageModel> _stageModelList;
     private Dictionary<int, EnemyModel> _enemyModelList;
@@ -17,6 +18,7 @@ public class TapperKinghtModel : MonoBehaviour
     
     private void Awake()
     {
+        _gameManager = GameManager.Get();
         _dataManager = DataManager.Get();
         SetStageList();
         SetEnemyList();
@@ -103,31 +105,13 @@ public class TapperKinghtModel : MonoBehaviour
         }
     }
 
-    public async UniTask AddScore(ScoreType type)
+    public int AddScore(ScoreType type)
     {
         int value = _scoreList[type].ScoreValue;
 
-        var result = await AddScore(value);
+        _playerModel.OwnScore += value;
 
-        if(false == result)
-        {
-            Debug.LogWarning("획득할 수 없는 점수입니다");
-        }
-    }
-
-    public async UniTask<bool> AddScore(int score)
-    {
-        if(_playerModel.OwnScore + score >= 0)
-        {
-            _playerModel.OwnScore += score;
-            //Debug.Log("점수" + score + "점 획득. 현재 스코어 : " + _playerModel.OwnScore);
-            await UniTask.Yield();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return value;
     }
 
     public async UniTask<bool> AddGold(int gold)
@@ -152,6 +136,32 @@ public class TapperKinghtModel : MonoBehaviour
     public void SetScore(int score)
     {
         _playerModel.OwnScore = score;
+    }
+
+    public void CalculateExp(int exp)
+    {
+        int Id = _gameManager.GetSelectModel().Id;
+        var characterData = _playerModel.OwnCharacterList.Find(x => x.Id == Id);
+        int totalExp = characterData.CurrExp + exp;
+
+        //int nextLevelUpExp = GetNextLevelUpExp(characterData);
+
+        while(totalExp >= GetNextLevelUpExp(characterData))
+        {
+            LevelUp(characterData);
+            totalExp -= GetNextLevelUpExp(characterData);
+        }
+    }
+
+    private int GetNextLevelUpExp(CharacterDataModel characterData)
+    {
+        return (characterData.Level - 1) * _playerModel.IncreaseRequiredExperience - characterData.CurrExp;
+    }
+
+    private void LevelUp(CharacterDataModel characterData)
+    {
+        characterData.Level += 1;
+        Debug.Log("레벨 업!!!!!!!");
     }
 
     public Sprite GetNoteSprite(string noteType)

@@ -974,6 +974,8 @@ MonoBehaviour:
   _animSpeedDivider: 3
   _maxAnimSpeed: 2.5
   _minAnimSpeed: 1
+  _requiredExperience: 100
+  _increaseRequiredExperience: 300
 --- !u!137 &315422260
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0

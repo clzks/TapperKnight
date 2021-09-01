@@ -58,8 +58,8 @@ public class TitleScene : MonoBehaviour
     private void SetMvpPattern()
     {
         _inGameView.SetPresenter(_inGamePresenter);
-        _inGamePresenter.SetModel(_model).Forget();
-        _inGamePresenter.SetView(_inGameView).Forget();
+        _inGamePresenter.SetModel(_model);
+        _inGamePresenter.SetView(_inGameView);
     }
 
     private async UniTask OpeningEvent()

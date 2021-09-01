@@ -49,7 +49,7 @@ public class CharacterSelect : MonoBehaviour
         {
             CharacterModel model = item.Value;
             CharacterIcon Ci = Instantiate(Icon).GetComponent<CharacterIcon>();
-            if(playerModel.OwnCharacterList.Contains(model.Id))
+            if(playerModel.OwnCharacterList.Exists(x => x.Id == model.Id))
             {
                 Ci.ActivateIcon(true);
             }

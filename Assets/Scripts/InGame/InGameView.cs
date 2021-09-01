@@ -35,6 +35,8 @@ public class InGameView : MonoBehaviour
     [SerializeField] private float _currStageTrackLength;
     private bool _isLastStage = false;
     private float _blackOutTime = 1.3f;
+    private int _currExp = 0;
+    [SerializeField] private float _expPercent = 0.1f;
 
     [Header("Control")]
     [Tooltip("버튼 동시 입력을 위한 대기시간(초)")]
@@ -330,6 +332,8 @@ public class InGameView : MonoBehaviour
     private async UniTask GameOver()
     {
         await _playerCharacter.ExecuteDead();
+        _inGamePresenter.CalculateExp(_currExp);
+        _currExp = 0;
         Time.timeScale = 0f;
         _result.SetScore(_inGamePresenter.GetScore());
         _result.SetRecord(_playerCharacter.GetRunningRecord());
@@ -351,6 +355,7 @@ public class InGameView : MonoBehaviour
 
     public async UniTask PrepareNextStage()
     {
+        await UniTask.Yield(_disableCancellation.Token);
         _playerCharacter.StopLifeTimer();
         _playerCharacter.SetSortingLayer("StageChangeBlock").Forget();
         await _bgController.ExecuteStageChange(_currentStageNumber, _blackOutTime);
@@ -475,6 +480,11 @@ public class InGameView : MonoBehaviour
     {
         _playerCharacter.AddSpeed(accel);
     }
+    public void AddExp(float value)
+    {
+        _currExp += (int)(value * _expPercent);
+    }
+
 
     public void Attack()
     {

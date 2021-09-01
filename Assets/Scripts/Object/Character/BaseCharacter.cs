@@ -21,7 +21,7 @@ public class BaseCharacter : MonoBehaviour
     [SerializeField] private float _minAnimSpeed = 1f;
     private CancellationTokenSource _lifeTimerCancelToken = new CancellationTokenSource();
     private bool _isInvincible;
-    
+    private int _currExp;
     private void OnDisable()
     {
         _lifeTimerCancelToken.Cancel();
@@ -187,6 +187,11 @@ public class BaseCharacter : MonoBehaviour
     public int GetRunningRecord()
     {
         return (int)_runningRecord;
+    }
+
+    public float GetExp()
+    {
+        return _currExp;
     }
 
     public float GetSpeed()

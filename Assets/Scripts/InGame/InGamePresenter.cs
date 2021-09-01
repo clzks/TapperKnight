@@ -14,16 +14,14 @@ public class InGamePresenter : MonoBehaviour
         
     }
 
-    public async UniTaskVoid SetView(InGameView view)
+    public void SetView(InGameView view)
     {
         _inGameView = view;
-        await UniTask.Yield();
     }   
     
-    public async UniTaskVoid SetModel(TapperKinghtModel model)
+    public void SetModel(TapperKinghtModel model)
     {
         _model = model;
-        await UniTask.Yield();
     }
 
     public Vector2 GetNoteBoxPos()
@@ -90,7 +88,12 @@ public class InGamePresenter : MonoBehaviour
         return _model.GetScoreSprite(type);
     }
 
-    public async UniTask OnNoteCall(ScoreType score, float damage)
+    public void CalculateExp(int exp)
+    {
+        _model.CalculateExp(exp);
+    }
+
+    public void OnNoteCall(ScoreType score, float damage)
     {
         var accel = _model.GetAccelerate(score);
         var recovery = _model.GetRecoveryHp(score);
@@ -106,8 +109,7 @@ public class InGamePresenter : MonoBehaviour
         }
 
         _inGameView.AddSpeed(accel);
-
-        await _model.AddScore(score);
+        _inGameView.AddExp(_model.AddScore(score));
     }
 
     public async UniTask OnTargetDestroy()
