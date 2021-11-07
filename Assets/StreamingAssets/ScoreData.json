@@ -11,22 +11,22 @@
             "Id": 10000,
             "Type": "Perfect",
             "ScoreValue": 50,
-            "Accelerate" : 0.3,
+            "Accelerate" : 0.7,
             "Recovery" : 1.0
         },
         {
             "Id": 20000,
             "Type": "Great",
             "ScoreValue": 30,
-            "Accelerate": 0.15,
-            "Recovery" : 0.7
+            "Accelerate": 0.25,
+            "Recovery" : 0.5
         },
         {
             "Id": 30000,
             "Type": "Good",
             "ScoreValue": 20,
             "Accelerate": 0,
-            "Recovery" : 0.3
+            "Recovery" : 0.2
         },
         {
             "Id": 40000,

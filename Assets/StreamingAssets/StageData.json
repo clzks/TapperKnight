@@ -8,150 +8,189 @@
         "EnemyList": "등장하는 몬스터 Id 리스트",
         "TrackLength" : "스테이지 트랙 길이"
     },
-    "Stage": [
-        {
-            "Id": 10000,
-            "StageNumber": 1,
-            "MinimumGenCycle": 1.3,
-            "MaximumGenCycle": 2.1,
-            "StageTime": 2,
-            "EnemyList": [
-                10000,
-                20000,
-                30000,
-                40000,
-                50000
-            ],
-            "TrackLength" :  120
-        },
-        {
-            "Id": 20000,
-            "StageNumber": 2,
-            "MinimumGenCycle": 1.0,
-            "MaximumGenCycle": 2.0,
-            "StageTime": 5,
-          "EnemyList": [
-            10000,
-            20000,
-            30000,
-            40000,
-            50000,
-            60000,
-            70000,
-            80000
-          ],
-            "TrackLength": 120
-        },
-        {
-            "Id": 30000,
-            "StageNumber": 3,
-            "MinimumGenCycle": 0.9,
-            "MaximumGenCycle": 1.5,
-            "StageTime": 5,
-          "EnemyList": [
-            30000,
-            40000,
-            50000,
-            60000,
-            70000
-          ],
-            "TrackLength": 220
-        },
-        {
-            "Id": 40000,
-            "StageNumber": 4,
-            "MinimumGenCycle": 0.9,
-            "MaximumGenCycle": 1.25,
-            "StageTime": 5,
-          "EnemyList": [
-            50000,
-            60000,
-            70000,
-            80000,
-            90000,
-            100000,
-            110000,
-            120000
-          ],
-            "TrackLength": 220
-        },
-        {
-            "Id": 50000,
-            "StageNumber": 5,
-            "MinimumGenCycle": 0.9,
-            "MaximumGenCycle": 1.3,
-            "StageTime": 5,
-          "EnemyList": [
-            100000,
-            110000,
-            120000,
-            130000,
-            140000,
-            150000,
-            160000,
-            170000
-          ],
-            "TrackLength": 220
-        },
-        {
-            "Id": 60000,
-            "StageNumber": 6,
-            "MinimumGenCycle": 0.9,
-            "MaximumGenCycle": 1.25,
-            "StageTime": 5,
-          "EnemyList": [
-            150000,
-            160000,
-            170000,
-            180000,
-            190000,
-            200000,
-            210000,
-            220000,
-            240000,
-            230000
-          ],
-            "TrackLength": 220
-        },
-        {
-            "Id": 70000,
-            "StageNumber": 7,
-            "MinimumGenCycle": 0.9,
-            "MaximumGenCycle": 1.2,
-            "StageTime": 5,
-          "EnemyList": [
-            180000,
-            190000,
-            200000,
-            210000,
-            220000,
-            230000,
-            240000,
-            250000,
-            260000,
-            270000
-          ],
-            "TrackLength": 320
-        },
-        {
-            "Id": 80000,
-            "StageNumber": 8,
-            "MinimumGenCycle": 0.9,
-            "MaximumGenCycle": 1.1,
-            "StageTime": 5,
-          "EnemyList": [
-            200000,
-            210000,
-            220000,
-            230000,
-            240000,
-            250000,
-            260000,
-            270000,
-            280000,
-            290000
-          ],
-            "TrackLength": 320
-        }
-    ]
+  "Stage": [
+    {
+      "Id": 10000,
+      "StageNumber": 1,
+      "MinimumGenCycle": 1.3,
+      "MaximumGenCycle": 2.1,
+      "StageTime": 2,
+      "EnemyList": [
+        10000,
+        20000,
+        30000,
+        40000,
+        50000
+      ],
+      "TrackLength": 200
+    },
+    {
+      "Id": 20000,
+      "StageNumber": 2,
+      "MinimumGenCycle": 1.0,
+      "MaximumGenCycle": 2.0,
+      "StageTime": 5,
+      "EnemyList": [
+        10000,
+        20000,
+        30000,
+        40000,
+        50000,
+        60000,
+        70000,
+        80000
+      ],
+      "TrackLength": 250
+    },
+    {
+      "Id": 30000,
+      "StageNumber": 3,
+      "MinimumGenCycle": 0.9,
+      "MaximumGenCycle": 1.5,
+      "StageTime": 5,
+      "EnemyList": [
+        30000,
+        40000,
+        50000,
+        60000,
+        70000
+      ],
+      "TrackLength": 300
+    },
+    {
+      "Id": 40000,
+      "StageNumber": 4,
+      "MinimumGenCycle": 0.9,
+      "MaximumGenCycle": 1.25,
+      "StageTime": 5,
+      "EnemyList": [
+        50000,
+        60000,
+        70000,
+        80000,
+        90000,
+        100000,
+        110000,
+        120000
+      ],
+      "TrackLength": 350
+    },
+    {
+      "Id": 50000,
+      "StageNumber": 5,
+      "MinimumGenCycle": 0.9,
+      "MaximumGenCycle": 1.3,
+      "StageTime": 5,
+      "EnemyList": [
+        100000,
+        110000,
+        120000,
+        130000,
+        140000,
+        150000,
+        160000,
+        170000
+      ],
+      "TrackLength": 450
+    },
+    {
+      "Id": 60000,
+      "StageNumber": 6,
+      "MinimumGenCycle": 0.9,
+      "MaximumGenCycle": 1.25,
+      "StageTime": 5,
+      "EnemyList": [
+        150000,
+        160000,
+        170000,
+        180000,
+        190000,
+        200000,
+        210000,
+        220000,
+        240000,
+        230000
+      ],
+      "TrackLength": 500
+    },
+    {
+      "Id": 70000,
+      "StageNumber": 7,
+      "MinimumGenCycle": 0.9,
+      "MaximumGenCycle": 1.2,
+      "StageTime": 5,
+      "EnemyList": [
+        180000,
+        190000,
+        200000,
+        210000,
+        220000,
+        230000,
+        240000,
+        250000,
+        260000,
+        270000
+      ],
+      "TrackLength": 700
+    },
+    {
+      "Id": 80000,
+      "StageNumber": 8,
+      "MinimumGenCycle": 0.9,
+      "MaximumGenCycle": 1.1,
+      "StageTime": 5,
+      "EnemyList": [
+        200000,
+        210000,
+        220000,
+        230000,
+        240000,
+        250000,
+        260000,
+        270000,
+        280000,
+        290000
+      ],
+      "TrackLength": 100000
+    },
+    {
+      "Id": 90000,
+      "StageNumber": 9,
+      "MinimumGenCycle": 0.8,
+      "MaximumGenCycle": 0.9,
+      "StageTime": 5,
+      "EnemyList": [
+        10000,
+        20000,
+        30000,
+        40000,
+        50000,
+        60000,
+        70000,
+        80000,
+        90000,
+        100000,
+        110000,
+        120000,
+        130000,
+        140000,
+        150000,
+        160000,
+        170000,
+        180000,
+        190000,
+        200000,
+        210000,
+        220000,
+        230000,
+        240000,
+        250000,
+        260000,
+        270000,
+        280000,
+        290000
+      ],
+      "TrackLength": 100000
+    }
+  ]
 }

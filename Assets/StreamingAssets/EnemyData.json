@@ -217,7 +217,7 @@
       "MoveSpeed": 7.0,
       "MinNoteCount": 2,
       "MaxNoteCount": 3,
-      "MinNoteInterval": 0.8,
+      "MinNoteInterval": 1.0,
       "MaxNoteInterval": 1.2
     },
     {
@@ -237,7 +237,7 @@
       "MoveSpeed": 7.5,
       "MinNoteCount": 2,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 0.7,
+      "MinNoteInterval": 0.9,
       "MaxNoteInterval": 1.0
     },
     {
@@ -247,7 +247,7 @@
       "MoveSpeed": 7.0,
       "MinNoteCount": 2,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 0.7,
+      "MinNoteInterval": 0.9,
       "MaxNoteInterval": 0.9
     },
     {
@@ -257,8 +257,8 @@
       "MoveSpeed": 7.5,
       "MinNoteCount": 3,
       "MaxNoteCount": 4,
-      "MinNoteInterval": 0.7,
-      "MaxNoteInterval": 0.8
+      "MinNoteInterval": 0.9,
+      "MaxNoteInterval": 1.1
     },
     {
       "Id": 260000,
@@ -267,8 +267,8 @@
       "MoveSpeed": 7.6,
       "MinNoteCount": 2,
       "MaxNoteCount": 5,
-      "MinNoteInterval": 0.7,
-      "MaxNoteInterval": 0.8
+      "MinNoteInterval": 0.9,
+      "MaxNoteInterval": 1.0
     },
     {
       "Id": 270000,
@@ -277,8 +277,8 @@
       "MoveSpeed": 7.6,
       "MinNoteCount": 3,
       "MaxNoteCount": 5,
-      "MinNoteInterval": 0.7,
-      "MaxNoteInterval": 0.7
+      "MinNoteInterval": 0.9,
+      "MaxNoteInterval": 1.1
     },
     {
       "Id": 280000,
@@ -287,8 +287,8 @@
       "MoveSpeed": 7.0,
       "MinNoteCount": 4,
       "MaxNoteCount": 5,
-      "MinNoteInterval": 0.7,
-      "MaxNoteInterval": 0.8
+      "MinNoteInterval": 0.9,
+      "MaxNoteInterval": 1.0
     },
     {
       "Id": 290000,
@@ -297,8 +297,8 @@
       "MoveSpeed": 7.7,
       "MinNoteCount": 3,
       "MaxNoteCount": 6,
-      "MinNoteInterval": 0.7,
-      "MaxNoteInterval": 0.7
+      "MinNoteInterval": 0.9,
+      "MaxNoteInterval": 0.9
     }
   ]
 }
