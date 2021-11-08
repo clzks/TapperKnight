@@ -35,7 +35,7 @@ public class AsyncTest : MonoBehaviour
     
     private void DestroyCard(int value)
     {
-    
+        Debug.Log("TestPUsh");
     }
     
     private async UniTask<bool> IsAvailableAsync()
