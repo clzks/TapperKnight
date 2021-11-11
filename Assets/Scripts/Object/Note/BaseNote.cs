@@ -162,6 +162,7 @@ public class BaseNote : MonoBehaviour, IPoolObject
         parentEnemy.OnNoteCall(score).Forget();
         NotePop(score).Forget();
         ScorePop(score).Forget();
+        _inGamePresenter.SendScroeType(score);
         //Debug.Log("Á¡¼ö : " + score.ToString());
         await UniTask.Yield();
     }

@@ -66,6 +66,15 @@ public enum SceneType
     Count
 }
 
+public enum QuestType
+{
+    Death_Stage,
+    Conscutive_Miss,
+    Conscutive_Perfect,
+    Single_RunningRecord,
+    Total_RunningRecord,
+    Count
+}
 
 public static class Formula
 {

@@ -8,9 +8,11 @@
         "MaxSpeed": "캐릭터 최대 속도(float)",
         "HpDecreasePerSecond": "캐릭터 초당 체력 감소량(float)",
         "Defence": "방어력(임시로 만들어둠, 쓰이지 않고 있음. float)",
-        "Cost" : "캐릭터 구매에 필요한 값?(int)"
+        "Cost" : "캐릭터 구매에 필요한 값?(int)",
+        "IsRetention" : "최초 보유여부",
+        "IsIncluded" : "리스트에 포함되는가"
     },
-  "Character": [
+  "CharacterModel": [
     {
       "Id": 10000,
       "NameKR": "글라디에이터",

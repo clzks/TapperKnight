@@ -23,7 +23,7 @@ public class InGameView : MonoBehaviour
     [SerializeField] private List<Vector3> _notePopDestination;
     [SerializeField] private Image _hpBar;
     [SerializeField] private Text _runnigRecord;
-    [SerializeField] private Text _score;
+    //[SerializeField] private Text _score;
     [SerializeField] private ResultPanel _result;
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
@@ -33,6 +33,8 @@ public class InGameView : MonoBehaviour
     [SerializeField] private float _genTime;
     [SerializeField] private float _currStageRunningDistance;
     [SerializeField] private float _currStageTrackLength;
+    private ScoreType _lastScoreType = ScoreType.Count;
+    private int _conscutiveScoreCount = 0;
     private bool _isLastStage = false;
     private float _blackOutTime = 1.3f;
     private int _currExp = 0;
@@ -56,7 +58,7 @@ public class InGameView : MonoBehaviour
 
     [Header("Test")]
     public int testMaxStageNumber;
-    [SerializeField] private bool _isAutoMode = false;
+    [SerializeField] private bool _isStart = false;
 
     [Header("TitleAutoMode")]
     [SerializeField] private bool _isTitleMode;
@@ -129,7 +131,7 @@ public class InGameView : MonoBehaviour
             _result.RetryButton.onClick.AddListener(async () => await Retry());
             _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
             _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
-            _score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
+            //_score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
         }
 
         _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
@@ -260,6 +262,7 @@ public class InGameView : MonoBehaviour
 
     private async UniTask Play()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.A))
         {
             OnClickButton(NoteType.Left).Forget();
@@ -279,48 +282,50 @@ public class InGameView : MonoBehaviour
         {
             await OnClickSingleRespawnButton();
         }
+#endif
 
-        if (true == _isAutoMode)
+        if (false == _isStart)
         {
-            if(_playerCharacter.GetHp() <= 0f)
+            return;
+        }
+
+        if(_playerCharacter.GetHp() <= 0f)
+        {
+            _state = InGameState.GameOver;
+            await GameOver();
+            return;
+        }
+
+        _currGenTimer += Time.deltaTime;
+
+        var runDistance = await _playerCharacter.AddRecord();
+        _currStageRunningDistance += runDistance;
+        if (_currStageRunningDistance >= _currStageTrackLength && !_isLastStage)
+        {
+            if (0 == _objectPool.GetEnemyCount())
             {
-                _state = InGameState.GameOver;
-                await GameOver();
+                _state = InGameState.Change;
+                await Change();
                 return;
             }
-
-            _currGenTimer += Time.deltaTime;
-
-            var runDistance = await _playerCharacter.AddRecord();
-            _currStageRunningDistance += runDistance;
-            if (_currStageRunningDistance >= _currStageTrackLength && !_isLastStage)
+        }
+        else
+        {
+            if (_currGenTimer >= _genTime)
             {
-                if (0 == _objectPool.GetEnemyCount())
+                var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
+                var delayTime = CheckEnemyInterval(enemyModel);
+                if (delayTime > 0f)
                 {
-                    _state = InGameState.Change;
-                    await Change();
-                    return;
+                    _currGenTimer = _genTime - delayTime;
                 }
-            }
-            else
-            {
-                if (_currGenTimer >= _genTime)
+                else
                 {
-                    var enemyModel = _inGamePresenter.GetRandomEnemy(_currentStageNumber);
-                    var delayTime = CheckEnemyInterval(enemyModel);
-                    if (delayTime > 0f)
-                    {
-                        _currGenTimer = _genTime - delayTime;
-                    }
-                    else
-                    {
-                        _currGenTimer = 0f;
-                        await MakeEnemy(enemyModel);
-                    }
+                    _currGenTimer = 0f;
+                    await MakeEnemy(enemyModel);
                 }
             }
         }
-
     }
 
     private async UniTask Change()
@@ -335,8 +340,10 @@ public class InGameView : MonoBehaviour
         _inGamePresenter.CalculateExp(_currExp);
         _currExp = 0;
         Time.timeScale = 0f;
-        _result.SetScore(_inGamePresenter.GetScore());
-        _result.SetRecord(_playerCharacter.GetRunningRecord());
+        //_result.SetScore(_inGamePresenter.GetScore());
+        var record = _playerCharacter.GetRunningRecord();
+        _result.SetRecord(record);
+        _inGamePresenter.AddTotalRunningRecord(record);
         _result.SetActive(true);
     }
     #endregion
@@ -348,7 +355,7 @@ public class InGameView : MonoBehaviour
         Time.timeScale = 1f;
         _currentStageNumber = 1;
         _playerCharacter.ResetCharacter();
-        _inGamePresenter.SetScore(0);
+        //_inGamePresenter.SetScore(0);
         await UpdateCharacterRecord();
         await PrepareNextStage();
     }
@@ -379,7 +386,6 @@ public class InGameView : MonoBehaviour
         if(NoteType.Null == _currClickButton)
         {
             _currClickButton = type;
-            //Debug.Log(_currClickButton.ToString() + "Å¬¸¯");
         }
         else
         {
@@ -387,10 +393,6 @@ public class InGameView : MonoBehaviour
             {
                 _currClickButton = NoteType.BothSide;
             }
-            //else
-            //{
-            //    delayTimer += _bothSideDelayTime;
-            //}
 
             return;
         }
@@ -416,7 +418,7 @@ public class InGameView : MonoBehaviour
 
     private async UniTask OnClickAutoRespawnButton()
     {
-        _isAutoMode = !_isAutoMode;
+        _isStart = !_isStart;
         await UniTask.Yield(_disableCancellation.Token);
     }
 
@@ -440,7 +442,7 @@ public class InGameView : MonoBehaviour
     {
         await UniTask.Yield(_disableCancellation.Token);
         _runnigRecord.text = _playerCharacter.GetRunningRecord().ToString();
-        _score.text = _inGamePresenter.GetScore().ToString();
+        //_score.text = _inGamePresenter.GetScore().ToString();
     }
 
     private void SetGenTime()
@@ -485,6 +487,10 @@ public class InGameView : MonoBehaviour
         _currExp += (int)(value * _expPercent);
     }
 
+    public void AddScore(float value)
+    {
+        
+    }
 
     public void Attack()
     {
@@ -545,6 +551,56 @@ public class InGameView : MonoBehaviour
         else
         {
             return 0f;
+        }
+    }
+
+    public bool CheckQuest(QuestInfo info)
+    {
+        switch (info.Type)
+        {
+            case QuestType.Death_Stage:
+                if(_currentStageNumber == info.Value)
+                {
+                    return true;
+                }
+                break;
+            case QuestType.Conscutive_Miss:
+                if(_lastScoreType == ScoreType.Miss && _conscutiveScoreCount >= info.Value)
+                {
+                    return true;
+                }
+                break;
+            case QuestType.Conscutive_Perfect:
+                if (_lastScoreType == ScoreType.Perfect && _conscutiveScoreCount >= info.Value)
+                {
+                    return true;
+                }
+                break;
+
+            case QuestType.Single_RunningRecord:
+                if(_playerCharacter.GetRunningRecord() >= info.Value)
+                {
+                    return true;
+                }
+                break;
+            case QuestType.Total_RunningRecord:
+
+                break;
+        }
+
+        return false;
+    }
+
+    public void SendScoreType(ScoreType score)
+    {
+        if (score == _lastScoreType)
+        {
+            _conscutiveScoreCount++;
+        }
+        else
+        {
+            _lastScoreType = score;
+            _conscutiveScoreCount = 1;
         }
     }
 

@@ -6,7 +6,7 @@
         "Accelerate" : "판정 후 가속",
         "Recovery" : "판정 후 회복량"
     },
-    "Score": [
+    "ScoreModel": [
         {
             "Id": 10000,
             "Type": "Perfect",

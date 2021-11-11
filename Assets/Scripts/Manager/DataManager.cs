@@ -60,45 +60,17 @@ public class DataManager : Singleton<DataManager>
         _noteSpriteList.Add("BothSide", Resources.Load<Sprite>("Sprites/BothSide"));
         await UniTask.Yield();
     }
-    
-    public async UniTask<string> LoadTextAsset(string name)
-    {
-#if UNITY_EDITOR
-        //TextAsset textAsset;
-        //textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(name);
-        //textAsset = Resources.Load("Data/" + name + "Data") as TextAsset;
-        //return textAsset.text;
-        var filePath = Path.Combine(Application.streamingAssetsPath, name + "Data.json");
-#elif UNITY_ANDROID
-        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", name + "Data.json");
-#endif 
-        var text = await LoadJsonString(filePath);
-        return text;
-    }
-
-    private async UniTask<string> LoadJsonString(string url)
-    {
-        UnityWebRequest www = UnityWebRequest.Get($"{url}");
-        while(!www.isDone)
-        {
-            await www.SendWebRequest();
-            Debug.Log("SendWebRequest 중");
-        }
-        return www.downloadHandler.text;
-    }
-
     private async UniTask LoadStageData()
     {
-        var stageData = await LoadTextAsset("Stage");
-        Debug.Log(stageData);
-        JArray stages = JObject.Parse(stageData)["Stage"] as JArray;
-        for (int i = 0; i < stages.Count; ++i)
+        Dictionary<int, StageModel> stageList = new Dictionary<int, StageModel>();
+        stageList = await JsonConverter<StageModel>.GetJsonToDictionaryKeyId();
+
+        foreach (var stage in stageList.Values)
         {
-            var stage = stages[i].ToObject<StageModel>();
             _stageList.Add(stage.StageNumber, stage);
         }
 
-        if(_stageList.Count == 0)
+        if (_stageList.Count == 0)
         {
             Debug.LogWarning("스테이지 불러오기 실패");
         }
@@ -106,19 +78,11 @@ public class DataManager : Singleton<DataManager>
         {
             Debug.Log("스테이지 불러오기 성공");
         }
-        await UniTask.Yield();
     }
 
     private async UniTask LoadEnemyData()
     {
-        var enemyList = await LoadTextAsset("Enemy");
-
-        JArray enemys = JObject.Parse(enemyList)["Enemy"] as JArray;
-        for (int i = 0; i < enemys.Count; ++i)
-        {
-            var enemy = enemys[i].ToObject<EnemyModel>();
-            _enemyList.Add(enemy.Id, enemy);
-        }
+        _enemyList = await JsonConverter<EnemyModel>.GetJsonToDictionaryKeyId();
 
         if (_enemyList.Count == 0)
         {
@@ -128,24 +92,42 @@ public class DataManager : Singleton<DataManager>
         {
             Debug.Log("이네미 불러오기 성공");
         }
-        await UniTask.Yield();
+        //var enemyList = await LoadTextAsset("Enemy");
+        //
+        //JArray enemys = JObject.Parse(enemyList)["Enemy"] as JArray;
+        //for (int i = 0; i < enemys.Count; ++i)
+        //{
+        //    var enemy = enemys[i].ToObject<EnemyModel>();
+        //    _enemyList.Add(enemy.Id, enemy);
+        //}
+        //
+        //if (_enemyList.Count == 0)
+        //{
+        //    Debug.LogWarning("이네미 불러오기 실패");
+        //}
+        //else
+        //{
+        //    Debug.Log("이네미 불러오기 성공");
+        //}
+        //await UniTask.Yield();
     }
 
     private async UniTask LoadBackground()
     {
-        var bgData = await LoadTextAsset("Background");
+        var bgData = await JsonConverter<BackgroundListModel>.GetJsonToDictionaryKeyId();
 
-        JArray backgroundListData = JObject.Parse(bgData)["Background"] as JArray;
-        for(int i = 0; i < backgroundListData.Count; ++i)
+        foreach (var listModel in bgData.Values)
         {
-            var listModel = backgroundListData[i].ToObject<BackgroundListModel>();
             var backgroundList = listModel.List;
+
             Dictionary<int, Texture> singleStageTexList = new Dictionary<int, Texture>();
+
             foreach (var item in backgroundList)
             {
                 Texture tex = GetTextureFromResources(listModel.StageNumber, item.LayerNumber);
                 singleStageTexList.Add(item.LayerNumber, tex);
             }
+
             _textureList.Add(listModel.StageNumber, singleStageTexList);
             _backgroundModelList.Add(listModel.StageNumber, backgroundList);
         }
@@ -158,18 +140,41 @@ public class DataManager : Singleton<DataManager>
         {
             Debug.Log("배경정보 불러오기 성공");
         }
-        await UniTask.Yield();
+
+        //var bgData = await LoadTextAsset("Background");
+        //
+        //JArray backgroundListData = JObject.Parse(bgData)["Background"] as JArray;
+        //for(int i = 0; i < backgroundListData.Count; ++i)
+        //{
+        //    var listModel = backgroundListData[i].ToObject<BackgroundListModel>();
+        //    var backgroundList = listModel.List;
+        //    Dictionary<int, Texture> singleStageTexList = new Dictionary<int, Texture>();
+        //    foreach (var item in backgroundList)
+        //    {
+        //        Texture tex = GetTextureFromResources(listModel.StageNumber, item.LayerNumber);
+        //        singleStageTexList.Add(item.LayerNumber, tex);
+        //    }
+        //    _textureList.Add(listModel.StageNumber, singleStageTexList);
+        //    _backgroundModelList.Add(listModel.StageNumber, backgroundList);
+        //}
+        //
+        //if (_backgroundModelList.Count == 0)
+        //{
+        //    Debug.LogWarning("배경정보 불러오기 실패");
+        //}
+        //else
+        //{
+        //    Debug.Log("배경정보 불러오기 성공");
+        //}
+        //await UniTask.Yield();
     }
 
     private async UniTask LoadScoreData()
     {
-        var scoreData = await LoadTextAsset("Score");
+        var scoreData = await JsonConverter<ScoreModel>.GetJsonToDictionaryKeyId();
 
-        JArray scores = JObject.Parse(scoreData)["Score"] as JArray;
-
-        for(int i = 0; i < scores.Count; ++i)
+        foreach (var score in scoreData.Values)
         {
-            var score = scores[i].ToObject<ScoreModel>();
             _scoreList.Add(score.Type, score);
         }
 
@@ -181,20 +186,11 @@ public class DataManager : Singleton<DataManager>
         {
             Debug.Log("스코어 불러오기 성공");
         }
-        await UniTask.Yield();
     }
 
     private async UniTask LoadCharacterData()
     {
-        var characterData = await LoadTextAsset("Character");
-
-        JArray characters = JObject.Parse(characterData)["Character"] as JArray;
-
-        for (int i = 0; i < characters.Count; ++i)
-        {
-            var character = characters[i].ToObject<CharacterModel>();
-            _characterList.Add(character.Id, character);
-        }
+        _characterList = await JsonConverter<CharacterModel>.GetJsonToDictionaryKeyId();
 
         if (_characterList.Count == 0)
         {
@@ -204,16 +200,34 @@ public class DataManager : Singleton<DataManager>
         {
             Debug.Log("캐릭터 불러오기 성공");
         }
-        await UniTask.Yield();
+        //var characterData = await LoadTextAsset("Character");
+        //
+        //JArray characters = JObject.Parse(characterData)["Character"] as JArray;
+        //
+        //for (int i = 0; i < characters.Count; ++i)
+        //{
+        //    var character = characters[i].ToObject<CharacterModel>();
+        //    _characterList.Add(character.Id, character);
+        //}
+        //
+        //if (_characterList.Count == 0)
+        //{
+        //    Debug.LogWarning("캐릭터 정보 불러오기 실패");
+        //}
+        //else
+        //{
+        //    Debug.Log("캐릭터 불러오기 성공");
+        //}
+        //await UniTask.Yield();
     }
 
     private async UniTask LoadPlayerData()
     {
-        var playerData = await LoadTextAsset("Player");
-
-        JObject player = JObject.Parse(playerData)["Player"] as JObject;
-
-        _playerModel = player.ToObject<PlayerModel>();
+        //var playerData = await LoadTextAsset("Player");
+        //
+        //JObject player = JObject.Parse(playerData)["Player"] as JObject;
+        //
+        //_playerModel = player.ToObject<PlayerModel>();
     }
 
     private Texture GetTextureFromResources(int stageNumber, int layerNumber)

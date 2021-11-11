@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterModel
+public class CharacterModel : IData
 {
     public int Id { get; set; }
     public string NameKR { get; set; }
@@ -12,4 +12,14 @@ public class CharacterModel
     public float MaxSpeed { get; set; }
     public float HpDecreasePerSecond { get; set; }
     public float Defence { get; set; }
+
+    public int GetId()
+    {
+        return Id;
+    }
+
+    public string GetName()
+    {
+        return NameKR;
+    }
 }

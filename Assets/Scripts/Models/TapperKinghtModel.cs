@@ -105,13 +105,11 @@ public class TapperKinghtModel : MonoBehaviour
         }
     }
 
-    public int AddScore(ScoreType type)
+    public void AddTotalRunningRecord(int record)
     {
-        int value = _scoreList[type].ScoreValue;
+        //int value = _scoreList[type].ScoreValue;
 
-        _playerModel.OwnScore += value;
-
-        return value;
+        _playerModel.TotalRunningRecord += record;
     }
 
     public async UniTask<bool> AddGold(int gold)
@@ -128,14 +126,14 @@ public class TapperKinghtModel : MonoBehaviour
         }
     }
 
-    public int GetScore()
+    public int GetTotalRunningRecord()
     {
-        return _playerModel.OwnScore;
+        return _playerModel.TotalRunningRecord;
     }
 
-    public void SetScore(int score)
+    public void SetTotalRunningRecord(int value)
     {
-        _playerModel.OwnScore = score;
+        _playerModel.TotalRunningRecord = value;
     }
 
     public void CalculateExp(int exp)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundModel
+public class BackgroundModel 
 {
     public int LayerNumber { get; set; }
     public float ScrollSpeed { get; set; }
@@ -11,8 +11,18 @@ public class BackgroundModel
     public float YScale { get; set; }
 }
 
-public class BackgroundListModel
+public class BackgroundListModel : IData
 {
     public int StageNumber { get; set; }
     public List<BackgroundModel> List { get; set; }
+
+    public int GetId()
+    {
+        return StageNumber;
+    }
+
+    public string GetName()
+    {
+        return string.Empty;
+    }
 }

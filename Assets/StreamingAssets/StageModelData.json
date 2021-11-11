@@ -8,7 +8,7 @@
         "EnemyList": "등장하는 몬스터 Id 리스트",
         "TrackLength" : "스테이지 트랙 길이"
     },
-  "Stage": [
+  "StageModel": [
     {
       "Id": 10000,
       "StageNumber": 1,

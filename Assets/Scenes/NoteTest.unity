@@ -974,8 +974,6 @@ MonoBehaviour:
   _animSpeedDivider: 3
   _maxAnimSpeed: 2.5
   _minAnimSpeed: 1
-  _requiredExperience: 100
-  _increaseRequiredExperience: 300
 --- !u!137 &315422260
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -2888,7 +2886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1227154374
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3005,13 +3003,13 @@ MonoBehaviour:
   _notePopDestination: []
   _hpBar: {fileID: 0}
   _runnigRecord: {fileID: 0}
-  _score: {fileID: 0}
   _result: {fileID: 1728600653}
   _currentStageNumber: 1
   _currGenTimer: 3
   _genTime: 0
   _currStageRunningDistance: 0
   _currStageTrackLength: 0
+  _expPercent: 0.1
   _bothSideDelayTime: 0.05
   _multiNoteIntervalLimit: 2
   _enemySpeedFactorByPlayer: 0.2
@@ -3022,7 +3020,7 @@ MonoBehaviour:
   _inGamePool: {fileID: 0}
   _spawnObject: {fileID: 358227337}
   testMaxStageNumber: 0
-  _isAutoMode: 0
+  _isStart: 0
   _isTitleMode: 0
   _autoPlayDelay: 0
   _autoPlayTimer: 0
@@ -3769,7 +3767,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1553808360
 RectTransform:
   m_ObjectHideFlags: 0

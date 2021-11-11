@@ -9,7 +9,7 @@
     "MinNoteInterval": "노트들간의 최소 거리간격",
     "MaxNoteInterval": "노트들간의 최대 거리간격, Min과 Max사이에 랜덤한 값이 나온다. 같을 경우는 물론 그 값으로"
   },
-  "Enemy": [
+  "EnemyModel": [
     {
       "Id": 10000,
       "Name": "Mob",

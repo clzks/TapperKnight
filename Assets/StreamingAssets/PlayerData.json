@@ -3,7 +3,7 @@
         "Id": "구글플레이 Id",
         "OwnCharacterList": "보유 캐릭터",
         "OwnGold" : "소지 골드",
-        "OwnScore": "점수?",
+        "OwnRunningRecord": "점수?",
         "RequiredExperience" : "1레벨일때 다음 레벨업에 필요한 경험치",
         "IncreaseRequiredExperience" : "레벨 업 마다 늘어나는 요구 경험치",
         "HpPerLevelUp" : "레벨업 시 늘어나는 체력",
@@ -12,59 +12,9 @@
     "Player": {
             "Id": "TestId",
             "OwnCharacterList": [
-                {
-                    "Id" : 10000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                },
-                {
-                    "Id" : 20000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                },
-                {
-                    "Id" : 30000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                },
-                {
-                    "Id" : 40000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                },
-                {
-                    "Id" : 50000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                },
-                {
-                    "Id" : 70000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                },
-                {
-                    "Id" : 90000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                },
-                {
-                    "Id" : 100000,
-                    "Level" : 1,
-                    "MaxLevel" : 10,
-                    "CurrExp" : 0
-                }
+                10000
             ],
             "OwnGold": 0,
-            "OwnScore" : 0,
-            "RequiredExperience" : 100,
-            "IncreaseRequiredExperience" : 300,
-            "HpPerLevelUp" : 5
+            "OwnRunningRecord" : 0
     }
 }

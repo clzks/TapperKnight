@@ -11,7 +11,7 @@
         "XScale": "MeshRenderer X크기(float)",
         "YScale": "MeshRenderer Y크기(float)"
     },
-  "Background": [
+  "BackgroundListModel": [
     {
       "StageNumber": 1,
       "List": [

@@ -1,4 +1,4 @@
-public class EnemyModel
+public class EnemyModel : IData
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -25,5 +25,13 @@ public class EnemyModel
         };
     }
 
+    public int GetId()
+    {
+        return Id;
+    }
 
+    public string GetName()
+    {
+        return Name;
+    }
 }

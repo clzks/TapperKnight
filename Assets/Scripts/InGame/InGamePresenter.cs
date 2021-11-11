@@ -59,14 +59,19 @@ public class InGamePresenter : MonoBehaviour
         return _inGameView.GetTarget();
     }
 
-    public int GetScore()
+    public void AddTotalRunningRecord(int record)
     {
-        return _model.GetScore();
+        _model.AddTotalRunningRecord(record);
     }
 
-    public void SetScore(int score)
+    public int GetTotalRunningRecord()
     {
-        _model.SetScore(score);
+        return _model.GetTotalRunningRecord();
+    }
+
+    public void SetTotalRunningRecord(int record)
+    {
+        _model.SetTotalRunningRecord(record);
     }
     public float GetPlayerSpeed()
     {
@@ -109,7 +114,11 @@ public class InGamePresenter : MonoBehaviour
         }
 
         _inGameView.AddSpeed(accel);
-        _inGameView.AddExp(_model.AddScore(score));
+    }
+
+    public void SendScroeType(ScoreType score)
+    {
+        _inGameView.SendScoreType(score);
     }
 
     public async UniTask OnTargetDestroy()
