@@ -20,6 +20,7 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, Dictionary<int, Texture>> _textureList;
     private Dictionary<int, CharacterModel> _characterList;
     private Dictionary<ScoreType, ScoreModel> _scoreList;
+    private Dictionary<int, QuestInfo> _questInfoList;
     private PlayerModel _playerModel;
     public async UniTask GetDataAsync()
     {
@@ -30,7 +31,7 @@ public class DataManager : Singleton<DataManager>
         _textureList = new Dictionary<int, Dictionary<int, Texture>>();
         _scoreList = new Dictionary<ScoreType, ScoreModel>();
         _characterList = new Dictionary<int, CharacterModel>();
-
+        _questInfoList = new Dictionary<int, QuestInfo>();
         LoadScoreSprite().Forget();
         LoadNoteSprite().Forget();
         await LoadStageData();
@@ -38,6 +39,7 @@ public class DataManager : Singleton<DataManager>
         await LoadBackground();
         await LoadScoreData();
         await LoadCharacterData();
+        await LoadQuestInfo();
         await LoadPlayerData();
         await UniTask.Yield();
     }
@@ -221,13 +223,50 @@ public class DataManager : Singleton<DataManager>
         //await UniTask.Yield();
     }
 
+    
+    //TODO : 구글 연동시 최우선되어야 할 것
     private async UniTask LoadPlayerData()
     {
+#if UNITY_EDITOR
+        _playerModel = await JsonConverter<PlayerModel>.LoadJson();
+
+        // 불러오는 작업 후
+        if (null == _playerModel)
+        {
+            Debug.Log("플레이어 정보 없음. 플레이어 정보 새로 생성");
+            MakeNewPlayerModel();
+        }
+        else
+        {
+            Debug.Log("플레이어 정보 읽기 성공");
+        }
+#endif
         //var playerData = await LoadTextAsset("Player");
         //
         //JObject player = JObject.Parse(playerData)["Player"] as JObject;
         //
         //_playerModel = player.ToObject<PlayerModel>();
+    }
+    
+    private void MakeNewPlayerModel()
+    {
+        _playerModel = PlayerModel.MakeSamplePlayerModel();
+        SavePlayerModel();
+    }
+
+    public void SavePlayerModel()
+    {
+        JsonConverter<PlayerModel>.WriteJson(_playerModel);
+    }
+
+    private async UniTask LoadQuestInfo()
+    {
+        var list = await JsonConverter<QuestInfo>.GetJsonToDictionaryKeyId();
+
+        foreach (var item in list.Values)
+        {
+            _questInfoList.Add(item.CharacterId, item);
+        }
     }
 
     private Texture GetTextureFromResources(int stageNumber, int layerNumber)
@@ -296,5 +335,10 @@ public class DataManager : Singleton<DataManager>
     public PlayerModel GetPlayerModel()
     {
         return _playerModel;
+    }
+
+    public Dictionary<int, QuestInfo> GetQuestInfoList()
+    {
+        return _questInfoList;
     }
 }

@@ -22,7 +22,9 @@
       "MaxSpeed": 20.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 0
+      "Cost": 0,
+      "IsRetention" : true,
+      "IsIncluded" : true
     },
     {
       "Id": 20000,
@@ -33,7 +35,9 @@
       "MaxSpeed": 19.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 100
+      "Cost": 100,
+      "IsRetention" : false,
+      "IsIncluded" : true
     },
     {
   	  "Id": 30000,
@@ -44,7 +48,9 @@
       "MaxSpeed": 21.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 200
+      "Cost": 200,
+      "IsRetention" : false,
+      "IsIncluded" : true
     },
     {
       "Id": 40000,
@@ -55,7 +61,9 @@
       "MaxSpeed": 22.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 300
+      "Cost": 300,
+      "IsRetention" : false,
+      "IsIncluded" : true
     },
     {
       "Id": 50000,
@@ -66,7 +74,9 @@
       "MaxSpeed": 23.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 400
+      "Cost": 400,
+      "IsRetention" : false,
+      "IsIncluded" : true
     },
     {
    	  "Id": 60000,
@@ -77,7 +87,9 @@
       "MaxSpeed": 25.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 500
+      "Cost": 500,
+      "IsRetention" : false,
+      "IsIncluded" : true
     },
     {
       "Id": 70000,
@@ -88,7 +100,9 @@
       "MaxSpeed": 10.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 600
+      "Cost": 600,
+      "IsRetention" : false,
+      "IsIncluded" : false
     },
     {
       "Id": 80000,
@@ -99,7 +113,9 @@
       "MaxSpeed": 10.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 700
+      "Cost": 700,
+      "IsRetention" : false,
+      "IsIncluded" : false
     },
     {
       "Id": 90000,
@@ -110,7 +126,9 @@
       "MaxSpeed": 10.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 800
+      "Cost": 800,
+      "IsRetention" : false,
+      "IsIncluded" : false
     },
     {
       "Id": 100000,
@@ -121,7 +139,9 @@
       "MaxSpeed": 10.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 900
+      "Cost": 900,
+      "IsRetention" : false,
+      "IsIncluded" : false
     },
     {
       "Id": 110000,
@@ -132,7 +152,9 @@
       "MaxSpeed": 10.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 1000
+      "Cost": 1000,
+      "IsRetention" : false,
+      "IsIncluded" : false
     },
     {
       "Id": 120000,
@@ -143,7 +165,9 @@
       "MaxSpeed": 10.0,
       "HpDecreasePerSecond": 1,
       "Defence": 3.0,
-      "Cost": 1000
+      "Cost": 1000,
+      "IsRetention" : false,
+      "IsIncluded" : false
     }
   ]
 }

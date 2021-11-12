@@ -23,7 +23,9 @@ public class InGameView : MonoBehaviour
     [SerializeField] private List<Vector3> _notePopDestination;
     [SerializeField] private Image _hpBar;
     [SerializeField] private Text _runnigRecord;
-    //[SerializeField] private Text _score;
+    [SerializeField] private Text _lastScoreText;
+    [SerializeField] private Text _conscutiveCountText;
+
     [SerializeField] private ResultPanel _result;
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
@@ -35,6 +37,7 @@ public class InGameView : MonoBehaviour
     [SerializeField] private float _currStageTrackLength;
     private ScoreType _lastScoreType = ScoreType.Count;
     private int _conscutiveScoreCount = 0;
+    private Dictionary<ScoreType, int> _conscutiveCountList;
     private bool _isLastStage = false;
     private float _blackOutTime = 1.3f;
     private int _currExp = 0;
@@ -131,7 +134,8 @@ public class InGameView : MonoBehaviour
             _result.RetryButton.onClick.AddListener(async () => await Retry());
             _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
             _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
-            //_score = GameObject.Find("Canvas/Status/ScoreValue").GetComponent<Text>();
+            _lastScoreText = GameObject.Find("Canvas/Status/LastScore").GetComponent<Text>();
+            _conscutiveCountText = GameObject.Find("Canvas/Status/ConscutiveCount").GetComponent<Text>();
         }
 
         _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
@@ -143,6 +147,9 @@ public class InGameView : MonoBehaviour
         _notePopDestination.Add(GameObject.Find("Field/NotePopDestination/Destination").transform.position);
         _inGamePool = GameObject.Find("ObjectPool").transform;
         _spawnObject = GameObject.Find("Field/SpawnSpot").transform;
+        _conscutiveCountList = new Dictionary<ScoreType, int>();
+        _conscutiveCountList.Add(ScoreType.Miss, 0);
+        _conscutiveCountList.Add(ScoreType.Perfect, 0);
         await UniTask.Yield();
     }
 
@@ -337,13 +344,27 @@ public class InGameView : MonoBehaviour
     private async UniTask GameOver()
     {
         await _playerCharacter.ExecuteDead();
-        _inGamePresenter.CalculateExp(_currExp);
-        _currExp = 0;
         Time.timeScale = 0f;
-        //_result.SetScore(_inGamePresenter.GetScore());
         var record = _playerCharacter.GetRunningRecord();
         _result.SetRecord(record);
         _inGamePresenter.AddTotalRunningRecord(record);
+
+        var questList = _inGamePresenter.GetQuestInfoList();
+        var playerModel = _inGamePresenter.GetPlayerModel();
+
+        foreach (var item in questList.Values)
+        {
+            if(false == playerModel.OwnCharacterList.Exists(x => x.Id == item.CharacterId))
+            {
+                if(true == CheckQuest(item))
+                {
+                    Debug.Log(item.CharacterId + "Ä³¸¯ÅÍ È¹µæ!!");
+                    playerModel.AddCharacter(item.CharacterId);
+                }
+            }
+        }
+
+        _inGamePresenter.SavePlayerModel();
         _result.SetActive(true);
     }
     #endregion
@@ -442,6 +463,8 @@ public class InGameView : MonoBehaviour
     {
         await UniTask.Yield(_disableCancellation.Token);
         _runnigRecord.text = _playerCharacter.GetRunningRecord().ToString();
+        _lastScoreText.text = _lastScoreType.ToString();
+        _conscutiveCountText.text = _conscutiveScoreCount.ToString();
         //_score.text = _inGamePresenter.GetScore().ToString();
     }
 
@@ -565,18 +588,17 @@ public class InGameView : MonoBehaviour
                 }
                 break;
             case QuestType.Conscutive_Miss:
-                if(_lastScoreType == ScoreType.Miss && _conscutiveScoreCount >= info.Value)
+                if(_conscutiveCountList[ScoreType.Miss] >= info.Value)
                 {
                     return true;
                 }
                 break;
             case QuestType.Conscutive_Perfect:
-                if (_lastScoreType == ScoreType.Perfect && _conscutiveScoreCount >= info.Value)
+                if (_conscutiveCountList[ScoreType.Perfect] >= info.Value)
                 {
                     return true;
                 }
                 break;
-
             case QuestType.Single_RunningRecord:
                 if(_playerCharacter.GetRunningRecord() >= info.Value)
                 {
@@ -596,9 +618,25 @@ public class InGameView : MonoBehaviour
         if (score == _lastScoreType)
         {
             _conscutiveScoreCount++;
+
+            if (_lastScoreType == ScoreType.Miss || _lastScoreType == ScoreType.Perfect)
+            {
+                if (_conscutiveCountList[_lastScoreType] < _conscutiveScoreCount)
+                {
+                    _conscutiveCountList[_lastScoreType] = _conscutiveScoreCount;
+                }
+            }
         }
         else
         {
+            if (_lastScoreType == ScoreType.Miss || _lastScoreType == ScoreType.Perfect)
+            {
+                if (_conscutiveCountList[_lastScoreType] < _conscutiveScoreCount)
+                {
+                    _conscutiveCountList[_lastScoreType] = _conscutiveScoreCount;
+                }
+            }
+
             _lastScoreType = score;
             _conscutiveScoreCount = 1;
         }

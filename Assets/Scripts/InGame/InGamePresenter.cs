@@ -24,6 +24,11 @@ public class InGamePresenter : MonoBehaviour
         _model = model;
     }
 
+    public void SavePlayerModel()
+    {
+        _model.SavePlayerModel();
+    }
+
     public Vector2 GetNoteBoxPos()
     {
         return _inGameView.GetNoteBoxPos();
@@ -91,6 +96,16 @@ public class InGamePresenter : MonoBehaviour
     public Sprite GetScoreSprite(ScoreType type)
     {
         return _model.GetScoreSprite(type);
+    }
+
+    public Dictionary<int, QuestInfo> GetQuestInfoList()
+    {
+        return _model.GetQuestInfoList();
+    }
+
+    public PlayerModel GetPlayerModel()
+    {
+        return _model.GetPlayerModel();
     }
 
     public void CalculateExp(int exp)

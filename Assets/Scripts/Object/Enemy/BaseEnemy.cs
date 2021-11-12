@@ -284,6 +284,12 @@ public class BaseEnemy : MonoBehaviour, IPoolObject
 
     public int GetNoteCount()
     {
+        if(null == enemyNotes)
+        {
+            Debug.LogWarning("enemyNotes가 Null 입니다!");
+            return 0;
+        }
+
         return enemyNotes.Count;
     }
 

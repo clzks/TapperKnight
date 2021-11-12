@@ -45,18 +45,21 @@ public class CharacterSelect : MonoBehaviour
 
         var Images = _objectPool.GetCharacterIconImageList();
 
-        foreach (var item in Characters)
+        foreach (var item in Characters.Values)
         {
-            CharacterModel model = item.Value;
+            if(false == item.IsIncluded)
+            {
+                return;
+            }
             CharacterIcon Ci = Instantiate(Icon).GetComponent<CharacterIcon>();
-            if(playerModel.OwnCharacterList.Exists(x => x.Id == model.Id))
+            if(playerModel.OwnCharacterList.Exists(x => x.Id == item.Id))
             {
                 Ci.ActivateIcon(true);
             }
             Ci.transform.SetParent(_contentTransform);
-            Ci.SetCharacterSprite(Images[model.PrefabName]);
-            Ci.SetClickAction(() => ClickIconAction(model, Ci));
-            Ci.SetCharacter(model);
+            Ci.SetCharacterSprite(Images[item.PrefabName]);
+            Ci.SetClickAction(() => ClickIconAction(item, Ci));
+            Ci.SetCharacter(item);
         }
     }
 

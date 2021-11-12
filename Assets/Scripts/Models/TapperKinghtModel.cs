@@ -14,8 +14,10 @@ public class TapperKinghtModel : MonoBehaviour
     private Dictionary<ScoreType, ScoreModel> _scoreList;
     private Dictionary<string, Sprite> _noteSpriteList;
     private Dictionary<ScoreType, Sprite> _scoreSpriteList;
+    private Dictionary<int, QuestInfo> _questInfoList;
     private PlayerModel _playerModel;
-    
+   
+
     private void Awake()
     {
         _gameManager = GameManager.Get();
@@ -25,6 +27,7 @@ public class TapperKinghtModel : MonoBehaviour
         SetScoreModel();
         SetNoteSpriteList();
         SetScoreSpriteList();
+        SetQuestInfoList();
         _playerModel = _dataManager.GetPlayerModel();
     }
     
@@ -51,6 +54,10 @@ public class TapperKinghtModel : MonoBehaviour
         _scoreSpriteList = _dataManager.GetScoreSpriteList();
     }
 
+    public void SetQuestInfoList()
+    {
+        _questInfoList = _dataManager.GetQuestInfoList();
+    }
     public StageModel GetStageModel(int index)
     {
         return _stageModelList[index];
@@ -105,6 +112,11 @@ public class TapperKinghtModel : MonoBehaviour
         }
     }
 
+    public Dictionary<int, QuestInfo> GetQuestInfoList()
+    {
+        return _questInfoList;
+    }
+
     public void AddTotalRunningRecord(int record)
     {
         //int value = _scoreList[type].ScoreValue;
@@ -124,6 +136,11 @@ public class TapperKinghtModel : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void SavePlayerModel()
+    {
+        _dataManager.SavePlayerModel();
     }
 
     public int GetTotalRunningRecord()
@@ -170,5 +187,10 @@ public class TapperKinghtModel : MonoBehaviour
     public Sprite GetScoreSprite(ScoreType type)
     {
         return _scoreSpriteList[type];
+    }
+
+    public PlayerModel GetPlayerModel()
+    {
+        return _playerModel;
     }
 }

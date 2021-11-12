@@ -22,7 +22,22 @@ public class PlayerModel : IData
             TotalRunningRecord = 0,
         };
 
+        model.OwnCharacterList = new List<CharacterDataModel>();
+
+        foreach (var item in list.Values)
+        {
+            if(true == item.IsRetention)
+            {
+                model.OwnCharacterList.Add(CharacterDataModel.CreateNewDataModel(item.Id));
+            }
+        }
+
         return model;
+    }
+
+    public void AddCharacter(int id)
+    {
+        OwnCharacterList.Add(CharacterDataModel.CreateNewDataModel(id));
     }
 
     public int GetId()

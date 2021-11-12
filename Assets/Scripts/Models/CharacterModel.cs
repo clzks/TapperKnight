@@ -12,7 +12,8 @@ public class CharacterModel : IData
     public float MaxSpeed { get; set; }
     public float HpDecreasePerSecond { get; set; }
     public float Defence { get; set; }
-
+    public bool IsRetention { get; set; }
+    public bool IsIncluded { get; set; }
     public int GetId()
     {
         return Id;
