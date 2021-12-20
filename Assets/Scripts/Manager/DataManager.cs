@@ -250,7 +250,13 @@ public class DataManager : Singleton<DataManager>
     
     private void MakeNewPlayerModel()
     {
-        _playerModel = PlayerModel.MakeSamplePlayerModel();
+        _playerModel = PlayerModel.MakePlayerModel();
+        SavePlayerModel();
+    }
+
+    public void ResetPlayerModel()
+    {
+        _playerModel.ResetPlayerModel();
         SavePlayerModel();
     }
 

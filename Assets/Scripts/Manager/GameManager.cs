@@ -29,6 +29,7 @@ public class GameManager : Singleton<GameManager>
         _currSelectCharacter = model;
     }
 
+    // 현재 캐릭터 모델 받아오기
     public CharacterModel GetSelectModel()
     {
         return _currSelectCharacter;
@@ -39,11 +40,13 @@ public class GameManager : Singleton<GameManager>
         ObjectPoolManager.Get().ResetPool();
     }
 
+    // 씬 타입 설정하기
     public void SetSceneType(SceneType type)
     {
         _currSceneType = type;
     }
 
+    // 씬 타입 받아오기
     public SceneType GetSceneType()
     {
         return _currSceneType;

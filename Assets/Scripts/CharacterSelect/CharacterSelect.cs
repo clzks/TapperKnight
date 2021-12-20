@@ -22,6 +22,7 @@ public class CharacterSelect : MonoBehaviour
     [SerializeField] private Button _backToLobbyButton;
     private CharacterIcon _selectIcon;
     private List<GameObject> _uiObjectList;
+    private List<CharacterIcon> _characterIconList;
     private void Awake()
     {
         _objectPool = ObjectPoolManager.Get();
@@ -35,6 +36,7 @@ public class CharacterSelect : MonoBehaviour
         _uiObjectList.Add(_scrollView);
         _uiObjectList.Add(_statusUI);
         LoadCharacterIcon();
+        SetCharcaterIcon();
     }
 
     public void LoadCharacterIcon()
@@ -44,6 +46,7 @@ public class CharacterSelect : MonoBehaviour
         var Characters = _dataManager.GetCharacterList();
 
         var Images = _objectPool.GetCharacterIconImageList();
+        _characterIconList = new List<CharacterIcon>();
 
         foreach (var item in Characters.Values)
         {
@@ -52,14 +55,29 @@ public class CharacterSelect : MonoBehaviour
                 return;
             }
             CharacterIcon Ci = Instantiate(Icon).GetComponent<CharacterIcon>();
-            if(playerModel.OwnCharacterList.Exists(x => x.Id == item.Id))
-            {
-                Ci.ActivateIcon(true);
-            }
+            Ci.ActivateIcon(false);
             Ci.transform.SetParent(_contentTransform);
             Ci.SetCharacterSprite(Images[item.PrefabName]);
             Ci.SetClickAction(() => ClickIconAction(item, Ci));
             Ci.SetCharacter(item);
+            _characterIconList.Add(Ci);
+        }
+    }
+
+    public void SetCharcaterIcon()
+    {
+        var playerModel = _dataManager.GetPlayerModel();
+
+        foreach (var icon in _characterIconList)
+        {
+            if (playerModel.OwnCharacterList.Exists(x => x.Id == icon.GetId()))
+            {
+                icon.ActivateIcon(true);
+            }
+            else
+            {
+                icon.ActivateIcon(false);
+            }
         }
     }
 

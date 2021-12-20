@@ -143,6 +143,11 @@ public class TapperKinghtModel : MonoBehaviour
         _dataManager.SavePlayerModel();
     }
 
+    public void ResetPlayerModel()
+    {
+        _dataManager.ResetPlayerModel();
+    }
+
     public int GetTotalRunningRecord()
     {
         return _playerModel.TotalRunningRecord;

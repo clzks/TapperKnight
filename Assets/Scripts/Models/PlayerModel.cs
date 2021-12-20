@@ -11,7 +11,7 @@ public class PlayerModel : IData
     public int IncreaseRequiredExperience { get; set; }
     public int HpPerLevelUp { get; set; }
 
-    public static PlayerModel MakeSamplePlayerModel()
+    public static PlayerModel MakePlayerModel()
     {
         var list = DataManager.Get().GetCharacterList();
 
@@ -33,6 +33,23 @@ public class PlayerModel : IData
         }
 
         return model;
+    }
+
+    public void ResetPlayerModel()
+    {
+        OwnCharacterList.Clear();
+        OwnGold = 0;
+        TotalRunningRecord = 0;
+
+        var list = DataManager.Get().GetCharacterList();
+
+        foreach (var item in list.Values)
+        {
+            if (true == item.IsRetention)
+            {
+                OwnCharacterList.Add(CharacterDataModel.CreateNewDataModel(item.Id));
+            }
+        }
     }
 
     public void AddCharacter(int id)

@@ -6,16 +6,10 @@
       "Level": 1,
       "MaxLevel": 10,
       "CurrExp": 0
-    },
-    {
-      "Id": 30000,
-      "Level": 1,
-      "MaxLevel": 10,
-      "CurrExp": 0
     }
   ],
   "OwnGold": 0,
-  "TotalRunningRecord": 5798,
+  "TotalRunningRecord": 0,
   "RequiredExperience": 0,
   "IncreaseRequiredExperience": 0,
   "HpPerLevelUp": 0

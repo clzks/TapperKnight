@@ -29,6 +29,11 @@ public class InGamePresenter : MonoBehaviour
         _model.SavePlayerModel();
     }
 
+    public void ResetPlayerModel()
+    {
+        _model.ResetPlayerModel();
+    }
+
     public Vector2 GetNoteBoxPos()
     {
         return _inGameView.GetNoteBoxPos();

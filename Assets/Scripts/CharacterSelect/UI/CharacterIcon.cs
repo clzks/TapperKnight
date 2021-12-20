@@ -13,9 +13,7 @@ public class CharacterIcon : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject _lockText;
     [SerializeField] private GameObject _unSelectImage;
     public UnityAction clickAction;
-    
-
-
+   
     public void SetCharacter(CharacterModel character)
     {
         _character = character;
@@ -57,5 +55,10 @@ public class CharacterIcon : MonoBehaviour, IPointerClickHandler
     public void ExecuteDeselect()
     {
         _unSelectImage.SetActive(true);
+    }
+
+    public int GetId()
+    {
+        return _character.GetId();
     }
 }
