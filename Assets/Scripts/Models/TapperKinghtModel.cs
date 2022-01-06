@@ -9,6 +9,7 @@ public class TapperKinghtModel : MonoBehaviour
     // 뷰는 몬스터의 정보를 받아서 생성 및 세팅한다.
     private GameManager _gameManager;
     private DataManager _dataManager;
+    private GPGSManager _gpgsManager;
     private Dictionary<int, StageModel> _stageModelList;
     private Dictionary<int, EnemyModel> _enemyModelList;
     private Dictionary<ScoreType, ScoreModel> _scoreList;
@@ -21,6 +22,7 @@ public class TapperKinghtModel : MonoBehaviour
     {
         _gameManager = GameManager.Get();
         _dataManager = DataManager.Get();
+        _gpgsManager = GPGSManager.Get();
         SetStageList();
         SetEnemyList();
         SetScoreModel();
@@ -139,12 +141,12 @@ public class TapperKinghtModel : MonoBehaviour
 
     public void SavePlayerModel()
     {
-        _dataManager.SavePlayerModel();
+        _dataManager.SavePlayerModel(_gpgsManager.IsAuthenticated());
     }
 
     public void ResetPlayerModel()
     {
-        _dataManager.ResetPlayerModel();
+        _dataManager.ResetPlayerModel(_gpgsManager.IsAuthenticated());
     }
 
     public int GetTotalRunningRecord()

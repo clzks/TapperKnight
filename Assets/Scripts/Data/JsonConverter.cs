@@ -148,9 +148,9 @@ public static class JsonConverter<T> where T : class, IData
     public static void WriteJson(T data)
     {
 #if UNITY_EDITOR
-        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
+        var filePath = Path.Combine(Application.streamingAssetsPath, typeof(T).Name + ".json");
 #elif UNITY_ANDROID
-        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
+        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", typeof(T).Name + "Data.json");
 #endif 
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -160,40 +160,15 @@ public static class JsonConverter<T> where T : class, IData
     public static async UniTask<T> LoadJson()
     {
         string text = string.Empty;
+
 #if UNITY_EDITOR
-        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
+        var filePath = Path.Combine(Application.streamingAssetsPath, typeof(T).Name + ".json");
 #elif UNITY_ANDROID
-        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
-#endif
+        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", typeof(T).Name + "Data.json");
+#endif 
+        text = await LoadJsonString(filePath);
 
-        FileInfo info = new FileInfo(filePath);
-        if (false == info.Exists)
-        {
-            Debug.Log(filePath + " is Not Exist");
-            return null;
-        }
-
-        UnityWebRequest www = UnityWebRequest.Get($"{filePath}");
-        www.timeout = 3;
-
-        while (!www.isDone)
-        {
-            await www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                Debug.Log("data arrived");
-            }
-        }
-
-        text = www.downloadHandler.text;
-
-
-        if (text.Equals(string.Empty))
+        if(text.Equals(string.Empty))
         {
             return null;
         }
@@ -211,7 +186,6 @@ public static class JsonConverter<T> where T : class, IData
         return value;
     }
 }
-
 
 public interface IData
 {

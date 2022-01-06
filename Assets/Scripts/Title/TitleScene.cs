@@ -7,10 +7,13 @@ public class TitleScene : MonoBehaviour
     [SerializeField] private InGameView _inGameView;
     [SerializeField] private InGamePresenter _inGamePresenter;
     [SerializeField] private TapperKinghtModel _model;
+    private GPGSManager _gpgsManager;
     private GameManager _gameManager;
+    private DataManager _dataManager;
     public Text titleText;
     public Text pressButtonText;
     public TitleTouchPanel touchPanel;
+    public LogInPanel logInPanel;
     public Button optionButton;
     private bool _isStart;
     private void Awake()
@@ -18,6 +21,8 @@ public class TitleScene : MonoBehaviour
         _isStart = false;
         MakeMvpPattern();
         SetMvpPattern();
+        _gpgsManager = GPGSManager.Get();
+        _dataManager = DataManager.Get();
         _gameManager = GameManager.Get();
         _gameManager.SetInGamePresenter(_inGamePresenter);
         _gameManager.SetSceneType(SceneType.Title);
@@ -25,6 +30,7 @@ public class TitleScene : MonoBehaviour
 
     private async UniTask Start()
     {
+        _gpgsManager.SignIn();
         await OpeningEvent();
     }
 
@@ -73,7 +79,7 @@ public class TitleScene : MonoBehaviour
             await UniTask.Yield();
         }
 
-        touchPanel.SetAction(() => LoadLobbyScene());
+        touchPanel.SetAction(() => OnClickTouchPanel());
         timer = 0f;
         c = pressButtonText.color;
         while (!_isStart)
@@ -96,10 +102,44 @@ public class TitleScene : MonoBehaviour
         }
     }
 
-    public void LoadLobbyScene()
+    public void OnClickTouchPanel()
     {
+        if (true == _gpgsManager.IsAuthenticated())
+        {
+            LoadLobbyScene();
+        }
+        else
+        {
+            logInPanel.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnClickPlayWithGoogleLogin()
+    {
+        _gpgsManager.SignIn();
+
+        if(true == _gpgsManager.IsAuthenticated())
+        {
+            LoadLobbyScene().Forget();
+        }
+    }
+
+    public void OnClickPlayGuestMode()
+    {
+        _gpgsManager.SetLogin(false);
+        LoadLobbyScene().Forget();
+    }
+
+    public async UniTask LoadLobbyScene()
+    {
+        await LoadPlayerData(_gpgsManager.IsAuthenticated());
         _isStart = true;
         SceneManager.LoadScene("LobbyScene");
         //SceneManager.LoadScene("CharacterSelectScene");
+    }
+
+    public async UniTask LoadPlayerData(bool isLogin)
+    {
+        await _dataManager.LoadPlayerData(isLogin);
     }
 }

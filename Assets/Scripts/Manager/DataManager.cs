@@ -40,7 +40,6 @@ public class DataManager : Singleton<DataManager>
         await LoadScoreData();
         await LoadCharacterData();
         await LoadQuestInfo();
-        await LoadPlayerData();
         await UniTask.Yield();
     }
 
@@ -225,15 +224,22 @@ public class DataManager : Singleton<DataManager>
 
     
     //TODO : 구글 연동시 최우선되어야 할 것
-    private async UniTask LoadPlayerData()
+    public async UniTask LoadPlayerData(bool isLogin)
     {
-        _playerModel = await JsonConverter<PlayerModel>.LoadJson();
+        if(true == isLogin)
+        {
+
+        }
+        else
+        {
+            _playerModel = await JsonConverter<PlayerModel>.LoadJson();
+        }
 
         // 불러오는 작업 후
         if (null == _playerModel)
         {
             Debug.Log("플레이어 정보 없음. 플레이어 정보 새로 생성");
-            MakeNewPlayerModel();
+            MakeNewPlayerModel(isLogin);
         }
         else
         {
@@ -246,21 +252,24 @@ public class DataManager : Singleton<DataManager>
         //_playerModel = player.ToObject<PlayerModel>();
     }
     
-    private void MakeNewPlayerModel()
+    private void MakeNewPlayerModel(bool isLogin)
     {
         _playerModel = PlayerModel.MakePlayerModel();
-        SavePlayerModel();
+        SavePlayerModel(isLogin);
     }
 
-    public void ResetPlayerModel()
+    public void ResetPlayerModel(bool isLogin)
     {
         _playerModel.ResetPlayerModel();
-        SavePlayerModel();
+        SavePlayerModel(isLogin);
     }
 
-    public void SavePlayerModel()
+    public void SavePlayerModel(bool isLogin)
     {
-        JsonConverter<PlayerModel>.WriteJson(_playerModel);
+        if (isLogin)
+        {
+            JsonConverter<PlayerModel>.WriteJson(_playerModel);
+        }
     }
 
     private async UniTask LoadQuestInfo()
