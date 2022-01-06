@@ -25,8 +25,9 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Text _runnigRecord;
     [SerializeField] private Text _lastScoreText;
     [SerializeField] private Text _conscutiveCountText;
-
+    [SerializeField] private CharacterPopUp _popUp;
     [SerializeField] private ResultPanel _result;
+
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
     private StageModel _inGameStageModel;
@@ -131,11 +132,17 @@ public class InGameView : MonoBehaviour
                 _result = GameObject.Find("ResultPanel").GetComponent<ResultPanel>();
             }
 
+            if(null == _popUp)
+            {
+                _popUp = GameObject.Find("CharacterPopUp").GetComponent<CharacterPopUp>();
+            }
+
             _result.RetryButton.onClick.AddListener(async () => await Retry());
             _hpBar = GameObject.Find("Canvas/Status/HpGauge").GetComponent<Image>();
             _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
             _lastScoreText = GameObject.Find("Canvas/Status/LastScore").GetComponent<Text>();
             _conscutiveCountText = GameObject.Find("Canvas/Status/ConscutiveCount").GetComponent<Text>();
+            
         }
 
         _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
@@ -358,6 +365,8 @@ public class InGameView : MonoBehaviour
             {
                 if(true == CheckQuest(item))
                 {
+                    _popUp.SetUI(item.CharacterName, item.Condition, _objectPool.GetCharacterIcon(item.PrefabName));
+                    _popUp.gameObject.SetActive(true);
                     Debug.Log(item.CharacterId + "Ä³¸¯ÅÍ È¹µæ!!");
                     playerModel.AddCharacter(item.CharacterId);
                 }

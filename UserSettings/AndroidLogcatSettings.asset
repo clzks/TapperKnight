@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "ce031713dc652e0102",
     "m_SelectedPackage": {
-        "deviceId": "ce031713dc652e0102",
-        "name": "com.HeekizCompany.TapperKnight",
-        "processId": 2041,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 1,
@@ -11,121 +11,49 @@
         {
             "deviceId": "ce031713dc652e0102",
             "name": "com.HeekizCompany.TapperKnight",
-            "processId": 9731,
-            "exited": true
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 10992,
-            "exited": true
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 11834,
-            "exited": true
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 13904,
-            "exited": true
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 16026,
-            "exited": true
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 17843,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 18848,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 20539,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 24078,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 27604,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 30763,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 30241,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 32520,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 4851,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 13689,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 16696,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
-            "processId": 27720,
-            "exited": false
-        },
-        {
-            "deviceId": "ce031713dc652e0102",
-            "name": "com.HeekizCompany.TapperKnight",
             "processId": 30528,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "ce031713dc652e0102",
             "name": "com.HeekizCompany.TapperKnight",
             "processId": 4671,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "ce031713dc652e0102",
             "name": "com.HeekizCompany.TapperKnight",
             "processId": 2041,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.sec.android.app.launcher",
+            "processId": 5298,
+            "exited": false
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 8517,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 17179,
+            "exited": true
+        },
+        {
+            "deviceId": "ce031713dc652e0102",
+            "name": "com.HeekizCompany.TapperKnight",
+            "processId": 22330,
+            "exited": false
+        },
+        {
+            "deviceId": "HA1CXN9L",
+            "name": "com.devguru.ntwomon",
+            "processId": 28656,
             "exited": false
         }
     ],

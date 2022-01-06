@@ -17,7 +17,7 @@ public static class JsonConverter<T> where T : class, IData
 
         if (text == string.Empty)
         {
-            Debug.LogWarning("Json데이터를 불러오는데 실패하였습니다");
+            Debug.LogWarning(dataPath + "의 Json데이터를 불러오는데 실패하였습니다");
             return null;
         }
 
@@ -31,7 +31,7 @@ public static class JsonConverter<T> where T : class, IData
 
         if (text == string.Empty)
         {
-            Debug.LogWarning("Json데이터를 불러오는데 실패하였습니다");
+            Debug.LogWarning(typeof(T).Name + "의 Json데이터를 불러오는데 실패하였습니다");
             return null;
         }
 
@@ -87,12 +87,14 @@ public static class JsonConverter<T> where T : class, IData
     }
     private static async UniTask<string> LoadJsonString(string url)
     {
+#if UNITY_EDITOR
         FileInfo info = new FileInfo(url);
         if(false == info.Exists)
         {
+            Debug.Log(url + " is Not Exist");
             return string.Empty;
         }
-
+#endif
         UnityWebRequest www = UnityWebRequest.Get($"{url}");
         www.timeout = 3;
 
@@ -111,6 +113,7 @@ public static class JsonConverter<T> where T : class, IData
         }
         return www.downloadHandler.text;
     }
+
     private static Dictionary<int, T> ConvertJsonDataToIdDictionary(string text)
     {
         JArray datas = JObject.Parse(text)[typeof(T).Name] as JArray;
@@ -145,9 +148,9 @@ public static class JsonConverter<T> where T : class, IData
     public static void WriteJson(T data)
     {
 #if UNITY_EDITOR
-        var filePath = Path.Combine(Application.streamingAssetsPath, typeof(T).Name + ".json");
+        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
 #elif UNITY_ANDROID
-        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", typeof(T).Name + "Data.json");
+        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
 #endif 
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -157,15 +160,40 @@ public static class JsonConverter<T> where T : class, IData
     public static async UniTask<T> LoadJson()
     {
         string text = string.Empty;
-
 #if UNITY_EDITOR
-        var filePath = Path.Combine(Application.streamingAssetsPath, typeof(T).Name + ".json");
+        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
 #elif UNITY_ANDROID
-        var filePath = Path.Combine("jar:file://" + Application.dataPath + "!/assets/", typeof(T).Name + "Data.json");
-#endif 
-        text = await LoadJsonString(filePath);
+        var filePath = Path.Combine(Application.persistentDataPath, typeof(T).Name + ".json");
+#endif
 
-        if(text.Equals(string.Empty))
+        FileInfo info = new FileInfo(filePath);
+        if (false == info.Exists)
+        {
+            Debug.Log(filePath + " is Not Exist");
+            return null;
+        }
+
+        UnityWebRequest www = UnityWebRequest.Get($"{filePath}");
+        www.timeout = 3;
+
+        while (!www.isDone)
+        {
+            await www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("data arrived");
+            }
+        }
+
+        text = www.downloadHandler.text;
+
+
+        if (text.Equals(string.Empty))
         {
             return null;
         }

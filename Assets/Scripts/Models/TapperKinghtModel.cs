@@ -16,7 +16,6 @@ public class TapperKinghtModel : MonoBehaviour
     private Dictionary<ScoreType, Sprite> _scoreSpriteList;
     private Dictionary<int, QuestInfo> _questInfoList;
     private PlayerModel _playerModel;
-   
 
     private void Awake()
     {

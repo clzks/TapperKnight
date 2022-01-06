@@ -2,39 +2,57 @@
   "Description": {
     "Id": "정보를 구분 짓는 값",
     "CharacterId" : "개방될 캐릭터 Id",
+    "CharacterName" : "개방될 캐릭터 이름",
+    "PrefabName" : "아이콘 이름",
     "Type" : "퀘스트 타입. Death_Stage : 해당 스테이지에서 죽을 경우, Conscutive_Miss : 연속 미스, Conscutive_Perfect : 연속 퍼펙, Single_RunningRecord : 이번 게임동안 달린거리 달성",
-    "Value" : "퀘스트 목표 값. Ex) Type이 연속 미스이고 Value가 10이면 10연속 미스, Type이 Death_Stage이고 Value가 4이면 4스테이지 사망"
+    "Value" : "퀘스트 목표 값. Ex) Type이 연속 미스이고 Value가 10이면 10연속 미스, Type이 Death_Stage이고 Value가 4이면 4스테이지 사망",
+    "Condition" : "조건 설명"
   },
   "QuestInfo": [
     {
       "Id": 1,
       "CharacterId": 20000,
+      "CharacterName" : "워리어",
+      "PrefabName" : "gladiator02",
       "Type" : "Death_Stage",
-      "Value" : 3
+      "Value" : 3,
+      "Condition" : "스테이지3에서 사망!"
     },
     {
       "Id": 2,
       "CharacterId": 30000,
+      "CharacterName" : "바바리안",
+      "PrefabName" : "gladiator03",
       "Type" : "Conscutive_Miss",
-      "Value" : 7
+      "Value" : 7,
+      "Condition" : "연속 7회 미스!"
     },
     {
       "Id": 3,
       "CharacterId": 40000,
+      "CharacterName" : "아쳐",
+      "PrefabName" : "archer01",
       "Type" : "Single_RunningRecord",
-      "Value" : 10000
+      "Value" : 10000,
+      "Condition" : "10000m 이상 기록달성!"
     },
     {
       "Id": 4,
       "CharacterId": 50000,
+      "CharacterName" : "샤프슈터",
+      "PrefabName" : "archer02",
       "Type" : "Conscutive_Perfect",
-      "Value" : 50
+      "Value" : 50,
+      "Condition" : "50회 연속 Perfect!!"
     },
     {
       "Id": 5,
       "CharacterId": 60000,
+      "CharacterName" : "레인저",
+      "PrefabName" : "archer03",
       "Type" : "Death_Stage",
-      "Value" : 9
+      "Value" : 9,
+      "Condition" : "스테이지9에 도달! "
     }
   ]
 }

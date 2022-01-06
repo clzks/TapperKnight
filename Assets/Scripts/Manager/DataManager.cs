@@ -227,7 +227,6 @@ public class DataManager : Singleton<DataManager>
     //TODO : 구글 연동시 최우선되어야 할 것
     private async UniTask LoadPlayerData()
     {
-#if UNITY_EDITOR
         _playerModel = await JsonConverter<PlayerModel>.LoadJson();
 
         // 불러오는 작업 후
@@ -240,7 +239,6 @@ public class DataManager : Singleton<DataManager>
         {
             Debug.Log("플레이어 정보 읽기 성공");
         }
-#endif
         //var playerData = await LoadTextAsset("Player");
         //
         //JObject player = JObject.Parse(playerData)["Player"] as JObject;
@@ -272,6 +270,15 @@ public class DataManager : Singleton<DataManager>
         foreach (var item in list.Values)
         {
             _questInfoList.Add(item.CharacterId, item);
+        }
+
+        if (_questInfoList.Count == 0)
+        {
+            Debug.LogWarning("퀫트 정보 불러오기 실패");
+        }
+        else
+        {
+            Debug.Log("퀫트 불러오기 성공");
         }
     }
 
