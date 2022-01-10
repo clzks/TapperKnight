@@ -15,6 +15,7 @@ public class TitleScene : MonoBehaviour
     public TitleTouchPanel touchPanel;
     public LogInPanel logInPanel;
     public Button optionButton;
+    public RetryPopUp retryPopUp;
     private bool _isStart;
     private void Awake()
     {
@@ -106,7 +107,7 @@ public class TitleScene : MonoBehaviour
     {
         if (true == _gpgsManager.IsAuthenticated())
         {
-            LoadLobbyScene();
+            LoadLobbyScene().Forget();
         }
         else
         {
@@ -122,6 +123,27 @@ public class TitleScene : MonoBehaviour
         {
             LoadLobbyScene().Forget();
         }
+        else
+        {
+            logInPanel.gameObject.SetActive(false);
+            retryPopUp.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnClickRetryGoogleLogin()
+    {
+        retryPopUp.gameObject.SetActive(false);
+
+        _gpgsManager.SignIn();
+
+        if (true == _gpgsManager.IsAuthenticated())
+        {
+            LoadLobbyScene().Forget();
+        }
+        else
+        {
+            retryPopUp.gameObject.SetActive(true);
+        }
     }
 
     public void OnClickPlayGuestMode()
@@ -135,7 +157,6 @@ public class TitleScene : MonoBehaviour
         await LoadPlayerData(_gpgsManager.IsAuthenticated());
         _isStart = true;
         SceneManager.LoadScene("LobbyScene");
-        //SceneManager.LoadScene("CharacterSelectScene");
     }
 
     public async UniTask LoadPlayerData(bool isLogin)
