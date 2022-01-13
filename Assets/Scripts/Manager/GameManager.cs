@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     private InGamePresenter _inGamePresenter;
     private CharacterModel _currSelectCharacter;
     public bool isTitle;
+    private GameNetworkType _networkType = GameNetworkType.Count;
     public void SetInGamePresenter(InGamePresenter presenter)
     {
         _inGamePresenter = presenter;
@@ -50,5 +51,15 @@ public class GameManager : Singleton<GameManager>
     public SceneType GetSceneType()
     {
         return _currSceneType;
+    }
+
+    public GameNetworkType GetGameNetworkType()
+    {
+        return _networkType;
+    }
+
+    public void SetGameNetworkType(GameNetworkType type)
+    {
+        _networkType = type;
     }
 }

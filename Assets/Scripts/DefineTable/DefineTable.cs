@@ -76,6 +76,28 @@ public enum QuestType
     Count
 }
 
+public enum GameDataCallbackType
+{ 
+    Save,
+    Load,
+    Count
+}
+
+public enum GameNetworkType
+{ 
+    Online,
+    Offline,
+    Count
+}
+
+public enum NetworkRequestStatus
+{
+    Done,
+    Progress,
+    Fail,
+    Count
+}
+
 public static class Formula
 {
     public static Vector3 BezierMove(Vector3 start, Vector3 p, Vector3 dest, float t)

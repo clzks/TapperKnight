@@ -295,7 +295,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1717084758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +378,49 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1808307604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1808307605}
+  - component: {fileID: 1808307606}
+  m_Layer: 0
+  m_Name: YieldTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1808307605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808307604}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 855.94165, y: 465.08527, z: -155.33731}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1808307606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808307604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07cb61a7763c644fbefdffec13d10b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1998484063 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6957543184402822469, guid: 05770de4743a0f24ca3c7e71746fd7a2, type: 3}
@@ -428,7 +471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5774348654147286635, guid: ab8bee3dd6cc1a8438f4545ab8dce43c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5774348654147286636, guid: ab8bee3dd6cc1a8438f4545ab8dce43c, type: 3}
       propertyPath: m_Pivot.x
@@ -526,6 +569,10 @@ PrefabInstance:
     - target: {fileID: 6957543184402822468, guid: 05770de4743a0f24ca3c7e71746fd7a2, type: 3}
       propertyPath: m_Name
       value: RetryPopUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6957543184402822468, guid: 05770de4743a0f24ca3c7e71746fd7a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6957543184402822469, guid: 05770de4743a0f24ca3c7e71746fd7a2, type: 3}
       propertyPath: m_Pivot.x

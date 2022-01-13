@@ -27,6 +27,7 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Text _conscutiveCountText;
     [SerializeField] private CharacterPopUp _popUp;
     [SerializeField] private ResultPanel _result;
+    [SerializeField] private RetryPopUp _retryPopUp;
 
     [Header("Stage")]
     private InGameState _state = InGameState.Count;
@@ -142,7 +143,8 @@ public class InGameView : MonoBehaviour
             _runnigRecord = GameObject.Find("Canvas/Status/RunningRecordValue").GetComponent<Text>();
             _lastScoreText = GameObject.Find("Canvas/Status/LastScore").GetComponent<Text>();
             _conscutiveCountText = GameObject.Find("Canvas/Status/ConscutiveCount").GetComponent<Text>();
-            
+            _retryPopUp.SetDescription("저장 실패");
+            _retryPopUp.SetButtonAction(SavePlayerModel());
         }
 
         _playerCharacter = GameObject.Find("Field/Player").GetComponent<BaseCharacter>();
@@ -373,10 +375,11 @@ public class InGameView : MonoBehaviour
             }
         }
 
-        _inGamePresenter.SavePlayerModel();
         _result.SetActive(true);
+        await SavePlayerModel();
     }
     #endregion
+
     public async UniTask Retry()
     {
         _targetEnemy = null;
@@ -650,6 +653,36 @@ public class InGameView : MonoBehaviour
             _conscutiveScoreCount = 1;
         }
     }
+
+    public async UniTask SavePlayerModel()
+    {
+        if (true == _retryPopUp.gameObject.activeSelf)
+        {
+            _retryPopUp.gameObject.SetActive(false);
+        }
+
+        await _inGamePresenter.SavePlayerModel();
+
+        if (NetworkRequestStatus.Done == _inGamePresenter.GetRequestStatus())
+        {
+            // 저장 성공
+        }
+        else if (NetworkRequestStatus.Fail == _inGamePresenter.GetRequestStatus())
+        {
+            // 저장 실패
+            _retryPopUp.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnClickPlayGuestModeButton()
+    {
+        _gameManager.SetGameNetworkType(GameNetworkType.Offline);
+
+        _inGamePresenter.SavePlayerModel().Forget();
+
+        _retryPopUp.gameObject.SetActive(false);
+    }
+
 
     public async UniTask OnTargetDestroy()
     {

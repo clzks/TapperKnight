@@ -24,9 +24,9 @@ public class InGamePresenter : MonoBehaviour
         _model = model;
     }
 
-    public void SavePlayerModel()
+    public async UniTask SavePlayerModel()
     {
-        _model.SavePlayerModel();
+        await _model.SavePlayerModel();
     }
 
     public void ResetPlayerModel()
@@ -146,4 +146,8 @@ public class InGamePresenter : MonoBehaviour
         await _inGameView.OnTargetDestroy();
     }
 
+    public NetworkRequestStatus GetRequestStatus()
+    {
+        return _model.GetRequestStatus();
+    }
 }

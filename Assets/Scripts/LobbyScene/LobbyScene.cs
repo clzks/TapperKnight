@@ -7,13 +7,13 @@ public class LobbyScene : MonoBehaviour
     [SerializeField] private CharacterSelect _characterSelect;
     [SerializeField] private Button _startButton;
     private DataManager _dataManager;
-    private GPGSManager _gpgsManager;
+    //private GPGSManager _gpgsManager;
 
     private void Awake()
     {
         GameManager.Get().SetSceneType(SceneType.Lobby);
         _dataManager = DataManager.Get();
-        _gpgsManager = GPGSManager.Get();
+        //_gpgsManager = GPGSManager.Get();
     }
 
     public void SetActiveCharacterSelect()
@@ -28,9 +28,9 @@ public class LobbyScene : MonoBehaviour
         _characterSelect.SetActiveCharacterSelectUI(false);
     }
 
-    public void OnClickResetButton()
-    {
-        _dataManager.ResetPlayerModel(_gpgsManager.IsAuthenticated());
-        _characterSelect.SetCharcaterIcon();
-    }
+    //public void OnClickResetButton()
+    //{
+    //    _dataManager.ResetPlayerModel();
+    //    _characterSelect.SetCharcaterIcon();
+    //}
 }

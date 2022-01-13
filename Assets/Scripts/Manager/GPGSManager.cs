@@ -11,10 +11,14 @@ using System;
 
 public class GPGSManager : Singleton<GPGSManager>
 {
+    private DataManager _dataManager;
     private bool _isLogin = false;
     private JObject _data;
+    private bool _isDone = false;
+    private NetworkRequestStatus _requestStatus = NetworkRequestStatus.Count;
     private void Awake()
     {
+        _dataManager = DataManager.Get();
         InitGPGS();
     }
 
@@ -41,6 +45,7 @@ public class GPGSManager : Singleton<GPGSManager>
         PlayGamesPlatform.Activate();
     }
 
+    // 로그인 시도
     public void SignIn()
     {
 #if UNITY_EDITOR
@@ -52,17 +57,15 @@ public class GPGSManager : Singleton<GPGSManager>
             {
                 _isLogin = true;
                 Debug.Log("SignIn Success");
-
-                 ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-
-                savedGameClient.OpenWithAutomaticConflictResolution("playerData", DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime, OnSaveGameOpenedToLoad);
             }
         });
-
 #endif
     }
 
+    /// <summary>
+    /// 로그인 중인가?
+    /// </summary>
+    /// <returns></returns>
     public bool IsAuthenticated()
     {
 #if UNITY_EDITOR
@@ -72,50 +75,84 @@ public class GPGSManager : Singleton<GPGSManager>
 #endif
     }
 
-    public void OnSaveGameOpenedToLoad(SavedGameRequestStatus status, ISavedGameMetadata game)
+    public void OpenGameData(GameDataCallbackType type)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        _requestStatus = NetworkRequestStatus.Progress;
+
+        if (GameDataCallbackType.Load == type)
+        {
+            savedGameClient.OpenWithAutomaticConflictResolution("playerData", DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLongestPlaytime, OnSaveGameOpenedToLoad);
+        }
+        else if(GameDataCallbackType.Save == type)
+        {
+            savedGameClient.OpenWithAutomaticConflictResolution("playerData", DataSource.ReadCacheOrNetwork,
+               ConflictResolutionStrategy.UseLongestPlaytime, OnSaveGameOpenedToSave);
+        }
+    }
+
+    private void OnSaveGameOpenedToLoad(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
         if (status == SavedGameRequestStatus.Success)
         {
-            StartCoroutine(LoadGame(game));
+            // 게임 불러오기 성공. 게임이 존재거나 null이거나 성공
+            LoadGame(game);
+        }
+        else
+        {
+            // 게임 불러오는 요청을 실패
+            _requestStatus = NetworkRequestStatus.Fail;
+        }
+    }
+
+    private void LoadGame(ISavedGameMetadata game)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+        if (null != savedGameClient)
+        {
+            Debug.Log("저장된 게임 로드 성공, 바이너리 데이타 분석 시작");
+            savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
+        }
+        else
+        {
+            _requestStatus = NetworkRequestStatus.Done;
+        }
+    }
+
+    // 저장 시도
+    private void OnSaveGameOpenedToSave(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            // 저장 1단계 성공
+            SaveGame(game, _dataManager.GetPlayerModelToByteArray());
         }
         else
         {
             // 게임 불러오기 실패
+            _requestStatus = NetworkRequestStatus.Fail;
         }
     }
 
+  
 
-    public IEnumerator LoadGame(ISavedGameMetadata game)
-    {
-        float timer = 0f;
-        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-        while (null == savedGameClient)
-        {
-            timer += Time.deltaTime;
-            savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-            yield return null;
-
-            if (timer >= 10f)
-            {
-                Debug.Log("저장된 게임이 없습니다");
-                _data = null;
-                yield break;
-            }
-        }
-
-        Debug.Log("저장된 게임 로드 성공, 바이너리 데이타 분석 시작");
-        savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
-    }
-
-    public void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
+    private void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
     {
         if (status == SavedGameRequestStatus.Success)
         {
             LoadGameData(data);
+            _requestStatus = NetworkRequestStatus.Done;
+        }
+        else
+        {
+            // 실패
+            _requestStatus = NetworkRequestStatus.Fail;
         }
     }
 
-    public void LoadGameData(byte[] data)
+    private void LoadGameData(byte[] data)
     {
         var stringData = Encoding.Default.GetString(data);
 
@@ -125,13 +162,13 @@ public class GPGSManager : Singleton<GPGSManager>
         }
         else
         {
-            // 플레이어 게임 데이터가 서버에 올라갔지만 불러오지 못한 상태
-
+            // 게임데이터가 없는 경우
+            _data = null;
         }
     }
 
     // 서버에 게임 데이터를 저장하는 함수
-    public void SaveGame(ISavedGameMetadata game, byte[] savedData)
+    private void SaveGame(ISavedGameMetadata game, byte[] savedData)
     {
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
@@ -143,17 +180,17 @@ public class GPGSManager : Singleton<GPGSManager>
         savedGameClient.CommitUpdate(game, updatedMetadata, savedData, OnSavedGameWritten);
     }
 
-    public void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+    private void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
         if (status == SavedGameRequestStatus.Success)
         {
-            // 성공
-            Debug.Log("OnSaveGameWrittenSuccess");
+            // 저장 2단계 성공
+            _requestStatus = NetworkRequestStatus.Done;
         }
         else
         {
             // 실패
-            Debug.Log("OnSaveGameWrittenError");
+            _requestStatus = NetworkRequestStatus.Fail;
         }
     }
 
@@ -162,9 +199,8 @@ public class GPGSManager : Singleton<GPGSManager>
         return _data;
     }
 
-
-    public void SetLogin(bool enabled)
+    public NetworkRequestStatus GetRequestStatus()
     {
-        _isLogin = enabled;
+        return _requestStatus;
     }
 }

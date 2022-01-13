@@ -139,14 +139,16 @@ public class TapperKinghtModel : MonoBehaviour
         }
     }
 
-    public void SavePlayerModel()
+    // 게임 저장하기 
+    public async UniTask SavePlayerModel()
     {
-        _dataManager.SavePlayerModel(_gpgsManager.IsAuthenticated());
+        await _dataManager.SavePlayerModel(_gameManager.GetGameNetworkType());
     }
 
+    // 유저 데이터 초기화하기 
     public void ResetPlayerModel()
     {
-        _dataManager.ResetPlayerModel(_gpgsManager.IsAuthenticated());
+        _dataManager.ResetPlayerModel(_gameManager.GetGameNetworkType());
     }
 
     public int GetTotalRunningRecord()
@@ -198,5 +200,10 @@ public class TapperKinghtModel : MonoBehaviour
     public PlayerModel GetPlayerModel()
     {
         return _playerModel;
+    }
+
+    public NetworkRequestStatus GetRequestStatus()
+    {
+        return _dataManager.GetRequestStatus();
     }
 }

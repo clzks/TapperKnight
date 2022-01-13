@@ -1,7 +1,9 @@
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,7 +12,7 @@ using UnityEngine.Networking;
 
 public class DataManager : Singleton<DataManager>
 {
-    //private string _path = "Assets/Data/";
+    private GPGSManager _gpgsManager;
     private string _texturePath = "Textures/Background/Stage";
     private Dictionary<ScoreType, Sprite> _scoreSpriteList;
     private Dictionary<string, Sprite> _noteSpriteList;
@@ -22,8 +24,10 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<ScoreType, ScoreModel> _scoreList;
     private Dictionary<int, QuestInfo> _questInfoList;
     private PlayerModel _playerModel;
+    private NetworkRequestStatus _requestStatus = NetworkRequestStatus.Count;
     public async UniTask GetDataAsync()
     {
+        _gpgsManager = GPGSManager.Get();
         _noteSpriteList = new Dictionary<string, Sprite>();
         _stageList = new Dictionary<int, StageModel>();
         _enemyList = new Dictionary<int, EnemyModel>();
@@ -223,52 +227,98 @@ public class DataManager : Singleton<DataManager>
     }
 
     
-    //TODO : 구글 연동시 최우선되어야 할 것
-    public async UniTask LoadPlayerData(bool isLogin)
+    public async UniTask LoadPlayerData(GameNetworkType type)
     {
-        if(true == isLogin)
-        {
+        _requestStatus = NetworkRequestStatus.Progress;
 
-        }
-        else
+        if (GameNetworkType.Offline == type)
         {
             _playerModel = await JsonConverter<PlayerModel>.LoadJson();
+            _requestStatus = NetworkRequestStatus.Done;
+        }
+        else if(GameNetworkType.Online == type)
+        {
+            _gpgsManager.OpenGameData(GameDataCallbackType.Load);
+            
+            while (NetworkRequestStatus.Progress == _gpgsManager.GetRequestStatus())
+            {
+                await UniTask.Delay(500, true);
+            }
+
+            if (NetworkRequestStatus.Done == _gpgsManager.GetRequestStatus())
+            {
+                JObject j = _gpgsManager.GetGameData();
+
+                if (null != j)
+                {
+                    _playerModel = _gpgsManager.GetGameData().ToObject<PlayerModel>();
+                }
+                else
+                {
+                    _playerModel = null;
+                }
+
+                _requestStatus = NetworkRequestStatus.Done;
+            }
+            else if (NetworkRequestStatus.Fail == _gpgsManager.GetRequestStatus())
+            {
+                // 실패했을 경우 재시도 UI 띄우기
+                _requestStatus = NetworkRequestStatus.Fail;
+            }
         }
 
-        // 불러오는 작업 후
         if (null == _playerModel)
         {
             Debug.Log("플레이어 정보 없음. 플레이어 정보 새로 생성");
-            MakeNewPlayerModel(isLogin);
+            MakeNewPlayerModel(type);
         }
         else
         {
             Debug.Log("플레이어 정보 읽기 성공");
         }
-        //var playerData = await LoadTextAsset("Player");
-        //
-        //JObject player = JObject.Parse(playerData)["Player"] as JObject;
-        //
-        //_playerModel = player.ToObject<PlayerModel>();
     }
-    
-    private void MakeNewPlayerModel(bool isLogin)
+
+
+
+    private void MakeNewPlayerModel(GameNetworkType type)
     {
         _playerModel = PlayerModel.MakePlayerModel();
-        SavePlayerModel(isLogin);
+        SavePlayerModel(type).Forget();
     }
 
-    public void ResetPlayerModel(bool isLogin)
+    public void ResetPlayerModel(GameNetworkType type)
     {
         _playerModel.ResetPlayerModel();
-        SavePlayerModel(isLogin);
+        SavePlayerModel(type).Forget();
     }
 
-    public void SavePlayerModel(bool isLogin)
+    public async UniTask SavePlayerModel(GameNetworkType type)
     {
-        if (isLogin)
+        _requestStatus = NetworkRequestStatus.Progress;
+
+        if (GameNetworkType.Offline == type)
         {
             JsonConverter<PlayerModel>.WriteJson(_playerModel);
+        }
+        else if (GameNetworkType.Online == type)
+        {
+            _gpgsManager.OpenGameData(GameDataCallbackType.Save);
+
+            while (NetworkRequestStatus.Progress == _gpgsManager.GetRequestStatus())
+            {
+                await UniTask.Delay(500, true);
+            }
+
+            if (NetworkRequestStatus.Done == _gpgsManager.GetRequestStatus())
+            {
+                // 성공했을 경우
+                _requestStatus = NetworkRequestStatus.Done;
+            }
+            else if (NetworkRequestStatus.Fail == _gpgsManager.GetRequestStatus())
+            {
+                // 실패했을 경우 재시도 UI 띄우기
+                _requestStatus = NetworkRequestStatus.Fail;
+            }
         }
     }
 
@@ -362,5 +412,30 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, QuestInfo> GetQuestInfoList()
     {
         return _questInfoList;
+    }
+
+    public byte[] GetPlayerModelToByteArray()
+    {
+        JObject json = JObject.FromObject(_playerModel);
+
+        var stringMessage = JsonConvert.SerializeObject(json, Formatting.None);
+        var bytes = Encoding.UTF8.GetBytes(stringMessage);
+
+        return bytes;
+    }
+
+    public void SignIn()
+    {
+        _gpgsManager.SignIn();
+    }
+
+    public bool IsAuthenticated()
+    {
+        return _gpgsManager.IsAuthenticated();
+    }
+
+    public NetworkRequestStatus GetRequestStatus()
+    {
+        return _requestStatus;
     }
 }

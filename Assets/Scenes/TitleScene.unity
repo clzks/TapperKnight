@@ -2052,6 +2052,7 @@ MonoBehaviour:
   _conscutiveCountText: {fileID: 0}
   _popUp: {fileID: 0}
   _result: {fileID: 0}
+  _retryPopUp: {fileID: 0}
   _currentStageNumber: 1
   _currGenTimer: 3
   _genTime: 0
@@ -2901,7 +2902,7 @@ MonoBehaviour:
   touchPanel: {fileID: 274354915}
   logInPanel: {fileID: 8965618261613565486}
   optionButton: {fileID: 0}
-  retryPopUp: {fileID: 0}
+  retryPopUp: {fileID: 7911791983482029756}
 --- !u!114 &1977188480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3362,19 +3363,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7911791982328885431}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1977188479}
-        m_TargetAssemblyTypeName: TitleScene, Assembly-CSharp
-        m_MethodName: OnClickRetryGoogleLogin
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7911791982328885431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3668,6 +3657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   descriptionText: {fileID: 7911791983062399964}
+  retryButton: {fileID: 7911791982328885430}
 --- !u!224 &7911791983489715016
 RectTransform:
   m_ObjectHideFlags: 0

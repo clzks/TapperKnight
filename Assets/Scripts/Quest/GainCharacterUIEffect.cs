@@ -8,6 +8,6 @@ public class GainCharacterUIEffect : MonoBehaviour
 
     private void Update()
     {
-        rt.Rotate(new Vector3(0, 0, Time.realtimeSinceStartup * 0.03f));
+        rt.Rotate(new Vector3(0, 0, 0.5f));
     }
 }
